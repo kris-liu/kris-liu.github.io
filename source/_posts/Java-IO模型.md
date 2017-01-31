@@ -2,9 +2,16 @@
 title: Java IO模型
 date: 2016-12-18 16:00:00
 categories: IO&NIO
-tags: [BIO, NIO, AIO]
+tags: [IO, BIO, NIO, AIO]
 ---
-目前常用的IO通信模型包括四种：阻塞式同步IO、非阻塞式同步IO、多路复用IO、和异步IO。这些IO模型都是要靠底层操作系统进行支持，应用程序只是提供相应的实现，对操作系统进行调用。本文将介绍这四种IO模型及Java对这四种IO模型的支持。
+目前常用的IO通信模型包括四种：
+
+- 阻塞同步I/O（blocking IO）
+- 非阻塞同步I/O（nonblocking IO）
+- 多路复用I/O（IO multiplexing）
+- 异步I/O（asynchronous IO）
+
+这些IO模型都是要靠底层操作系统进行支持，应用程序只是提供相应的实现，对操作系统进行调用。本文将介绍这四种IO模型及Java对这四种IO模型的支持。
 
 对于一次IO访问（以read举例），数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。所以说，当一个read操作发生时，它会经历两个阶段：
 
@@ -12,15 +19,15 @@ tags: [BIO, NIO, AIO]
 2. 将数据从内核拷贝到进程中。
 
 
-## 阻塞 I/O（blocking IO）
+## 阻塞同步I/O（blocking IO）
 
 ![blocking-IO](Java-IO模型/blocking-IO.png)
 
-在linux中，默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：准备数据（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户进程这边，整个进程会被阻塞（当然，是进程自己选择的阻塞）。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除block的状态，重新运行起来。这意味着应用程序在调用时会一直阻塞，直到系统调用完成为止（数据传输完成或发生错误）。调用应用程序处于一种不再消费 CPU 而只是简单等待响应的状态，因此从处理的角度来看，这是非常有效的。
+在linux中，默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：当用户线程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：准备数据（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户线程这边，整个线程会被阻塞（当然，是线程自己选择的阻塞）。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户线程才解除block的状态，重新运行起来。这意味着应用程序在调用时会一直阻塞，直到系统调用完成为止（数据传输完成或发生错误）。调用应用程序处于一种不再消费 CPU 而只是简单等待响应的状态，因此从处理的角度来看，这是非常有效的。
 
 blocking IO的特点就是在IO执行的两个阶段都被block了。
 
-###同步阻塞IO Java实现
+### 阻塞同步IO Java实现
 
 ```
 package com.kris.ioModel;
@@ -35,7 +42,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * 同步阻塞IO Java实现
+ * 阻塞同步IO Java实现
  *
  * @author xin.liu
  */
@@ -90,15 +97,15 @@ public class SocketServer1 {
 
 ```
 
-## 非阻塞 I/O（nonblocking IO）
+## 非阻塞同步I/O（nonblocking IO）
 
 ![nonblocking-IO](Java-IO模型/nonblocking-IO.png)
 
-linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：当用户进程发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是立刻返回一个error。从用户进程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到了用户进程的system call，那么它马上就将数据拷贝到了用户内存，然后返回。这种模式下，应用程序的线程不再一直等待操作系统的IO状态，而是在等待一段时间后，就解除阻塞。如果没有得到想要的结果，则再次进行相同的操作。
+linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：当用户线程发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户线程，而是立刻返回一个error。从用户线程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户线程判断结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到了用户线程的system call，那么它马上就将数据拷贝到了用户内存，然后返回。这种模式下，应用程序的线程不再一直等待操作系统的IO状态，而是在等待一段时间后，就解除阻塞。如果没有得到想要的结果，则再次进行相同的操作。
 
-nonblocking IO的特点是用户进程需要不断的主动询问kernel数据好了没有。
+nonblocking IO的特点是用户线程需要不断的主动询问kernel数据好了没有。
 
-### 同步非阻塞IO Java实现
+### 非阻塞同步IO Java实现
 
 ```
 package com.kris.ioModel;
@@ -114,7 +121,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 /**
- * 同步非阻塞IO Java实现
+ * 非阻塞同步IO Java实现
  *
  * @author xin.liu
  */
@@ -195,21 +202,18 @@ public class SocketServer2 {
 }
 ```
 
-## I/O 多路复用（ IO multiplexing）
+## 多路复用I/O（IO multiplexing）
 
 ![IO-multiplexing](Java-IO模型/IO-multiplexing.png)
 
-IO multiplexing就是我们说的select，poll，epoll，有些地方也称这种IO方式为event driven IO。select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。
+IO multiplexing就是我们说的select，poll，epoll。IO多路复用模型从流程上和同步阻塞IO的区别不大，主要区别在于操作系统为用户提供了同时轮询多个IO句柄来查看是否有IO事件的接口（如select/epoll），这从根本上允许用户可以使用单个线程来管理多个IO句柄的问题。
 
-当用户进程调用了select，那么整个进程会被block，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。
+当用户线程调用了select，那么整个线程会被block，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户线程再调用read操作，直接把数据从kernel拷贝到用户线程。
 
-所以，I/O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。
-这个图和blocking IO的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个system call (select 和 recvfrom)，而blocking IO只调用了一个system call (recvfrom)。但是，用select的优势在于它可以同时处理多个connection。
+在IO multiplexing Model中，实际中，对于每一个socket，一般都设置成为non-blocking，但是，如上图所示，整个用户的线程其实是一直被block的。只不过线程是被select这个函数block，而不是被socket IO给block。
 
-所以，如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用multi-threading + blocking IO的web server性能更好，可能延迟还更大。select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。）
-
-在IO multiplexing Model中，实际中，对于每一个socket，一般都设置成为non-blocking，但是，如上图所示，整个用户的process其实是一直被block的。只不过process是被select这个函数block，而不是被socket IO给block。
-
+I/O多路复用的特点是通过一种机制使一个线程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入就绪状态，select()函数就可以返回。
+这个图和blocking IO的图其实并没有太大的不同，事实上，还更差一些。因为这里需要使用两个system call (select 和 recvfrom)，而blocking IO只调用了一个system call (recvfrom)。但是，用select的优势在于它可以同时处理多个socket。所以，如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用multi-threading + blocking IO的web server性能更好，可能延迟还更大。select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。
 
 ### 多路复用IO Java实现
 
@@ -331,13 +335,13 @@ public class SocketServer3 {
 }
 ```
 
-## 异步 I/O（asynchronous IO）
+## 异步I/O（asynchronous IO）
 
 ![asynchronous-IO](Java-IO模型/asynchronous-IO.png)
 
-用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，kernel会给用户进程发送一个signal，告诉它read操作完成了。
+用户线程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户线程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，kernel会给用户线程发送一个signal，告诉它read操作完成了。
 
-采用“订阅-通知”模式：即应用程序向操作系统注册IO监听，然后继续做自己的事情。当操作系统发生IO事件，并且准备好数据后，在主动通知应用程序，触发相应的函数去处理。
+采用“订阅-通知”模式：即应用程序向操作系统注册IO监听，然后继续做自己的事情。当操作系统发生IO事件，并且准备好数据后，再主动通知应用程序，触发相应的函数去处理。
 
 ### 异步IO Java实现
 
@@ -518,13 +522,15 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 }
 ```
 
-## 总结
+
+## IO模型总结
 
 ### blocking和non-blocking的区别
 
-这个概念是针对应用程序而言，是指应用程序中的线程在向操作系统发送IO请求后，是否一直等待操作系统的IO响应。如果是，那么就是阻塞式的；如果不是，那么应用程序一般会以轮询的方式以一定周期询问操作系统，直到某次获得了IO响应为止（轮序间隔应用程序线程可以做一些其他工作）。调用blocking IO会一直block住对应的进程直到操作完成，而non-blocking IO在kernel还准备数据的情况下会立刻返回。
+这个概念是针对应用程序而言，是指应用程序中的线程在向操作系统发送IO请求后，是否一直等待操作系统的IO响应。如果是，那么就是阻塞式的；如果不是，那么应用程序一般会以轮询的方式以一定周期询问操作系统，直到某次获得了IO响应为止（轮序间隔应用程序线程可以做一些其他工作）。调用blocking IO会一直block住对应的线程直到操作完成，而non-blocking IO在kernel还准备数据的情况下会立刻返回。
 
 ### synchronous IO和asynchronous IO的区别
+
 在说明synchronous IO和asynchronous IO的区别之前，需要先给出两者的定义。POSIX的定义是这样子的：
 
 - A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes;
@@ -532,25 +538,32 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 
 两者的区别就在于synchronous IO做”IO operation”的时候会将process阻塞。按照这个定义，之前所述的blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。
 
-有人会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。
+有人会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block线程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候线程是被block了，在这段时间内，线程是被block的。
 
-而asynchronous IO则不一样，当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。在这整个过程中，进程完全没有被block。
+而asynchronous IO则不一样，当线程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉线程说IO完成。在这整个过程中，线程完全没有被block。
 
 ### IO模型分类
 
 同步异步：
 
 - 同步IO： blocking IO； non-blocking IO； IO multiplexing
-- 异步IO： asynchronous I/O
+- 异步IO： asynchronous IO
 
 阻塞非阻塞：
 
 - 阻塞IO： blocking IO
-- 非阻塞IO： non-blocking IO； IO multiplexing； asynchronous I/O
+- 非阻塞IO： non-blocking IO； IO multiplexing； asynchronous IO
 
 ### Java实现
 
-以上这些IO工作模型，在JAVA中都能够找到对应的支持：传统的JAVA Socket套接字支持阻塞/非阻塞模式下的同步IO；JAVA NIO框架在不同操作系统下支持不同种类的多路复用IO技术（windows下的select模型、Linux下的poll/epoll模型）；JAVA AIO框架支持异步IO（windows下的IOCP和Linux使用epoll的模拟AIO）
+以上这些IO工作模型，在JAVA中都能够找到对应的支持：传统的JAVA Socket套接字支持阻塞/非阻塞模式下的同步IO；JAVA NIO框架在不同操作系统下支持不同种类的多路复用IO技术（windows下的select模型、Linux下的poll/epoll模型）；JAVA AIO框架支持异步IO（windows下的IOCP和Linux使用epoll的模拟AIO）。
+
+### 注：
+上文中的示例代码只是针对各种IO模型下的Java实现示例展示，并没有使用线程池技术去处理业务逻辑。实际应用中推荐也应当使用线程池技术，用线程池去处理业务逻辑部分。
+
+客户端使用何种IO技术，对整个系统架构的性能提升相关性并不大。
+
+非阻塞IO模型中，报文的解析，连接的管理维护都需要额外去处理，增加了编程复杂度，一般可以借助Netty，Mina等成型的封装好的NIO类库。
 
 
 ## 参考资料
