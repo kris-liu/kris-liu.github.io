@@ -437,7 +437,7 @@ protected boolean tryReleaseShared(int arg)
     }
 ```
 
-###  * boolean releaseShared(int arg)
+### * boolean releaseShared(int arg)
 以共享模式释放对象。
 
 ```
