@@ -2,9 +2,107 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kris-liu.github.io/2016/12/24/I-O-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B9%8Bselect%E3%80%81poll%E3%80%81epoll%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2017-02-01T20:07:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/11/15/Java-Cache-Line-%E4%BC%AA%E5%85%B1%E4%BA%AB%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    
+    <lastmod>2017-02-01T20:06:33.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/10/12/JUC-Condition-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T20:03:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/10/11/JUC-CountDownLatch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T20:03:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/11/29/JUC-FutureTask-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T20:03:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/11/17/Unsafe-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T20:02:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2015/07/01/Tomcat%E5%8D%95%E6%9C%BA%E9%83%A8%E7%BD%B2%E5%A4%9A%E5%AE%9E%E4%BE%8B/</loc>
+    
+    <lastmod>2017-02-01T20:02:10.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/11/18/ThreadLocal-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T20:01:30.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/11/27/JUC-ThreadPoolExecutor-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T20:00:55.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/11/12/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-JMM-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2017-02-01T20:00:13.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/10/16/JUC-ReentrantReadWriteLock-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T19:59:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/10/11/JUC-ReentrantLock-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T19:59:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T19:58:28.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kris-liu.github.io/2016/10/08/JUC-Semaphore-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2017-02-01T19:58:10.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kris-liu.github.io/2016/12/18/Java-IO%E6%A8%A1%E5%9E%8B/</loc>
     
-    <lastmod>2017-02-01T19:23:40.000Z</lastmod>
+    <lastmod>2017-02-01T19:56:17.000Z</lastmod>
     
   </url>
   
@@ -16,83 +114,6 @@
   </url>
   
   <url>
-    <loc>https://kris-liu.github.io/2016/12/24/I-O-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B9%8Bselect%E3%80%81poll%E3%80%81epoll%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93/</loc>
-    
-    <lastmod>2017-01-31T18:09:00.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-31T12:57:27.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/10/12/JUC-Condition-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/11/29/JUC-FutureTask-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/10/11/JUC-ReentrantLock-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/10/16/JUC-ReentrantReadWriteLock-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/10/08/JUC-Semaphore-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/about/index.html</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/11/15/Java-Cache-Line-%E4%BC%AA%E5%85%B1%E4%BA%AB%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/10/11/JUC-CountDownLatch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/11/12/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-JMM-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://kris-liu.github.io/2015/08/20/Spring-AspectJ%E4%BA%8B%E5%8A%A1/</loc>
     
     <lastmod>2017-01-27T18:22:38.000Z</lastmod>
@@ -100,28 +121,7 @@
   </url>
   
   <url>
-    <loc>https://kris-liu.github.io/2016/11/18/ThreadLocal-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2015/07/01/Tomcat%E5%8D%95%E6%9C%BA%E9%83%A8%E7%BD%B2%E5%A4%9A%E5%AE%9E%E4%BE%8B/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/11/17/Unsafe-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-01-27T18:22:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kris-liu.github.io/2016/11/27/JUC-ThreadPoolExecutor-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    <loc>https://kris-liu.github.io/about/index.html</loc>
     
     <lastmod>2017-01-27T18:22:38.000Z</lastmod>
     
