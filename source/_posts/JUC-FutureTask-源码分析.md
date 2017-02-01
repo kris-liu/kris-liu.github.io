@@ -4,8 +4,9 @@ date: 2016-11-29 23:43:59
 categories: Concurrent
 tags: [Java,并发,异步,源码]
 ---
-# 简介
 FutureTask，可取消的异步计算。利用开始和取消计算的方法、查询计算是否完成的方法和获取计算结果的方法，此类提供了对 Future 的基本实现。仅在计算完成时才能获取结果；如果计算尚未完成，则阻塞 get 方法。一旦计算完成，就不能再重新开始或取消计算。可使用 FutureTask 包装 Callable 或 Runnable 对象。因为 FutureTask 实现了 Runnable，所以可将 FutureTask 提交给 Executor 执行。
+
+<!--more-->
 
 # 源码分析
 

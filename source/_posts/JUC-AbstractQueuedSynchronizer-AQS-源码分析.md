@@ -4,13 +4,14 @@ date: 2016-09-28 15:24:00
 categories: Concurrent
 tags: [Java,并发,锁,源码]
 ---
-# 简介
 AbstractQueuedSynchronizer，同步器，以下简称AQS。本文从源码分析AQS的核心方法和实现原理。
 
 AQS内部有两组重要的成员变量：
 
 1. int类型的status变量，通过CAS操作（详见：[CAS深度分析](http://blog.csdn.net/hsuxu/article/details/9467651)）改变status值来控制当前线程能否访问资源以及并发数量。
 2. Node类型的head和tail两个变量，两个变量维护了一个FIFO的同步队列，将获取访问权限失败的线程构造成Node节点加入队列中，释放资源时再来唤醒队列中阻塞的线程。（Node类型主要包涵节点的状态，当前线程的引用，以及前驱节点和后置节点的引用）
+
+<!--more-->
 
 # 使用方式
 AQS在使用时一般是作为自定义同步工具的内部类，实现AQS中可重写的方法，来自定义获取以及释放锁的方式，在自定义同步工具类中，调用AQS中提供给使用者的模版方法，来控制锁的获取和释放。

@@ -17,6 +17,8 @@ tags: Tomcat
 
  5、可实现自定义单一实例热加载热部署，不会对其它实例造成影响
 
+<!--more-->
+
 这里需要说明的两个变量CATALINA_HOME、CATALINA_BASE，其中CATALINA_HOME指定的是tomcat主目录，CATALINA_BASE指定的是tomcat实例的目录，CATALINA_BASE默认和CATALINA_HOME相同。
 
 在/etc/profile最后加入CATALINA_HOME环境变量

@@ -6,6 +6,9 @@ tags: [Java,源码]
 ---
 转：<http://www.cnblogs.com/mickole/articles/3757278.html>
 ## sun.misc.Unsafe
+
+<!--more-->
+
 ```
 /**
  * This class should provide access to low-level operations and its

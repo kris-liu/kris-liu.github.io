@@ -4,11 +4,13 @@ date: 2016-10-11 18:05:50
 categories: Concurrent
 tags: [Java,并发,锁,源码]
 ---
-# 简介
 ReentrantLock，一个可重入的独占锁 Lock，它具有与使用 synchronized 方法和语句所访问的隐式监视器锁相同的一些基本行为和语义，但功能更强大。
 
 # 源码分析
 ReentrantLock的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync主要实现了AbstractQueuedSynchronizer中独占模式的获取和释放方法tryAcquire和tryRelease，在ReentrantLock中使用AQS的子类Sync，AQS的status代表锁是否被占用，为0代表没有被占用，大于0代表被当前线程占用的次数，每次占用必需要对应一次释放，ReentrantLock是可重入的锁，一个线程可以同时多次获取到锁。
+
+<!--more-->
+
 
 ```
 	abstract static class Sync extends AbstractQueuedSynchronizer {

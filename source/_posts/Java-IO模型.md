@@ -18,12 +18,13 @@ tags: [IO, BIO, NIO, AIO]
 1. 等待内核数据就绪。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
 2. 数据从内核拷贝到进程。出于系统安全,用户态的程序没有权限直接读取内核态内存,因此内核负责把内核态内存中的数据拷贝一份到用户态内存中。
 
+<!--more-->
 
 ## 阻塞同步I/O（blocking IO）
 
 ![blocking-IO](Java-IO模型/blocking-IO.png)
 
-在linux中，默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：当用户线程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：准备数据（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户线程这边，整个线程会被阻塞（当然，是线程自己选择的阻塞）。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户线程才解除block的状态，重新运行起来。这意味着应用程序在调用时会一直阻塞，直到系统调用完成为止（数据传输完成或发生错误）。调用应用程序处于一种不再消费 CPU 而只是简单等待响应的状态，因此从处理的角度来看，这是非常有效的。
+默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：当用户线程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：准备数据（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。而在用户线程这边，整个线程会被阻塞（当然，是线程自己选择的阻塞）。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户线程才解除block的状态，重新运行起来。这意味着应用程序在调用时会一直阻塞，直到系统调用完成为止（数据传输完成或发生错误）。调用应用程序处于一种不再消费 CPU 而只是简单等待响应的状态，因此从处理的角度来看，这是非常有效的。
 
 blocking IO的特点就是在IO执行的两个阶段都被block了。
 
@@ -525,18 +526,25 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 
 ## IO模型总结
 
-一个IO操作会经历一下两个阶段：
+### IO模型分类
 
-1. 等待数据准备。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
+首先，一次IO操作发生时，它会经历两个阶段：
+
+1. 等待内核数据就绪。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
 2. 数据从内核拷贝到进程。出于系统安全,用户态的程序没有权限直接读取内核态内存,因此内核负责把内核态内存中的数据拷贝一份到用户态内存中。
 
-### blocking和non-blocking的区别
+#### 阻塞非阻塞的区别分类：
 
 这个概念是针对应用程序而言，是指应用程序中的线程在向操作系统发送IO请求后，是否一直等待操作系统的IO响应。如果是，那么就是阻塞式的；如果不是，那么应用程序一般会以轮询的方式以一定周期询问操作系统，直到某次获得了IO响应为止（轮序间隔应用程序线程可以做一些其他工作）。调用blocking IO会一直block住对应的线程直到操作完成，而non-blocking IO在kernel还没准备好数据的情况下会立刻返回。
 
-### synchronous IO和asynchronous IO的区别
+**主要区别就是内核还没准备好数据的时候是否block用户，阻塞IO整个IO操作阶段会一直block住用户直到全部完成；非阻塞IO在内核没有准备好数据时不会阻塞而是返回错误，需要用户主动轮询操作。**
 
-在说明synchronous IO和asynchronous IO的区别之前，需要先给出两者的定义。POSIX的定义是这样子的：
+- 阻塞IO： blocking IO
+- 非阻塞IO： non-blocking IO； IO multiplexing； asynchronous IO
+
+#### 同步异步的区别分类：
+
+POSIX的定义是这样子的：
 
 - A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes;
 - An asynchronous I/O operation does not cause the requesting process to be blocked;
@@ -547,23 +555,7 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 
 而asynchronous IO则不一样，当线程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉线程说IO完成。在这整个过程中，线程完全没有被block。
 
-### IO模型分类
-
-一次IO操作发生时，它会经历两个阶段：
-
-1. 等待内核数据就绪。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
-2. 数据从内核拷贝到进程。出于系统安全,用户态的程序没有权限直接读取内核态内存,因此内核负责把内核态内存中的数据拷贝一份到用户态内存中。
-
-#### 阻塞非阻塞：
-
-主要区别就是内核还没准备好数据的时候是否block用户，阻塞IO整个IO操作阶段会一直block住用户直到全部完成；非阻塞IO在内核没有准备好数据时不会阻塞而是返回错误，需要用户主动轮询操作。
-
-- 阻塞IO： blocking IO
-- 非阻塞IO： non-blocking IO； IO multiplexing； asynchronous IO
-
-#### 同步异步：
-
-主要区别就是做真实IO操作即把数据从内核拷贝到进程时是否block用户，同步IO在把数据从内核拷贝到进程时会block用户；异步IO通过回调主动将数据拷贝到用户内存，整个过程不会block用户
+**主要区别就是做真实IO操作即把数据从内核拷贝到进程时是否block用户，同步IO在把数据从内核拷贝到进程时会block用户；异步IO通过回调主动将数据拷贝到用户内存，整个过程不会block用户。**
 
 - 同步IO： blocking IO； non-blocking IO； IO multiplexing
 - 异步IO： asynchronous IO
@@ -574,11 +566,12 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 以上这些IO工作模型，在JAVA中都能够找到对应的支持：传统的JAVA Socket套接字支持阻塞/非阻塞模式下的同步IO；JAVA NIO框架在不同操作系统下支持不同种类的多路复用IO技术（windows下的select模型、Linux下的poll/epoll模型）；JAVA AIO框架支持异步IO（windows下的IOCP和Linux使用epoll的模拟AIO）。
 
 ### 注：
-上文中的示例代码只是针对各种IO模型下的Java实现示例展示，并没有使用线程池技术去处理业务逻辑。实际应用中推荐也应当使用线程池技术，用线程池去处理业务逻辑部分。
 
-客户端使用何种IO技术，对整个系统架构的性能提升相关性并不大。
+**上文中的示例代码只是针对各种IO模型下的Java实现示例展示，并没有使用线程池技术去处理业务逻辑。实际应用中推荐也应当使用线程池技术，用线程池去处理业务逻辑部分。**
 
-非阻塞IO模型中，报文的解析，连接的管理维护都需要额外去处理，增加了编程复杂度，一般可以借助Netty，Mina等成型的封装好的NIO类库。
+**客户端使用何种IO技术，对整个系统架构的性能提升相关性并不大。**
+
+**非阻塞IO模型中，报文的解析，连接的管理维护都需要额外去处理，增加了编程复杂度，一般可以借助Netty，Mina等成型的封装好的NIO类库。**
 
 
 ## 参考资料

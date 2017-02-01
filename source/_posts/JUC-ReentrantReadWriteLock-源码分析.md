@@ -4,10 +4,11 @@ date: 2016-10-16 02:09:04
 categories: Concurrent
 tags: [Java,并发,读写锁,源码]
 ---
-# 简介
 ReentrantReadWriteLock，读写锁。维护了一对相关的锁，一个用于只读操作，另一个用于写入操作。只要没有 writer，读取锁可以由多个 reader 线程同时保持。写入锁是独占的。
 
 与互斥锁相比，读-写锁允许对共享数据进行更高级别的并发访问。虽然一次只有一个线程（writer 线程）可以修改共享数据，但在许多情况下，任何数量的线程可以同时读取共享数据（reader 线程）。当访问读写比恰当的共享数据时，使用读-写锁所允许的并发性将带来更大的性能提高。
+
+<!--more-->
 
 # 源码分析
 ReentrantReadWriteLock的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync同时实现了AbstractQueuedSynchronizer中独占模式的获取和释放方法tryAcquire和tryRelease，和共享模式的获取和释放方法tryAcquireShared和tryReleaseShared，**写锁WriteLock**使用独占模式的方法控制锁状态，**读锁ReadLock**使用共享模式的方法控制锁状态，在WriteLock和ReadLock中使用同一个AQS的子类Sync，用AQS的status代表读写锁的状态计数，单个int值，通过位运算区分高低位，低16位代表写状态，高16位代表读状态。支持公平非公平实现，支持中断，支持重入，支持锁降级。

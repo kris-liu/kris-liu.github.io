@@ -4,8 +4,9 @@ date: 2016-10-08 16:58:30
 categories: Concurrent
 tags: [Java,并发,源码]
 ---
-# 简介
 **Semaphore，信号量。用于控制同时访问特定资源的线程数量，来保证合理的使用特定资源。**比如：有10个数据库连接，有30个线程都需要使用连接，Semaphore可以控制只有10个线程能够获取连接，其他线程需要排队等待，当已经获取到连接的线程释放连接，排队的线程才能够去申请获取。
+
+<!--more-->
 
 # 源码分析
 Semaphore的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync主要实现了AbstractQueuedSynchronizer中共享模式的获取和释放方法tryAcquireShared和tryReleaseShared，在Semaphore中使用AQS的子类Sync，初始化的state表示许可数，在每一次请求acquire()一个许可都会导致state减少1，同样每次释放一个许可release()都会导致state增加1。一旦达到了0，新的许可请求线程将被挂起，直到有许可被释放。
