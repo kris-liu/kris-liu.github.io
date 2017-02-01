@@ -61,17 +61,17 @@ aspectj的编译器编译结果(class反编译的结果)：
 
 ```
     @Transactional
-    public BonusBookingResult doBooking(UserBonusModel bonusModel, Map<String, String> promotionMap) {
-        BonusBookingResult var10;
+    public BookingResult doBooking(UserModel Model, Map<String, String> map) {
+        BookingResult var10;
         try {
-            BonusBookingResult var8;
+            BookingResult var8;
             try {
                 AnnotationTransactionAspect.aspectOf().ajc$before$org_springframework_transaction_aspectj_AbstractTransactionAspect$1$2a73e96c(this, ajc$tjp_0);
 
 		... ...
                 doXxx业务逻辑
 		... ...
-                var8 = new BonusBookingResult(bestBonus, defaultBonus);
+                var8 = new BookingResult(best, default);
             } catch (Throwable var11) {
                 AnnotationTransactionAspect.aspectOf().ajc$afterThrowing$org_springframework_transaction_aspectj_AbstractTransactionAspect$2$2a73e96c(this, var11);
                 throw var11;
