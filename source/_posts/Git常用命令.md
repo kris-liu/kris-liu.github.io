@@ -25,6 +25,11 @@ git add -A把所有文件修改添加到暂存区
 
 git commit -m 'message' 把暂存区的所有内容提交到当前分支，一定要带提交日志
 
+```
+
+<!--more-->
+
+```
 git branch 显示分支 *开头的是当前分支
 	liuxin@liuxin-ProBook:~/Work/Projects/training$ git branch
 	* liuxin
@@ -35,7 +40,7 @@ git baranch -avv 显示所有分支的详细信息
 	liuxin@liuxin-ProBook:~/Work/Projects/training$ git branch -avv
 	* liuxin                        2a8804e [origin/liuxin] update pom
 	  master                           924d69f [origin/master] xxx standard initialization
-	  zhao                     ab33686 [origin/ronghua.zhao] change project structure
+	  zhao                     ab33686 [origin/zhao] change project structure
 	  remotes/origin/HEAD              -> origin/master
 	  remotes/origin/cheng     35234e2 modify question
 	  remotes/origin/yang        fae3081 update resources
