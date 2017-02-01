@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>https://kris-liu.github.io/2016/12/18/Java-IO%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2017-02-01T19:23:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java IO模型</title>
+        <pubTime>2016-12-18T08:00:00.000Z</pubTime>
+        
+        <tag>IO</tag>
+         
+        <tag>NIO</tag>
+         
+        <tag>BIO</tag>
+         
+        <tag>AIO</tag>
+         
+         
+           
+             
+              <breadCrumb title="IO&amp;NIO" url="https://kris-liu.github.io/categories/IO-NIO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://kris-liu.github.io/2015/09/01/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
     <lastmod>2017-02-01T18:12:02.000Z</lastmod>
     <data>
@@ -34,32 +60,6 @@
         <tag>IO</tag>
          
         <tag>NIO</tag>
-         
-         
-           
-             
-              <breadCrumb title="IO&amp;NIO" url="https://kris-liu.github.io/categories/IO-NIO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://kris-liu.github.io/2016/12/18/Java-IO%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2017-01-31T17:07:51.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java IO模型</title>
-        <pubTime>2016-12-18T08:00:00.000Z</pubTime>
-        
-        <tag>IO</tag>
-         
-        <tag>NIO</tag>
-         
-        <tag>BIO</tag>
-         
-        <tag>AIO</tag>
          
          
            
