@@ -75,8 +75,8 @@ public abstract class SelectionKey {
     }
 
 }
-
 ```
+
 
 一个键表示了一个特定的通道对象和一个特定的选择器对象之间的注册关系。
 
@@ -85,7 +85,9 @@ channel()方法返回与该键相关的SelectableChannel对象。
 selector()则返回相关的Selector对象。
 调用SelectionKey对象的cancel()方法可以取消通道和选择器的关联。可以通过调用isValid()方法来检查它是否仍然是有效的关联关系。当键被取消时，它将被放在相关的选择器的已取消的键的集合里。注册不会立即被取消，但键会立即失效。当再次调用select()方法时(或者一个正在进行的select()调用结束时)，已取消的键的集合中的被取消的键将被清理掉，并且相应的注销也将完成。当通道关闭时，所有相关的键会自动取消。当选择器关闭时，所有被注册到该选择器的通道都将被注销，并且相关的键将立即被无效化。一旦键被无效化，调用它的与选择相关的方法就将抛出CancelledKeyException。
 
+
 ```java
+
     public static final int OP_READ = 1 << 0;//1
 
     public static final int OP_WRITE = 1 << 2;//4
@@ -93,12 +95,16 @@ selector()则返回相关的Selector对象。
     public static final int OP_CONNECT = 1 << 3;//8
 
     public static final int OP_ACCEPT = 1 << 4;//16
-```    
+
+```
+
 
 上面的常量表示通道相关的操作的比特掩码。
-    一个SelectionKey对象包含两个以整数形式进行编码的比特掩码：一个用于指示那些通道选择器组合体所关心的操作(instrest集合)，另一个表示通道准备好要执行的操作(ready集合)。
+
+一个SelectionKey对象包含两个以整数形式进行编码的比特掩码：一个用于指示那些通道选择器组合体所关心的操作(instrest集合)，另一个表示通道准备好要执行的操作(ready集合)。
 
 - instrest集合：当前的interest集合可以通过调用键对象的interestOps()方法来获取。可以通过调用interestOps()方法并传入一个新的比特掩码参数来改变它。当相关的Selector上的select()操作正在进行时改变键的interest集合，不会影响那个正在进行的选择操作。所有更改将会在select()的下一个调用中体现出来。- ready集合：可以通过调用键的readyOps()方法来获取相关的通道的已经就绪的操作，不能直接改变键的ready集合。ready集合是interest集合的子集，并且表示了interest集合中从上次调用select()以来已经就绪的那些操作。
+
 
 SelectionKey类定义了四个便于使用的布尔方法来为您测试这些比特值，用来检测channel中什么事件或操作已经就绪：
 
@@ -107,7 +113,9 @@ SelectionKey类定义了四个便于使用的布尔方法来为您测试这些�
 - isConnectable()
 - isAcceptable()
 
+
 attach()方法将在键对象中保存所提供的对象的引用。SelectionKey类除了保存它之外，不 会将它用于任何其他用途。任何一个之前保存在键中的附件引用都会被替换。可以使用null值来清除附件。可以通过调用attachment()方法来获取与键关联的附件句柄。
+
 
 ## Selector API
 
@@ -279,6 +287,7 @@ public class Thread implements Runnable {
 ## 代码示例
 
 通过一个服务端应用的代码示例展示选择器如何与通道和缓冲区共同使用，具体选择器和选择键还有通道如何相互配合以及底层如何调用还是自己看一下关键方法的源代码了解一下吧。^_^
+
 
 ```java
 public class SocketServer3 {
