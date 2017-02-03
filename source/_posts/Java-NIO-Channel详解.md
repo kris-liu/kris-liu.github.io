@@ -2,9 +2,8 @@
 title: Java NIO Channel详解
 date: 2017-01-18 22:34:00
 categories: IO&NIO
-tags: [NIO]
+tags: [Java, NIO]
 ---
-
 ## Channel通道
 
 在JAVA NIO中，基本上所有的IO都是从Channel开始的，读取操作即从Channel读到Buffer，写操作即从Buffer写入Channel。
@@ -40,10 +39,10 @@ DatagramChannel、SocketChannel和ServerSocketChannel分别代表UDP，TCP客户
 
 ### 打开通道
 
-```
-SocketChannel sc = SocketChannel.open( );sc.connect (new InetSocketAddress ("somehost", someport));
-ServerSocketChannel ssc = ServerSocketChannel.open( );ssc.bind (new InetSocketAddress (somelocalport));
-DatagramChannel dc = DatagramChannel.open( );
+```java
+SocketChannel sc = SocketChannel.open();sc.connect (new InetSocketAddress ("somehost", someport));
+ServerSocketChannel ssc = ServerSocketChannel.open();ssc.bind (new InetSocketAddress (somelocalport));
+DatagramChannel dc = DatagramChannel.open();
 ```
 
 ```
@@ -63,9 +62,9 @@ SocketChannel sc = SocketChannel.open( );sc.connect (new InetSocketAddress ("so
 
 ### 使用通道
 
-道将数据传输给ByteBuffer对象或者从ByteBuffer对象获取数据进行传输。ByteChannel 的read( )和write( )方法使用ByteBuffer对象作为参数。两种方法均返回已传输的字节数，可能比缓冲区的字节数少甚至可能为零。缓冲区的位置也会发生与已传输字节相同数量的移动。如果只进行了部分传输，缓冲区可以被重新提交给通道并从上次中断的地方继续传输。该过 程重复进行直到缓冲区的 hasRemaining( )方法返回false值。
+道将数据传输给ByteBuffer对象或者从ByteBuffer对象获取数据进行传输。ByteChannel 的read()和write()方法使用ByteBuffer对象作为参数。两种方法均返回已传输的字节数，可能比缓冲区的字节数少甚至可能为零。缓冲区的位置也会发生与已传输字节相同数量的移动。如果只进行了部分传输，缓冲区可以被重新提交给通道并从上次中断的地方继续传输。该过 程重复进行直到缓冲区的 hasRemaining()方法返回false值。
 
-```
+```java
 	public static void testChannel() throws IOException {
         ReadableByteChannel source = Channels.newChannel(System.in);
         WritableByteChannel dest = Channels.newChannel(System.out);
@@ -97,7 +96,7 @@ SocketChannel sc = SocketChannel.open( );sc.connect (new InetSocketAddress ("so
 
 Socket通道可以在非阻塞模式下运行。非阻塞I/O是许多复杂的、高性能的程序构建的基础。要把一个socket通道置于非阻塞模式，我们要依靠所有socket通道类的父类类：SelectableChannel。下面的方法就是关于通道的阻塞模式的:
 
-```
+```java
 public abstract class AbstractSelectableChannel
     extends SelectableChannel {
     private final Object regLock = new Object();
@@ -138,13 +137,14 @@ public abstract class AbstractSelectableChannel
     static native void configureBlocking(FileDescriptor var0, boolean var1) throws IOException;
 
 ```
+
 设置或重新设置一个通道的阻塞模式是很简单的，只要调用configureBlocking()方法即可，传递参数值为true则设为阻塞模式，参数值为false值设为非阻塞模式。可以通过调用isBlocking()方法来判断某个socket通道当前处于哪种模式。
 
 ### ServerSocketChannel
 
 ServerSocketChannel可以监听新进来的TCP连接, 就像标准IO中的ServerSocket一样。
 
-```
+```java
     public class ServerSocketChannelTest {
         public static final String HELLO = "Hello";
 
@@ -173,62 +173,62 @@ ServerSocketChannel可以监听新进来的TCP连接, 就像标准IO中的Server
     }
 ```
 
-首先open打开一个ServerSocketChannel，然后bind到一个本地可用端口。如果以非阻塞模式被调用，当没有传入连接在等待时，ServerSocketChannel.accept()会立即返回null。下一节结合非阻塞通道和Selector选择器给出示例。
+首先open打开一个ServerSocketChannel，然后bind到一个本地可用端口。如果以非阻塞模式被调用，当没有传入连接在等待时，ServerSocketChannel.accept()会立即返回null。下一节结合非阻塞通道和Selector选择器给出代码示例。
 
 ### SocketChannel
 
 SocketChannel是一个连接到TCP网络套接字的通道。可以通过两种方式创建SocketChannel：1.打开一个SocketChannel并连接到某台服务器；2.一个新连接到达ServerSocketChannel时，会创建一个SocketChannel。
 
-```
+```java
 	InetSocketAddress addr = new InetSocketAddress(host, port);	SocketChannel sc = SocketChannel.open();	sc.configureBlocking(false);	sc.connect(addr);	while (!sc.finishConnect()) {		doSomethingElse();	}	doSomething(sc);	sc.close();
 ```
 
-首首先open打开一个SocketChannel，如果设置非阻塞，在connect一个远程地址时将非阻塞的进行连接，连接成功finishConnect将返回true，正在连接返回false。连接成功后就可以进行读写操作了。
+首首先open打开一个SocketChannel，如果设置非阻塞，在connect一个远程地址时将非阻塞的进行连接，连接成功后finishConnect将返回true，正在连接返回false。连接成功后就可以进行读写操作了。
 
-write()
+- write()
 
-非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()，直到缓存区写完。
+	非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()，直到缓存区写完。
 
-read()
+- read()
 
-非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。
+	非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。
 
 ### DatagramChannel
 
 DatagramChannel是一个能收发UDP包的通道。因为UDP是无连接的网络协议，所以不能像其它通道那样读取和写入。它发送和接收的是数据包。
 
-打开 DatagramChannel
+- 打开 DatagramChannel
 
-```
+	```java
 DatagramChannel channel = DatagramChannel.open();
 channel.socket().bind(new InetSocketAddress(9999));
-```
+	```
 
-接收数据：通过receive()方法从DatagramChannel接收数据，receive()方法会将接收到的数据包内容复制到指定的Buffer. 如果Buffer容不下收到的数据，多出的数据将被丢弃。
+- 接收数据：通过receive()方法从DatagramChannel接收数据，receive()方法会将接收到的数据包内容复制到指定的Buffer. 如果Buffer容不下收到的数据，多出的数据将被丢弃。
 
-```
+	```java
 ByteBuffer buf = ByteBuffer.allocate(48);
 channel.receive(buf);
-```
+	```
 
-发送数据：通过send()方法从DatagramChannel发送数据，这里发送一串字符到host服务器的UDP端口80。因为服务端并没有监控这个端口，所以什么也不会发生。也不会通知你发出的数据包是否已收到，因为UDP在数据传送方面没有任何保证。
+- 发送数据：通过send()方法从DatagramChannel发送数据，这里发送一串字符到host服务器的UDP端口80。因为服务端并没有监控这个端口，所以什么也不会发生。也不会通知你发出的数据包是否已收到，因为UDP在数据传送方面没有任何保证。
 
-```
+	```java
 String hello = "Hello";
 ByteBuffer buf = ByteBuffer.allocate(48);
 buf.clear();
 buf.put(hello.getBytes());
 buf.flip();
 int bytesSent = channel.send(buf, new InetSocketAddress(host, 80));
-```
+	```
 
-连接到特定的地址：可以将DatagramChannel“连接”到网络中的特定地址的。由于UDP是无连接的，连接到特定地址并不会像TCP通道那样创建一个真正的连接。而是锁住DatagramChannel，让其只能从特定地址收发数据。当连接后，也可以使用read()和write()方法，就像在用传统的通道一样。只是在数据传送方面没有任何保证。这里有几个例子：
+- 连接到特定的地址：可以将DatagramChannel“连接”到网络中的特定地址的。由于UDP是无连接的，连接到特定地址并不会像TCP通道那样创建一个真正的连接。而是锁住DatagramChannel，让其只能从特定地址收发数据。当连接后，也可以使用read()和write()方法，就像在用传统的通道一样。只是在数据传送方面没有任何保证。
 
-```
+	```java
 channel.connect(new InetSocketAddress(host, 80));
 int bytesRead = channel.read(buf);
 int bytesWrite = channel.write(but);
-```
+	```
 
 
 

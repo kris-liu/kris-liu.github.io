@@ -2,9 +2,8 @@
 title: Java NIO Buffer详解
 date: 2017-01-14 23:47:59
 categories: IO&NIO
-tags: [NIO]
+tags: [Java, NIO]
 ---
-
 ## Buffer缓冲区
 
 缓冲区提供了对数据的结构化访问，而且还可以跟踪系统的读/写进程。所有的缓冲区都具有四个属性来提供关于其所包含的数据元素的信息。它们是: 
@@ -71,12 +70,12 @@ ByteBuffer分为直接缓冲区和非直接缓冲区。
 
 ### 构造
 
-```
+```java
 public static CharBuffer allocate (int capacity)public static CharBuffer wrap (char [] array)public static CharBuffer wrap (char [] array, int offset,     int length)
      
 ```
 
-```
+```java
     public static CharBuffer allocate(int capacity) {
         if (capacity < 0)
             throw new IllegalArgumentException();
@@ -100,7 +99,7 @@ public static CharBuffer allocate (int capacity)public static CharBuffer wrap (
 
 Buffer通过allocate和wrap两类方法创建，通过这两类方法调用相应实现类的构造方法创建Buffer实例，最终调用父类Buffer的构造函数设置Buffer的pos，limit，cap，mark几个关键位置标记
 
-```   
+```java
     Buffer(int mark, int pos, int lim, int cap) {       // package-private
         if (cap < 0)
             throw new IllegalArgumentException("Negative capacity: " + cap);
@@ -119,7 +118,7 @@ Buffer通过allocate和wrap两类方法创建，通过这两类方法调用相�
 
 *特别的是ByteBuffer，通过额外的allocateDirect方法可以创建一个直接缓冲区DirectByteBuffer，直接缓冲区借助unsafe类去操作直接内存区域。
 
-```
+```java
     DirectByteBuffer(int cap) {                   // package-private
 
         super(-1, 0, cap, cap);
@@ -185,7 +184,7 @@ Buffer通过allocate和wrap两类方法创建，通过这两类方法调用相�
 
 ### 获取和设置position，limit，capacity
 
-```
+```java
     public final int capacity() {
         return capacity;
     }
@@ -218,13 +217,13 @@ Buffer通过allocate和wrap两类方法创建，通过这两类方法调用相�
 
 ### 存取
 
-```
-public abstract class ByteBuffer       extends Buffer implements Comparable{       // This is a partial API listing	public abstract byte get( );	public abstract byte get (int index);	public abstract ByteBuffer put (byte b);	public abstract ByteBuffer put (int index, byte b);}
+```java
+public abstract class ByteBuffer       extends Buffer implements Comparable{       // This is a partial API listing	public abstract byte get();	public abstract byte get (int index);	public abstract ByteBuffer put (byte b);	public abstract ByteBuffer put (int index, byte b);}
 ```
 
 取
 
-```
+```java
     public byte get() {
         return hb[ix(nextGetIndex())];
     }
@@ -262,8 +261,7 @@ public abstract class ByteBuffer       extends Buffer implements Comparable{ 
 
 存
 
-```    
-    
+```java
     public ByteBuffer put(byte x) {
 
         hb[ix(nextPutIndex())] = x;
@@ -312,7 +310,7 @@ Buffer具有一系列便捷的存取和批量存取的API，get和put可以是�
 
 ### 翻转
 
-```
+```java
     public final Buffer flip() {
         limit = position;
         position = 0;
@@ -333,7 +331,7 @@ rewind()函数与flip()相似，但不影响上界属性。它只是将位置值
 
 ### 释放
 
-```
+```java
     public final int remaining() {
         return limit - position;
     }
@@ -347,19 +345,19 @@ hasRemaining()会在释放缓冲区时告诉您是否已经达到缓冲区的上
 
 remaining()函数将告知您从当前位置到上界还剩余的元素数目。
 
-```
-    while (buffer.hasRemaining( )) {	     System.out.print (buffer.get( )); 
+```java
+    while (buffer.hasRemaining()) {	     System.out.print (buffer.get()); 
     }
     
     
-    int count = buffer.remaining( );    for (int i = 0; i < count, i++) {
-        myByteArray[i] = buffer.get( ); 
+    int count = buffer.remaining();    for (int i = 0; i < count, i++) {
+        myByteArray[i] = buffer.get(); 
     }
 ```
 
 ### 压缩
 
-```
+```java
     public ByteBuffer compact() {
         System.arraycopy(hb, ix(position()), hb, ix(0), remaining());
         position(remaining());
@@ -373,7 +371,7 @@ remaining()函数将告知您从当前位置到上界还剩余的元素数目。
 
 ### 标记
 
-```
+```java
     public final Buffer mark() {
         mark = position;
         return this;
@@ -398,7 +396,7 @@ reset()函数将位置设为当前的标记值。
 
 ### 比较
 
-```
+```java
     public boolean equals(Object ob) {
         if (this == ob)
             return true;
@@ -419,7 +417,7 @@ reset()函数将位置设为当前的标记值。
 两个缓冲区被认为相等的充要条件是:1. 两个对象类型相同。包含不同数据类型的buffer永远不会相等，而且buffer绝不会等于非 buffer对象。2. 两个对象都剩余同样数量的元素。Buffer的容量不需要相同，而且缓冲区中剩余数据的索引也不必相同。但每个缓冲区中剩余元素的数目(从位置到上界)必须相同。3. 在每个缓冲区中应被get()函数返回的剩余数据元素序列必须一致。如果不满足以上任意条件，就会返回 false。
 
 
-```
+```java
     public int compareTo(ByteBuffer that) {
         int n = this.position() + Math.min(this.remaining(), that.remaining());
         for (int i = this.position(), j = that.position(); i < n; i++, j++) {
@@ -440,7 +438,7 @@ reset()函数将位置设为当前的标记值。
 
 ### 清除
 
-```
+```java
     public final Buffer clear() {
         position = 0;
         limit = capacity;
@@ -453,13 +451,13 @@ clear()函数将位置设置为0，上界设置为容量。
 
 ### 复制
 
-```
-	public abstract CharBuffer duplicate( ); 
-	public abstract CharBuffer asReadOnlyBuffer( ); 
-	public abstract CharBuffer slice( );
+```java
+	public abstract CharBuffer duplicate(); 
+	public abstract CharBuffer asReadOnlyBuffer(); 
+	public abstract CharBuffer slice();
 ```
 
-```
+```java
     public CharBuffer duplicate() {
         return new HeapCharBuffer(hb,
                                         this.markValue(),
@@ -500,7 +498,7 @@ slice()分割缓冲区与复制相似，但slice()创建一个从原始缓冲区
 
 每个基本数据类型都是以连续字节序列的形式存储在内存中。多字节数值被存储在内存中的方式一般被称为endian-ness(字节顺序)。如果数字数值的最高字节——big end(大端)，位于低位地址，那么系统就是大端字节顺序。如果最低字节最先保存在内存中，那么是小端字节顺序(如图 2-15 所示)。
 
-```
+```java
 public final class ByteOrder {
 
     private String name;
@@ -532,7 +530,7 @@ ByteOrder类定义了决定从缓冲区中存储或检索多字节数值时使�
 
 ByteBuffer类提供了丰富的API来创建视图缓冲区。视图缓冲区通过已存在的缓冲区对象实例的工厂方法来创建。这种视图对象维护它自己的 属性，容量，位置，上界和标记，但是和原来的缓冲区共享数据元素。
 
-```
+```java
 	public abstract class ByteBuffer
             extends Buffer implements Comparable {
 
@@ -556,7 +554,7 @@ ByteBuffer类提供了丰富的API来创建视图缓冲区。视图缓冲区通�
 
 ByteBuffer 类提供了一个不太重要的机制来以多字节数据类型的形式存取 byte 数据 组。ByteBuffer 类为每一种原始数据类型提供了存取的和转化的方法:
 
-```
+```java
     public abstract class ByteBuffer
             extends Buffer implements Comparable {
         public abstract char getChar();
