@@ -12,7 +12,7 @@ ThreadPoolExecutor，Java线程池。使用线程池可以降低资源消耗，�
 
 ## 初始化参数
 
-```
+```java
     public ThreadPoolExecutor(int corePoolSize,
                               int maximumPoolSize,
                               long keepAliveTime,
@@ -73,7 +73,7 @@ ThreadPoolExecutor，Java线程池。使用线程池可以降低资源消耗，�
 
 ThreadPoolExecutor类继承自AbstractExecutorService抽象类，AbstractExecutorService抽象类实现了ExecutorService接口，ExecutorService接口继承自Executor接口。核心执行方法是Executor接口的execute()方法，ExecutorService扩展了submit()，invokeAll()，invokeAny()方法，并在AbstractExecutorService中做了具体实现，这三个方法最终都会调用Executor接口的execute()方法，execute()方法在ThreadPoolExecutor中做了具体实现。
 
-```
+```java
 public interface Executor {
 
     void execute(Runnable command);//在将来某个时间执行给定任务。
@@ -81,7 +81,7 @@ public interface Executor {
 }
 ```
 
-```
+```java
 public interface ExecutorService extends Executor {
 
     void shutdown();//启动一次顺序关闭，执行以前提交的任务，但不接受新任务。
@@ -115,7 +115,7 @@ public interface ExecutorService extends Executor {
 
 ## ThreadPoolExecutor核心属性
 
-```
+```java
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));//原子的int类型计数器，高三位代表线程池状态，低29位代表线程数量
     private static final int COUNT_BITS = Integer.SIZE - 3;//代表线程数量，29位
     private static final int CAPACITY   = (1 << COUNT_BITS) - 1;//允许的最大线程数
@@ -162,7 +162,7 @@ public interface ExecutorService extends Executor {
 
 Worker与其说是工作线程，其实是管理工作线程，每个Worker内部的线程在run方法中通过不断的从任务队列中获取任务来不断的处理任务，自身继承自AQS，所以每个Worker自身也是一个锁，保护获取到的任务的执行，在锁状态意味着该Worker正在执行任务。除了创建Worker时提交的任务，其他提交过来的任务都是放入任务队列交给Workers去消费的。
 
-```
+```java
     private final class Worker
         extends AbstractQueuedSynchronizer
         implements Runnable
@@ -335,7 +335,7 @@ Worker与其说是工作线程，其实是管理工作线程，每个Worker内�
 
 在将来某个时间执行给定任务。该方法直接返回不等待任务执行完成，异步处理任务。
 
-```
+```java
     public void execute(Runnable command) {
         if (command == null)
             throw new NullPointerException();
@@ -425,7 +425,7 @@ Worker与其说是工作线程，其实是管理工作线程，每个Worker内�
 
 执行给定的任务，当所有任务完成或超时期满时（无论哪个首先发生），返回保持任务状态和结果的 Future 列表。返回列表的所有元素的 Future.isDone() 为 true。一旦返回后，即取消尚未完成的任务。注意，可以正常地或通过抛出异常来终止已完成的任务。如果此操作正在进行时修改了给定的 collection，则此方法的结果是不确定的。
 
-```
+```java
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException {
         if (tasks == null || unit == null)
             throw new NullPointerException();
@@ -480,7 +480,7 @@ Worker与其说是工作线程，其实是管理工作线程，每个Worker内�
 
 关闭线程池，仍会处理任务队列中的任务，但是不接受新任务。如果已经关闭，则调用没有其他作用。
 
-```
+```java
     public void shutdown() {
         final ReentrantLock mainLock = this.mainLock;
         mainLock.lock();
@@ -557,7 +557,7 @@ Worker与其说是工作线程，其实是管理工作线程，每个Worker内�
 
 尝试停止所有的活动执行任务、停止任务队列的处理，并返回等待执行的任务列表。并不保证能够停止正在处理的活动执行任务，但是会尽力尝试。 此实现通过 Thread.interrupt() 取消任务，所以无法响应中断的任何任务可能永远无法终止。
 
-```
+```java
     public List<Runnable> shutdownNow() {
         List<Runnable> tasks;
         final ReentrantLock mainLock = this.mainLock;
