@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>https://kris-liu.github.io/2017/01/31/Java-NIO-%E6%96%87%E4%BB%B6IO-%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6MappedByteBuffer%E4%B8%8Ezerocopy%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2017-02-04T16:33:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术</title>
+        <pubTime>2017-01-31T15:30:00.000Z</pubTime>
+        
+        <tag>NIO</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="IO&amp;NIO" url="https://kris-liu.github.io/categories/IO-NIO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://kris-liu.github.io/2017/01/14/Java-NIO-Buffer%E8%AF%A6%E8%A7%A3/</loc>
     <lastmod>2017-02-03T19:33:03.000Z</lastmod>
     <data>
