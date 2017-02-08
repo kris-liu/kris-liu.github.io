@@ -6,7 +6,7 @@ tags: [Java, NIO]
 ---
 ## Selector选择器
 
-Selector（选择器）是Java NIO中能够检测一到多个NIO通道，并能够发现通道是否为读写等事件做好准备的组件。这样，一个单独的线程可以管理多个channel，从而管理多个网络连接。
+Selector（选择器）选择器提供了选择已经就绪的任务的能力。Selector会不断的轮询注册在上面的所有channel，如果某个channel为读写等事件做好准备，那么就处于就绪状态，通过Selector可以不断轮询发现出就绪的channel，进行后续的IO操作。一个Selector能够同时轮询多个channel。这样，一个单独的线程就可以管理多个channel，从而管理多个网络连接。
 
 Selector的实现根据JVM运行的操作系统不同会有相应的不同的实现，上层API对底层做了抽象，这样上层API无需关心底层操作系统的变化，可以在不同操作系统上实现相同的功能。
 
