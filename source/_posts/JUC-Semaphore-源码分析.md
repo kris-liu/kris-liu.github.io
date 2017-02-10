@@ -9,6 +9,7 @@ tags: [Java,并发,源码]
 <!--more-->
 
 # 源码分析
+
 Semaphore的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync主要实现了AbstractQueuedSynchronizer中共享模式的获取和释放方法tryAcquireShared和tryReleaseShared，在Semaphore中使用AQS的子类Sync，初始化的state表示许可数，在每一次请求acquire()一个许可都会导致state减少1，同样每次释放一个许可release()都会导致state增加1。一旦达到了0，新的许可请求线程将被挂起，直到有许可被释放。
 
 ```

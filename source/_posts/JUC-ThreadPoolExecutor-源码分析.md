@@ -41,9 +41,13 @@ ThreadPoolExecutor，Java线程池。使用线程池可以降低资源消耗，�
 - maximumPoolSize：线程池最大大小，当线程数大于或等于核心线程，当任务队列已满，且已创建的线程数小于最大线程数，线程池会创建新的工作线程，直到线程数量达到maxPoolSize。如果线程数已等于maxPoolSize，且任务队列已满，则已超出线程池的处理能力，线程池会拒绝处理任务而抛出异常。
 
 - workQueue：任务队列，用于保存等待执行的任务的阻塞队列，当达到corePoolSize的时候，就向该等待队列放入线程信息 。可以选择以下几个阻塞队列。
+
  - ArrayBlockingQueue：是一个基于数组结构的有界阻塞队列，此队列按 FIFO（先进先出）原则对元素进行排序。
+
  - LinkedBlockingQueue：一个基于链表结构的阻塞队列，此队列按FIFO （先进先出） 排序元素，吞吐量通常要高于ArrayBlockingQueue。静态工厂方法Executors.newFixedThreadPool()使用了这个队列。
+
  - SynchronousQueue：一个不存储元素的阻塞队列。每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态，吞吐量通常要高于LinkedBlockingQueue，静态工厂方法Executors.newCachedThreadPool使用了这个队列。
+
  - PriorityBlockingQueue：一个具有优先级得无限阻塞队列。
 
 - keepAliveTime：线程活动保持时间，线程池的工作线程空闲后，保持存活的时间。所以如果任务很多，并且每个任务执行的时间比较短，可以调大这个时间，提高线程的利用率。
@@ -53,18 +57,25 @@ ThreadPoolExecutor，Java线程池。使用线程池可以降低资源消耗，�
 - threadFactory：用于设置创建线程的工厂，可以通过线程工厂给每个创建出来的线程设置更有意义的名字，Debug和定位问题时非常又帮助。
 
 - handler：饱和策略，当队列和线程池都满了，说明线程池处于饱和状态，那么必须采取一种策略处理提交的新任务。以下是JDK提供的策略。
+
  - AbortPolicy：表示无法处理新任务时抛出异常
+
  - CallerRunsPolicy：使用调用者所在线程来运行任务。
+
  - DiscardOldestPolicy：丢弃队列里当前第一个任务，并重新提交当前任务。
+
  - DiscardPolicy：不处理。
-当然也可以根据应用场景需要来实现RejectedExecutionHandler接口自定义策略。如监控，记录日志或持久化不能处理的任务。
+
+ 当然也可以根据应用场景需要来实现RejectedExecutionHandler接口自定义策略。如监控，记录日志或持久化不能处理的任务。
 
 ## 线程池执行任务流程
 
 线程池按以下行为执行任务：
 
 1. 当线程数小于核心线程数时，创建线程并执行任务。
+
 2. 当线程数大于等于核心线程数，且任务队列未满时，将任务放入任务队列。
+
 3. 当线程数大于等于核心线程数，且任务队列已满。若线程数小于最大线程数，创建线程并执行任务；若线程数到达最大线程数，则抛出异常，拒绝任务。
 
 # 源码分析

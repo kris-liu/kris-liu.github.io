@@ -4,17 +4,19 @@ date: 2016-11-29 23:43:59
 categories: Concurrent
 tags: [Java,并发,异步,源码]
 ---
-FutureTask，可取消的异步计算。利用开始和取消计算的方法、查询计算是否完成的方法和获取计算结果的方法，此类提供了对 Future 的基本实现。仅在计算完成时才能获取结果；如果计算尚未完成，则阻塞 get 方法。一旦计算完成，就不能再重新开始或取消计算。可使用 FutureTask 包装 Callable 或 Runnable 对象。因为 FutureTask 实现了 Runnable，所以可将 FutureTask 提交给 Executor 执行。
+FutureTask，可取消的异步计算。利用开始和取消计算的方法、查询计算是否完成的方法和获取计算结果的方法，此类提供了对Future的基本实现。仅在计算完成时才能获取结果；如果计算尚未完成，则阻塞get方法。一旦计算完成，就不能再重新开始或取消计算。可使用 FutureTask包装Callable或Runnable对象。因为FutureTask实现了Runnable，所以可将FutureTask提交给Executor执行。
 
 <!--more-->
 
 # 源码分析
 
 ## FutureTask类继承关系
+
 FutureTask类实现了RunnableFuture接口，RunnableFuture接口继承自Future接口和Runnable接口，整合了一下Future接口和Runnable接口。
 其中的方法在FutureTask中做了具体的实现。
 
- - Future接口表示异步计算的结果。它提供了检查计算是否完成的方法，以等待计算的完成，并获取计算的结果。计算完成后只能使用 get 方法来获取结果，如有必要，计算完成前可以阻塞此方法。取消则由 cancel 方法来执行。还提供了其他方法，以确定任务是正常完成还是被取消了。一旦计算完成，就不能再取消计算。
+ - Future接口表示异步计算的结果。它提供了检查计算是否完成的方法，以等待计算的完成，并获取计算的结果。计算完成后只能使用get方法来获取结果，如有必要，计算完成前可以阻塞此方法。取消则由cancel方法来执行。还提供了其他方法，以确定任务是正常完成还是被取消了。一旦计算完成，就不能再取消计算。
+
  - Runnable接口是为了方便把FutureTask提交给线程池，线程池中的工作线程将调用他的 run 方法。
 
 ```
@@ -209,6 +211,7 @@ public interface Runnable {
 ```
 
 ### V get() throws InterruptedException, ExecutionException
+
 等待计算完成，然后获取其结果。
 
 ```
@@ -289,6 +292,7 @@ public interface Runnable {
 ```
 
 ### V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
+
 最多等待为使计算完成所给定的时间之后，获取其结果（如果结果可用）。
 
 ```
@@ -305,6 +309,7 @@ public interface Runnable {
 ```
 
 ### boolean cancel(boolean mayInterruptIfRunning)
+
 试图取消对此任务的执行。如果任务已完成、或已取消，或者由于某些其他原因而无法取消，则此尝试将失败。当调用 cancel 时，如果调用成功，而此任务尚未启动，则此任务将永不运行。如果任务已经启动，则 mayInterruptIfRunning 参数确定是否应该以试图停止任务的方式来中断执行此任务的线程。如果此时业务方法在执行中且FutureTask状态还是NEW时，可以取消FutureTask，但是无法停止业务方法的执行，取消之后，即使业务方法执行完毕也无法获取执行结果，因为FutureTask状态是取消的。
 
 ```
@@ -327,6 +332,7 @@ public interface Runnable {
 ```
 
 ### boolean isCancelled()
+
 如果在任务正常完成前将其取消，则返回 true。
 
 ```
@@ -336,6 +342,7 @@ public interface Runnable {
 ```
 
 ### boolean isDone()
+
 如果任务已完成，则返回 true。 可能由于正常终止、异常或取消而完成，在所有这些情况中，此方法都将返回 true。
 
 ```
@@ -345,6 +352,7 @@ public interface Runnable {
 ```
 
 ## FutureTask扩展点
+
 任务执行完成后执行，可自定义处理逻辑，做监控或记录等等。
 
 ```

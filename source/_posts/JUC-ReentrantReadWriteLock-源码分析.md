@@ -14,11 +14,17 @@ ReentrantReadWriteLock，读写锁。维护了一对相关的锁，一个用于�
 ReentrantReadWriteLock的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync同时实现了AbstractQueuedSynchronizer中独占模式的获取和释放方法tryAcquire和tryRelease，和共享模式的获取和释放方法tryAcquireShared和tryReleaseShared，**写锁WriteLock**使用独占模式的方法控制锁状态，**读锁ReadLock**使用共享模式的方法控制锁状态，在WriteLock和ReadLock中使用同一个AQS的子类Sync，用AQS的status代表读写锁的状态计数，单个int值，通过位运算区分高低位，低16位代表写状态，高16位代表读状态。支持公平非公平实现，支持中断，支持重入，支持锁降级。
 
 ### 当并发读写时：
+
 1. 当有线程获取了独占锁，那么后续所有其他线程的独占和共享锁请求会加入同步队列等待，后续当前线程的独占和共享锁可以再次获取；
+
 2. 当有线程获取了共享锁，那么后续所有其他线程的独占锁请求会加入同步队列，后续所有线程的共享锁请求可以继续获取锁；
+
 3. 当独占锁完全释放时，会唤醒后继节点，当唤醒的是共享节点时，会传播向后唤醒后继的共享节点；
+
 4. 当共享锁完全释放时，且当前没有持有独占锁，会唤醒后继节点，当唤醒的是共享节点时，会传播向后唤醒后继的共享节点；
+
 5. 当当前线程已经获取独占锁，那么当前线程可以继续获取共享锁，当独占锁退出时，锁降级为共享锁；
+
 6. 一个线程可以同时进入多次共享锁或独占锁；
 
 
@@ -313,16 +319,9 @@ ReentrantReadWriteLock的实现方式是在内部定义了一个实现**Abstract
     static final class NonfairSync extends Sync {
         private static final long serialVersionUID = -8159625535654395037L;
         final boolean writerShouldBlock() {
-            return false; // writers can always barge
+            return false; 
         }
         final boolean readerShouldBlock() {
-            /* As a heuristic to avoid indefinite writer starvation,
-             * block if the thread that momentarily appears to be head
-             * of queue, if one exists, is a waiting writer.  This is
-             * only a probabilistic effect since a new reader will not
-             * block if there is a waiting writer behind other enabled
-             * readers that have not yet drained from the queue.
-             */
             return apparentlyFirstQueuedIsExclusive();
         }
     }
@@ -350,10 +349,7 @@ ReentrantReadWriteLock的实现方式是在内部定义了一个实现**Abstract
     }
 
 	public final boolean hasQueuedPredecessors() {
-        // The correctness of this depends on head being initialized
-        // before tail and on head.next being accurate if the current
-        // thread is first in queue.
-        Node t = tail; // Read fields in reverse initialization order
+        Node t = tail; 
         Node h = head;
         Node s;
         return h != t &&
