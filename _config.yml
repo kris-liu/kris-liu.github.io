@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Kris's Blog
+title: Liu Xin's Blog
 subtitle: Whatever you do, you have to keep moving forward!
-description: Kris's Blog
-author: Kris
+description: Liu Xin's Blog
+author: Liu Xin
 language: zh-CN
 timezone:
 email: 895195774@qq.com
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://kris-liu.github.io
+url: http://blogxin.cn/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -70,7 +70,9 @@ theme: maupassant
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:kris-liu/kris-liu.github.io.git
+  repo: 
+    github: git@github.com:kris-liu/kris-liu.github.io.git
+    coding: git@git.coding.net:kris-liu/kris-liu.git
   branch: master
 
 # 自动生成sitemap
