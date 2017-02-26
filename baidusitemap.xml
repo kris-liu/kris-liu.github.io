@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2016/12/18/Java-IO%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2017-02-26T15:16:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java IO模型</title>
+        <pubTime>2016-12-18T08:00:00.000Z</pubTime>
+        
+        <tag>IO</tag>
+         
+        <tag>NIO</tag>
+         
+        <tag>BIO</tag>
+         
+        <tag>AIO</tag>
+         
+         
+           
+             
+              <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2016/11/18/ThreadLocal-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
     <lastmod>2017-02-26T15:15:33.000Z</lastmod>
     <data>
@@ -113,35 +139,9 @@
         <title>Java NIO Buffer详解</title>
         <pubTime>2017-01-14T15:47:59.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
          
-         
-           
-             
-              <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2016/12/18/Java-IO%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2017-02-26T14:39:28.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java IO模型</title>
-        <pubTime>2016-12-18T08:00:00.000Z</pubTime>
-        
-        <tag>IO</tag>
-         
         <tag>NIO</tag>
-         
-        <tag>BIO</tag>
-         
-        <tag>AIO</tag>
          
          
            
@@ -357,9 +357,9 @@
         <title>Java NIO Selector详解</title>
         <pubTime>2017-01-23T16:33:00.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
@@ -379,9 +379,9 @@
         <title>Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术</title>
         <pubTime>2017-01-31T15:30:00.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
@@ -421,9 +421,9 @@
         <title>Java NIO Channel详解</title>
         <pubTime>2017-01-18T14:34:00.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
