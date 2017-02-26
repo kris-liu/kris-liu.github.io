@@ -1,6 +1,7 @@
 ---
 title: Java IO模型
 date: 2016-12-18 16:00:00
+toc: true
 categories: IO&NIO
 tags: [IO, BIO, NIO, AIO]
 ---
@@ -533,7 +534,7 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 1. 等待内核数据就绪。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
 2. 数据从内核拷贝到进程。出于系统安全,用户态的程序没有权限直接读取内核态内存,因此内核负责把内核态内存中的数据拷贝一份到用户态内存中。
 
-#### 阻塞非阻塞的区别分类：
+#### 阻塞非阻塞的区别分类
 
 这个概念是针对应用程序而言，是指应用程序中的线程在向操作系统发送IO请求后，是否一直等待操作系统的IO响应。如果是，那么就是阻塞式的；如果不是，那么应用程序一般会以轮询的方式以一定周期询问操作系统，直到某次获得了IO响应为止（轮序间隔应用程序线程可以做一些其他工作）。调用blocking IO会一直block住对应的线程直到操作完成，而non-blocking IO在kernel还没准备好数据的情况下会立刻返回。
 
@@ -542,7 +543,7 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 - 阻塞IO： blocking IO
 - 非阻塞IO： non-blocking IO； IO multiplexing； asynchronous IO
 
-#### 同步异步的区别分类：
+#### 同步异步的区别分类
 
 POSIX的定义是这样子的：
 
@@ -565,13 +566,13 @@ POSIX的定义是这样子的：
 
 以上这些IO工作模型，在JAVA中都能够找到对应的支持：传统的JAVA Socket套接字支持阻塞/非阻塞模式下的同步IO；JAVA NIO框架在不同操作系统下支持不同种类的多路复用IO技术（windows下的select模型、Linux下的poll/epoll模型）；JAVA AIO框架支持异步IO（windows下的IOCP和Linux使用epoll的模拟AIO）。
 
-### 注：
+### 注意：
 
 **上文中的示例代码只是针对各种IO模型下的Java实现示例展示，并没有使用线程池技术去处理业务逻辑。实际应用中推荐也应当使用线程池技术，用线程池去处理业务逻辑部分。**
 
 **客户端使用何种IO技术，对整个系统架构的性能提升相关性并不大。**
 
-**非阻塞IO模型中，报文的解析，连接的管理维护都需要额外去处理，增加了编程复杂度，一般可以借助Netty，Mina等成型的封装好的NIO类库。**
+**非阻塞IO模型中，报文的解析，粘包拆包的处理，连接状态的管理维护都需要额外去处理，增加了编程复杂度，一般可以借助Netty，Mina等成型的封装好的NIO类库。**
 
 
 ## 参考资料

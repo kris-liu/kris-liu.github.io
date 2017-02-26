@@ -1,6 +1,7 @@
 ---
 title: Java内存模型(JMM)核心概念总结
 date: 2016-11-12 19:20:12
+toc: true
 categories: [JVM]
 tags: [Java,JVM,JMM,内存模型,并发]
 ---
