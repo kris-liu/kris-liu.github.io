@@ -346,13 +346,13 @@ hasRemaining()会在释放缓冲区时告诉您是否已经达到缓冲区的上
 remaining()函数将告知您从当前位置到上界还剩余的元素数目。
 
 ```java
-    while (buffer.hasRemaining()) {	     System.out.print (buffer.get()); 
+    while (buffer.hasRemaining()) {	     System.out.print(buffer.get()); 
     }
-    
     
     int count = buffer.remaining();    for (int i = 0; i < count, i++) {
-        myByteArray[i] = buffer.get(); 
+		myByteArray[i] = buffer.get();
     }
+    
 ```
 
 ### 压缩
