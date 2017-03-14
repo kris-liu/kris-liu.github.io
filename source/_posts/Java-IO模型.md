@@ -5,7 +5,7 @@ toc: true
 categories: IO&NIO
 tags: [IO, BIO, NIO, AIO]
 ---
-目前常用的IO通信模型包括四种：
+目前常用的IO通信模型主要有以下四种：
 
 - 阻塞同步I/O（blocking IO）
 - 非阻塞同步I/O（nonblocking IO）
@@ -17,6 +17,7 @@ tags: [IO, BIO, NIO, AIO]
 对于一次IO访问（以read举例），数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。所以说，当一个read操作发生时，它会经历两个阶段：
 
 1. 等待内核数据就绪。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
+
 2. 数据从内核拷贝到进程。出于系统安全,用户态的程序没有权限直接读取内核态内存,因此内核负责把内核态内存中的数据拷贝一份到用户态内存中。
 
 <!--more-->
@@ -532,6 +533,7 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 首先，一次IO操作发生时，它会经历两个阶段：
 
 1. 等待内核数据就绪。网络I/O的情况就是等待远端数据陆续抵达；磁盘I/O的情况就是等待磁盘数据从磁盘上读取到内核态内存中。
+
 2. 数据从内核拷贝到进程。出于系统安全,用户态的程序没有权限直接读取内核态内存,因此内核负责把内核态内存中的数据拷贝一份到用户态内存中。
 
 #### 阻塞非阻塞的区别分类
@@ -541,6 +543,7 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 **主要区别就是内核还没准备好数据的时候是否block用户，阻塞IO整个IO操作阶段会一直block住用户直到全部完成；非阻塞IO在内核没有准备好数据时不会阻塞而是返回错误，需要用户主动轮询操作。**
 
 - 阻塞IO： blocking IO
+
 - 非阻塞IO： non-blocking IO； IO multiplexing； asynchronous IO
 
 #### 同步异步的区别分类
@@ -548,6 +551,7 @@ class SocketChannelReadHandle implements CompletionHandler<Integer, StringBuffer
 POSIX的定义是这样子的：
 
 - A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes;
+
 - An asynchronous I/O operation does not cause the requesting process to be blocked;
 
 两者的区别就在于synchronous IO做”IO operation”的时候会将process阻塞。按照这个定义，之前所述的blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。
