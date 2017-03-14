@@ -4,30 +4,8 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2017/01/14/Java-NIO-Buffer%E8%AF%A6%E8%A7%A3/</loc>
-    <lastmod>2017-03-01T15:19:35.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java NIO Buffer详解</title>
-        <pubTime>2017-01-14T15:47:59.000Z</pubTime>
-        
-        <tag>NIO</tag>
-         
-        <tag>Java</tag>
-         
-         
-           
-             
-              <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blogxin.cn/2016/12/18/Java-IO%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2017-02-26T15:19:23.000Z</lastmod>
+    <lastmod>2017-03-14T16:38:33.000Z</lastmod>
     <data>
         <display>
         <title>Java IO模型</title>
@@ -40,6 +18,56 @@
         <tag>BIO</tag>
          
         <tag>AIO</tag>
+         
+         
+           
+             
+              <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2016/11/12/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-JMM-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2017-03-14T16:37:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java内存模型(JMM)核心概念总结</title>
+        <pubTime>2016-11-12T11:20:12.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>并发</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>JMM</tag>
+         
+        <tag>内存模型</tag>
+         
+         
+           
+             
+              <breadCrumb title="JVM" url="http://blogxin.cn/categories/JVM/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2017/01/14/Java-NIO-Buffer%E8%AF%A6%E8%A7%A3/</loc>
+    <lastmod>2017-03-01T15:19:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java NIO Buffer详解</title>
+        <pubTime>2017-01-14T15:47:59.000Z</pubTime>
+        
+        <tag>NIO</tag>
+         
+        <tag>Java</tag>
          
          
            
@@ -126,34 +154,6 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2016/11/12/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-JMM-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/</loc>
-    <lastmod>2017-02-26T14:41:33.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java内存模型(JMM)核心概念总结</title>
-        <pubTime>2016-11-12T11:20:12.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>并发</tag>
-         
-        <tag>JVM</tag>
-         
-        <tag>JMM</tag>
-         
-        <tag>内存模型</tag>
-         
-         
-           
-             
-              <breadCrumb title="JVM" url="http://blogxin.cn/categories/JVM/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blogxin.cn/2016/11/15/Java-Cache-Line-%E4%BC%AA%E5%85%B1%E4%BA%AB%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
     <lastmod>2017-02-26T14:39:11.000Z</lastmod>
     <data>
@@ -211,9 +211,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
@@ -335,9 +335,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
