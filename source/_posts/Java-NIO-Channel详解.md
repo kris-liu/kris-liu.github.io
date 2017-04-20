@@ -16,9 +16,9 @@ tags: [Java, NIO]
 
 - ServerSocketChannel可以监听新进来的TCP连接，像Web服务器那样。对每一个新进来的连接都会创建一个SocketChannel。
 
-其整体继承结构如下图：
-
 <!--more-->
+
+其整体继承结构如下图：
 
 ![Channel继承结构](Java-NIO-Channel详解/diagram.png)
 

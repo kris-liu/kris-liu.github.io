@@ -10,6 +10,10 @@ tags: [Java, NIO]
 
 <!--more-->
 
+内存映射文件是将硬盘上文件的位置与进程逻辑地址空间中一块大小相同的区域之间一一对应， 建立内存映射由mmap()系统调用将文件直接映射到用户空间，mmap()中没有进行数据拷贝，真正的数据拷贝是在缺页中断处理时进行的，mmap()会返回一个指针ptr，它指向进程逻辑地址空间中的一个地址，要操作其中的数据时即第一次访问ptr指向的内存区域，必须通过MMU将逻辑地址转换成物理地址，MMU在地址映射表中是无法找到与ptr相对应的物理地址的，也就是MMU失败，将产生一个缺页中断，缺页中断的中断响应函数会通过mmap()建立的映射关系，从硬盘上将文件读取到物理内存中，这个过程只进行了一次数据拷贝。因此，内存映射的效率要比read/write调用效率高。
+
+
+
 ## 内存映射文件 MappedByteBuffer
 
 JAVA处理大文件，一般用BufferedReader，BufferedInputStream这类带缓冲的IO类，不过如果文件超大的话，更快的方式是采用MappedByteBuffer。
@@ -167,3 +171,4 @@ zerocopy好处就是减少了将数据从内核缓冲区拷贝到用户缓冲区
 [JAVA NIO之浅谈内存映射文件原理与DirectMemory](http://blog.csdn.net/fcbayernmunchen/article/details/8635427)
 
 [JAVA IO 以及 NIO 理解 zerocopy技术介绍](http://www.cnblogs.com/hapjin/p/5736188.html)
+

@@ -6,11 +6,12 @@ tags: [Java,并发,源码]
 ---
 CountDownLatch，一个同步辅助类，在完成一组正在其他线程中执行的操作之前，它允许一个或多个线程一直等待。
 
+<!--more-->
+
 # 源码分析
 
 CountDownLatch的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync主要实现了AbstractQueuedSynchronizer中共享模式的获取和释放方法tryAcquireShared和tryReleaseShared，在CountDownLatch中使用AQS的子类Sync，初始化的state表示一个计数器，每次countDown的时候计数器会减少1，直到减为0的时候或超时或中断，await方法从等待中返回。
 
-<!--more-->
 
 ```
 	private static final class Sync extends AbstractQueuedSynchronizer {

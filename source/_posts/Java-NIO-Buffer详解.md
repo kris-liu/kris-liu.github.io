@@ -24,10 +24,11 @@ tags: [Java, NIO]
 
 	一个备忘位置。调用mark()来设定mark=postion。调用reset()设定position=mark。标记在设定前是未定义的(undefined)。 
 
+<!--more-->
+
 这四个属性之间总是遵循以下关系: 
 0 <= mark <= position <= limit <= capacity
 
-<!--more-->
 
 使用Buffer读写数据一般遵循以下四个步骤：
 
