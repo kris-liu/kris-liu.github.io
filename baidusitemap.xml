@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2017/01/31/Java-NIO-%E6%96%87%E4%BB%B6IO-%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6MappedByteBuffer%E4%B8%8Ezerocopy%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2017-04-20T07:57:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术</title>
+        <pubTime>2017-01-31T15:30:00.000Z</pubTime>
+        
+        <tag>NIO</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2016/11/12/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-JMM-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2017-03-28T13:24:21.000Z</lastmod>
     <data>
@@ -356,28 +378,6 @@
         <display>
         <title>Java NIO Selector详解</title>
         <pubTime>2017-01-23T16:33:00.000Z</pubTime>
-        
-        <tag>NIO</tag>
-         
-        <tag>Java</tag>
-         
-         
-           
-             
-              <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2017/01/31/Java-NIO-%E6%96%87%E4%BB%B6IO-%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6MappedByteBuffer%E4%B8%8Ezerocopy%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2017-02-04T16:44:56.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术</title>
-        <pubTime>2017-01-31T15:30:00.000Z</pubTime>
         
         <tag>NIO</tag>
          
