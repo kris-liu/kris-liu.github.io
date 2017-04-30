@@ -1,17 +1,20 @@
 fancybox: true ## If you want to use fancybox please set the value to true.
-duoshuo: blogxin ## Your duoshuo_shortname, e.g. username
+duoshuo: ## Your duoshuo_shortname, e.g. username
 disqus: ## Your disqus_shortname, e.g. username
+uyan: ## Your uyan_id. e.g. 1234567
+gentie: 157392863ef6444e9bd377b63173fd41 ## Your gentie_productKey, e.g. fc799538c7ad4cf5a5a0c2877a90cbd7
 google_search: true ## Use Google search, true/false.
-baidu_search: false ## Use Baidu search, true/false.
+baidu_search: ## Use Baidu search, true/false.
 swiftype: ## Your swiftype_key, e.g. m7b11ZrsT8Me7gzApciT
 tinysou: ## Your tinysou_key, e.g. 4ac092ad8d749fdc6293
-self_search: false ## Use a jQuery-based local search engine, true/false.
+self_search: ## Use a jQuery-based local search engine, true/false.
 google_analytics: UA-91282031-1 ## Your Google Analytics tracking id, e.g. UA-42425684-2
 baidu_analytics: ## Your Baidu Analytics tracking id, e.g. 8006843039519956000
 show_category_count: true ## If you want to show the count of categories in the sidebar widget please set the value to true.
+toc_number: true ## If you want to add list number to toc please set the value to true.
 shareto: true ## If you want to use the share button please set the value to true.
-busuanzi: true ## If you want to use Busuanzi page views please set the value to true.
-widgets_on_small_screens: true ## Set to true to enable widgets on small screens.
+busuanzi: false ## If you want to use Busuanzi page views please set the value to true.
+widgets_on_small_screens: false ## Set to true to enable widgets on small screens.
 
 menu:
   - page: home
