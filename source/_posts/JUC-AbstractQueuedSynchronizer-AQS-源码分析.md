@@ -23,7 +23,7 @@ AQS在使用时一般是作为自定义同步工具的内部类，实现AQS中�
 
 独占式
 
-```
+```java
 void acquire(int arg)
 以独占模式获取对象，忽略中断。
 
@@ -39,7 +39,7 @@ boolean release(int arg)
 
 共享式
 
-```
+```java
 void acquireShared(int arg)
 以共享模式获取对象，忽略中断。
 
@@ -57,7 +57,7 @@ boolean releaseShared(int arg)
 
 独占式
 
-```
+```java
 protected boolean tryAcquire(int arg)	
 独占的获取这个状态。这个方法的实现需要查询当前状态是否允许获取，然后再进行获取（使用compareAndSetState来做）状态。
 
@@ -67,7 +67,7 @@ protected boolean tryRelease(int arg)
 
 共享式
 
-```
+```java
 protected int tryAcquireShared(int arg)	
 共享的模式下获取状态。
 
@@ -83,7 +83,7 @@ protected boolean tryReleaseShared(int arg)
 
 以独占模式获取对象，忽略中断。
 
-```
+```java
 	public final void acquire(int arg) {
         if (!tryAcquire(arg) //通过CAS更新status尝试获取
 	        && acquireQueued(addWaiter(Node.EXCLUSIVE) //获取锁失败后添加到同步队列
@@ -92,7 +92,7 @@ protected boolean tryReleaseShared(int arg)
     }
 ```
 
-```
+```java
 	private Node addWaiter(Node mode) { //添加到同步队列
         Node node = new Node(Thread.currentThread(), mode); //把当前线程构造成Node节点
         Node pred = tail; //获取当前的tail节点
@@ -124,7 +124,7 @@ protected boolean tryReleaseShared(int arg)
     }
 ```
 
-```
+```java
 	final boolean acquireQueued(final Node node, int arg) { //使节点阻塞自旋，直至获取到锁，才返回。
         boolean failed = true; //当前获取是否失败
         try {
@@ -169,7 +169,7 @@ protected boolean tryReleaseShared(int arg)
     }
 ```
 
-```
+```java
     private void cancelAcquire(Node node) { //取消当前节点
         if (node == null)
             return;
@@ -182,7 +182,7 @@ protected boolean tryReleaseShared(int arg)
         node.waitStatus = Node.CANCELLED; //无条件设置节点状态为取消
         if (node == tail && compareAndSetTail(node, pred)) { //如果处于链尾，直接移除，再修复前驱的连接关系
             compareAndSetNext(pred, predNext, null);
-        } else {node有后继。用前驱的next指针指向他，这样他会得到正确的signal信号，否则唤醒他来传播信号。
+        } else {//node有后继。用前驱的next指针指向他，这样他会得到正确的signal信号，否则唤醒他来传播信号。
             int ws;
             if (pred != head &&
                 ((ws = pred.waitStatus) == Node.SIGNAL ||
@@ -203,7 +203,7 @@ protected boolean tryReleaseShared(int arg)
 
 以独占模式获取对象，如果被中断则中止，抛出InterruptedException。
 
-```
+```java
 	public final void acquireInterruptibly(int arg)
             throws InterruptedException {
         if (Thread.interrupted()) //被中断则清空中断状态并抛出异常
@@ -240,7 +240,7 @@ protected boolean tryReleaseShared(int arg)
 
 试图以独占模式获取对象，如果被中断则中止，抛出InterruptedException，如果到了给定超时时间，则会返回失败。
 
-```
+```java
 	public final boolean tryAcquireNanos(int arg, long nanosTimeout)
             throws InterruptedException {
         if (Thread.interrupted()) //被中断则清空中断状态并抛出异常
@@ -285,7 +285,7 @@ protected boolean tryReleaseShared(int arg)
 
 以独占模式释放对象。
 
-```
+```java
 	public final boolean release(int arg) {
         if (tryRelease(arg)) { //如果修改status状态释放锁成功
             Node h = head; //head是初始化的节点或代表当前占有锁的线程，所以要unparkhead的有效后继节点
@@ -319,7 +319,7 @@ protected boolean tryReleaseShared(int arg)
 
 以共享模式获取对象，忽略中断。
 
-```
+```java
 	public final void acquireShared(int arg) {
         if (tryAcquireShared(arg) < 0) //tryAcquireShared大于等于0则共享锁获取成功
             doAcquireShared(arg);
@@ -368,7 +368,7 @@ protected boolean tryReleaseShared(int arg)
 
 以共享模式获取对象，如果被中断则中止，抛出InterruptedException。
 
-```
+```java
 	public final void acquireSharedInterruptibly(int arg)
             throws InterruptedException {
         if (Thread.interrupted())
@@ -408,7 +408,7 @@ protected boolean tryReleaseShared(int arg)
 
 试图以共享模式获取对象，如果被中断则中止，抛出InterruptedException，如果到了给定超时时间，则会返回失败。
 
-```
+```java
 	public final boolean tryAcquireSharedNanos(int arg, long nanosTimeout)
             throws InterruptedException {
         if (Thread.interrupted())
@@ -457,7 +457,7 @@ protected boolean tryReleaseShared(int arg)
 
 以共享模式释放对象。
 
-```
+```java
 	public final boolean releaseShared(int arg) {
         if (tryReleaseShared(arg)) {
             doReleaseShared(); //unpark后继节点，传播共享状态
