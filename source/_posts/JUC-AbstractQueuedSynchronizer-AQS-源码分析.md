@@ -5,6 +5,7 @@ toc: true
 categories: Concurrent
 tags: [Java,并发,锁,源码]
 ---
+
 AbstractQueuedSynchronizer，同步器，以下简称AQS。本文从源码分析AQS的核心方法和实现原理。
 
 AQS内部有两组重要的成员变量：

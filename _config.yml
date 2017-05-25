@@ -75,7 +75,7 @@ deploy:
     coding: git@git.coding.net:kris-liu/kris-liu.git
   branch: master
 
-# 自动生成sitemap
+# sitemap
 sitemap:
   path: sitemap.xml
 baidusitemap:
