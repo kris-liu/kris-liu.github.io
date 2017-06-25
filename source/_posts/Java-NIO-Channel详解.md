@@ -4,6 +4,7 @@ date: 2017-01-18 22:34:00
 categories: IO&NIO
 tags: [Java, NIO]
 ---
+
 ## Channel通道
 
 在JAVA NIO中，基本上所有的IO都是从Channel开始的，读取操作即从Channel读到Buffer，写操作即从Buffer写入Channel。

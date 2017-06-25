@@ -1,10 +1,10 @@
 ---
 title: Java IO模型
 date: 2016-12-18 16:00:00
-toc: true
 categories: IO&NIO
 tags: [IO, BIO, NIO, AIO]
 ---
+
 目前常用的IO通信模型主要有以下四种：
 
 - 阻塞同步I/O（blocking IO）

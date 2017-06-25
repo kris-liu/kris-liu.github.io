@@ -4,6 +4,7 @@ date: 2016-10-12 15:38:57
 categories: Concurrent
 tags: [Java,并发,源码]
 ---
+
 Condition将Object监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意Lock实现组合使用，为每个对象提供多个等待set（wait-set）。其中，Lock替代了synchronized方法和语句的使用，Condition替代了Object监视器方法的使用。Condition实例实质上被绑定到一个锁上。要为特定Lock实例获得Condition实例，请使用其newCondition()方法。
 
 <!--more-->
@@ -17,7 +18,7 @@ Condition属于**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSy
 
 造成当前线程在接到信号或被中断之前一直处于等待状态。
 
-```
+```java
         public final void await() throws InterruptedException {//调用者一定是获取了锁的线程
             if (Thread.interrupted())//中断检测
                 throw new InterruptedException();
@@ -42,7 +43,7 @@ Condition属于**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSy
 Condition中的方法：
 
 
-```
+```java
         private Node addConditionWaiter() {//添加当前线程节点进入等待队列。此方法执行时，一定是持有锁的，不会有并发问题
             Node t = lastWaiter;
             if (t != null && t.waitStatus != Node.CONDITION) {//当等待队列中有节点且尾节点状态不是CONDITION，则移除等待队列中不是CONDITION状态的节点。
@@ -97,7 +98,7 @@ Condition中的方法：
 AQS中的方法：
 
 
-```
+```java
 	final boolean isOnSyncQueue(Node node) {//检查节点是否被转移到同步队列中了
         if (node.waitStatus == Node.CONDITION || node.prev == null)//节点状态是CONDITION或者prev是空一定没有加入同步队列，因为加入同步队列一定会设置prev并且状态不为CONDITION
             return false;
@@ -190,7 +191,7 @@ AQS中的方法：
 
 造成当前线程在接到信号、被中断或到达指定等待时间之前一直处于等待状态。
 
-```
+```java
 		public final long awaitNanos(long nanosTimeout)
                 throws InterruptedException {
             if (Thread.interrupted())
@@ -226,7 +227,7 @@ AQS中的方法：
 
 造成当前线程在接到信号、被中断或到达指定等待时间之前一直处于等待状态。此方法在行为上等效于：awaitNanos(unit.toNanos(time)) > 0
 
-```
+```java
 		public final boolean await(long time, TimeUnit unit)
                 throws InterruptedException {
             if (unit == null)
@@ -266,7 +267,7 @@ AQS中的方法：
 
 造成当前线程在接到信号、被中断或到达指定最后期限之前一直处于等待状态。
 
-```
+```java
 		public final boolean awaitUntil(Date deadline)
                 throws InterruptedException {
             if (deadline == null)
@@ -301,7 +302,7 @@ AQS中的方法：
 
 唤醒一个等待线程。
 
-```
+```java
 		public final void signal() {//将节点从等待队列转移到同步队列，持有锁的线程才能执行此操作
             if (!isHeldExclusively())//当前线程必须是持有锁的线程
                 throw new IllegalMonitorStateException();
@@ -311,7 +312,7 @@ AQS中的方法：
         }
 ```
 
-```
+```java
 		private void doSignal(Node first) {
             do {
                 if ( (firstWaiter = first.nextWaiter) == null)//移除移除老的first，将firstWaiter置为signal节点的next
@@ -336,7 +337,7 @@ AQS中的方法：
 
 唤醒所有等待线程。
 
-```
+```java
 		public final void signalAll() {
             if (!isHeldExclusively())
                 throw new IllegalMonitorStateException();
@@ -346,7 +347,7 @@ AQS中的方法：
         }
 ```
 
-```
+```java
 		private void doSignalAll(Node first) {
             lastWaiter = firstWaiter = null;
             do {
@@ -362,7 +363,7 @@ AQS中的方法：
 
 BoundedBuffer是使用两个Condition维护的一个阻塞队列，队列空时，take方法会等待直到队列中有新元素加入；队列满时，put方法会等待直到队列中有元素移出。
 
-```
+```java
 public class ConditionTest {
 
     static class BoundedBuffer {

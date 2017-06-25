@@ -1,7 +1,6 @@
 ---
 title: IntelliJ IDEA下使用JRebel远程热部署
 date: 2017-04-22 15:38:52
-toc: true
 categories: Tools
 tags: [Java,Tools]
 ---

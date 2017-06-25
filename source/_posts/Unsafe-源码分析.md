@@ -1,10 +1,12 @@
 ---
-title: Unsafe 源码分析
+title: 【转】Unsafe 源码分析
 date: 2016-11-17 10:25:28
 categories: Java
 tags: [Java,源码]
 ---
-转：<http://www.cnblogs.com/mickole/articles/3757278.html>
+
+【转】：<http://www.cnblogs.com/mickole/articles/3757278.html>
+
 ## sun.misc.Unsafe
 
 <!--more-->

@@ -4,6 +4,7 @@ date: 2016-10-11 18:05:50
 categories: Concurrent
 tags: [Java,并发,锁,源码]
 ---
+
 ReentrantLock，一个可重入的独占锁 Lock，它具有与使用 synchronized 方法和语句所访问的隐式监视器锁相同的一些基本行为和语义，但功能更强大。
 
 <!--more-->

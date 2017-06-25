@@ -4,6 +4,7 @@ date: 2016-10-16 02:09:04
 categories: Concurrent
 tags: [Java,并发,读写锁,源码]
 ---
+
 ReentrantReadWriteLock，读写锁。维护了一对相关的锁，一个用于只读操作，另一个用于写入操作。只要没有 writer，读取锁可以由多个 reader 线程同时保持。写入锁是独占的。
 
 与互斥锁相比，读-写锁允许对共享数据进行更高级别的并发访问。虽然一次只有一个线程（writer 线程）可以修改共享数据，但在许多情况下，任何数量的线程可以同时读取共享数据（reader 线程）。当访问读写比恰当的共享数据时，使用读-写锁所允许的并发性将带来更大的性能提高。
@@ -30,7 +31,7 @@ ReentrantReadWriteLock的实现方式是在内部定义了一个实现**Abstract
 
 ## Sync
 
-```
+```java
     abstract static class Sync extends AbstractQueuedSynchronizer {
         private static final long serialVersionUID = 6317671515068378041L;
 
@@ -315,7 +316,7 @@ ReentrantReadWriteLock的实现方式是在内部定义了一个实现**Abstract
 
 ## NonfairSync
 
-```
+```java
     static final class NonfairSync extends Sync {
         private static final long serialVersionUID = -8159625535654395037L;
         final boolean writerShouldBlock() {
@@ -337,7 +338,7 @@ ReentrantReadWriteLock的实现方式是在内部定义了一个实现**Abstract
 
 ## FairSync
 
-```
+```java
     static final class FairSync extends Sync {
         private static final long serialVersionUID = -2274990926593161451L;
         final boolean writerShouldBlock() {
@@ -359,7 +360,7 @@ ReentrantReadWriteLock的实现方式是在内部定义了一个实现**Abstract
 
 # 使用方式
 
-```
+```java
 public class ReadWriteLockTest {
 
     private final Map<String, String> m = new TreeMap<String, String>();

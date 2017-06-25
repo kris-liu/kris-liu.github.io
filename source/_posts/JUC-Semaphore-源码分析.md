@@ -4,6 +4,7 @@ date: 2016-10-08 16:58:30
 categories: Concurrent
 tags: [Java,并发,源码]
 ---
+
 **Semaphore，信号量。用于控制同时访问特定资源的线程数量，来保证合理的使用特定资源。**比如：有10个数据库连接，有30个线程都需要使用连接，Semaphore可以控制只有10个线程能够获取连接，其他线程需要排队等待，当已经获取到连接的线程释放连接，排队的线程才能够去申请获取。
 
 <!--more-->
@@ -12,7 +13,7 @@ tags: [Java,并发,源码]
 
 Semaphore的实现方式是在内部定义了一个实现**AbstractQueuedSynchronizer**（详见：[JUC - AbstractQueuedSynchronizer(AQS) 源码分析](https://kris-liu.github.io/2016/09/28/JUC-AbstractQueuedSynchronizer-AQS-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)）的**内部类Sync**，Sync主要实现了AbstractQueuedSynchronizer中共享模式的获取和释放方法tryAcquireShared和tryReleaseShared，在Semaphore中使用AQS的子类Sync，初始化的state表示许可数，在每一次请求acquire()一个许可都会导致state减少1，同样每次释放一个许可release()都会导致state增加1。一旦达到了0，新的许可请求线程将被挂起，直到有许可被释放。
 
-```
+```java
 	abstract static class Sync extends AbstractQueuedSynchronizer {
         private static final long serialVersionUID = 1192457210091910933L;
 
@@ -68,7 +69,7 @@ Semaphore的实现方式是在内部定义了一个实现**AbstractQueuedSynchro
 
 **公平与非公平**的实现，主要区别就是在获取许可时，公平实现会检查同步队列是否有线程处在等待，有则获取失败进入同步队列中去等待，非公平实现则不会检查，新插入的线程可以和队列中等待最久的线程一起竞争锁的使用，非公平是默认的实现，因为减少了线程挂起和释放，线程上下文切换的开销，性能好，缺点是有可能造成锁饥饿，队列中的线程迟迟无法获取到锁。
 
-```
+```java
 	static final class NonfairSync extends Sync {//非公平
         private static final long serialVersionUID = -2694183684443567898L;
 
@@ -92,7 +93,7 @@ Semaphore的实现方式是在内部定义了一个实现**AbstractQueuedSynchro
 	}
 ```
 
-```
+```java
 	static final class FairSync extends Sync {//公平
         private static final long serialVersionUID = 2014338818796000944L;
 
@@ -124,7 +125,7 @@ Semaphore的实现方式是在内部定义了一个实现**AbstractQueuedSynchro
 
 # 使用方式
 
-```
+```java
 public class SemaphoreTest {
 
     public static void main(String[] args) {

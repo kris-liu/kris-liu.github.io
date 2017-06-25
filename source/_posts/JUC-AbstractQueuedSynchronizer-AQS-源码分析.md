@@ -1,7 +1,6 @@
 ---
 title: JUC - AbstractQueuedSynchronizer(AQS) 源码分析
 date: 2016-09-28 15:24:00
-toc: true
 categories: Concurrent
 tags: [Java,并发,锁,源码]
 ---

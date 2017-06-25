@@ -1,7 +1,6 @@
 ---
 title: ThreadLocal 源码分析
 date: 2016-11-18 19:15:44
-toc: true
 categories: Java
 tags: [Java,源码]
 ---
@@ -10,6 +9,7 @@ ThreadLocal线程局部变量，使得各线程能够保持各自独立的一份
 ThreadLocal类本身定义了有get(), set(), remove()和initialValue()方法。前面三个方法是public的，initialValue()是protected的，主要用于我们在定义ThreadLocal对象的时候根据需要来重写。这样我们初始化这么一个对象在里面设置它的初始值时就用到这个方法。ThreadLocal变量因为本身定位为要被多个线程来访问，它通常被定义为static变量。
 
 <!--more-->
+
 # ThreadLocal API
 
 ## 方法

@@ -1,11 +1,11 @@
 ---
 title: JUC - FutureTask 源码分析
 date: 2016-11-29 23:43:59
-toc: true
 categories: Concurrent
 tags: [Java,并发,异步,源码]
 ---
-FutureTask，可取消的异步计算。利用开始和取消计算的方法、查询计算是否完成的方法和获取计算结果的方法，此类提供了对Future的基本实现。仅在计算完成时才能获取结果；如果计算尚未完成，则阻塞get方法。一旦计算完成，就不能再重新开始或取消计算。可使用 FutureTask包装Callable或Runnable对象。因为FutureTask实现了Runnable，所以可将FutureTask提交给Executor执行。
+
+FutureTask，可取消的异步计算任务。利用开始和取消计算的方法、查询计算是否完成的方法和获取计算结果的方法，此类提供了对Future的基本实现。仅在计算完成时才能获取结果；如果计算尚未完成，则阻塞get方法。一旦计算完成，就不能再重新开始或取消计算。可使用 FutureTask包装Callable或Runnable对象。因为FutureTask实现了Runnable，所以可将FutureTask提交给Executor执行。
 
 <!--more-->
 
@@ -20,7 +20,7 @@ FutureTask类实现了RunnableFuture接口，RunnableFuture接口继承自Future
 
  - Runnable接口是为了方便把FutureTask提交给线程池，线程池中的工作线程将调用他的 run 方法。
 
-```
+```java
 public interface Future<V> {
 
 	//试图取消对此任务的执行
@@ -41,7 +41,7 @@ public interface Future<V> {
 }
 ```
 
-```
+```java
 public interface Runnable {
 
     public abstract void run();
@@ -51,7 +51,7 @@ public interface Runnable {
 
 ## FutureTask核心属性
 
-```
+```java
     /**
      * 状态扭转
      * NEW -> COMPLETING -> NORMAL //正常完成 
@@ -97,7 +97,7 @@ public interface Runnable {
 
 ### 构造方法
 
-```
+```java
 	public FutureTask(Callable<V> callable) {
         if (callable == null)
             throw new NullPointerException();
@@ -111,7 +111,7 @@ public interface Runnable {
     }
 ```
 
-```
+```java
     public static <T> Callable<T> callable(Runnable task, T result) {
         if (task == null)
             throw new NullPointerException();
@@ -134,7 +134,7 @@ public interface Runnable {
 
 ### 核心运行方法run()
 
-```
+```java
     public void run() {
         if (state != NEW ||
             !UNSAFE.compareAndSwapObject(this, runnerOffset, null, Thread.currentThread()))//如果当前状态不是NEW，或者状态是NEW但是将执行线程runner用CAS从null更新为当前线程失败，则直接退出
@@ -215,7 +215,7 @@ public interface Runnable {
 
 等待计算完成，然后获取其结果。
 
-```
+```java
     public V get() throws InterruptedException, ExecutionException {
         int s = state;
         if (s <= COMPLETING)//如果是初始化或者运行中状态，则调用awaitDone等待执行完成后唤醒返回。
@@ -296,7 +296,7 @@ public interface Runnable {
 
 最多等待为使计算完成所给定的时间之后，获取其结果（如果结果可用）。
 
-```
+```java
     public V get(long timeout, TimeUnit unit)
         throws InterruptedException, ExecutionException, TimeoutException {
         if (unit == null)
@@ -313,7 +313,7 @@ public interface Runnable {
 
 试图取消对此任务的执行。如果任务已完成、或已取消，或者由于某些其他原因而无法取消，则此尝试将失败。当调用 cancel 时，如果调用成功，而此任务尚未启动，则此任务将永不运行。如果任务已经启动，则 mayInterruptIfRunning 参数确定是否应该以试图停止任务的方式来中断执行此任务的线程。如果此时业务方法在执行中且FutureTask状态还是NEW时，可以取消FutureTask，但是无法停止业务方法的执行，取消之后，即使业务方法执行完毕也无法获取执行结果，因为FutureTask状态是取消的。
 
-```
+```java
     public boolean cancel(boolean mayInterruptIfRunning) {
         if (state != NEW)//如果是NEW状态，则一定没取消返回false
             return false;
@@ -336,7 +336,7 @@ public interface Runnable {
 
 如果在任务正常完成前将其取消，则返回 true。
 
-```
+```java
     public boolean isCancelled() {//大于等于CANCELLED都是取消，中断也是取消
         return state >= CANCELLED;
     }
@@ -346,7 +346,7 @@ public interface Runnable {
 
 如果任务已完成，则返回 true。 可能由于正常终止、异常或取消而完成，在所有这些情况中，此方法都将返回 true。
 
-```
+```java
     public boolean isDone() {//不是NEW就代表已经执行完成任务，等待返回了
         return state != NEW;
     }
@@ -356,7 +356,7 @@ public interface Runnable {
 
 任务执行完成后执行，可自定义处理逻辑，做监控或记录等等。
 
-```
+```java
     protected void done() { }
     
 ```
