@@ -9,6 +9,10 @@ tags: [Java,JVM,JMM,内存模型,并发]
 
 从抽象的角度来看，JMM定义了线程和主内存之间的抽象关系：线程之间的共享变量存储在主内存中，每个线程都有一个私有的本地内存，本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存，写缓冲区，寄存器以及其他的硬件和编译器优化。
 
+
+![jmm](Java内存模型-JMM-核心概念总结/jmm.png)
+
+
 <!--more-->
 
 ## 原子性、可见性和有序性
@@ -21,6 +25,30 @@ JAVA内存模型主要是建立在如何处理java并发过程中的原子性、
 
 3. 有序性：Java语言提供了volatile和synchronized两个关键字来保证线程间操作的有序性。在java中，有序性可以总结为：如果在本线程内观察，所有操作都是有序的；如果在一个线程内观察另一个线程，所有操作都是无序的。前半句讲的是“线程内表现为串行语义”，后半句指“指令重排序”和“工作内存和主内存同步延迟”。 
 
+
+## 内存屏障
+
+内存屏障：LoadLoad,StoreStore,LoadStore,StoreLoad
+
+
+![cpu](Java内存模型-JMM-核心概念总结/cpu.png)
+
+
+1. LoadLoad
+
+	Load1; LoadLoad; Load2: 确保Load1数据的装载，之前于Load2及所有后续装载指令的装载。
+
+2. StoreStore
+	
+	Store1; StoreStore; Store2: 确保Store1数据对其他处理器可见（刷新到内存），之前于Store2及所有后续存储指令的存储。
+	
+3. LoadStore
+	
+	Load1; LoadStore; Store2: 确保Load1数据装载，之前于Store2及所有后续的存储指令刷新到内存。
+
+4. StoreLoad
+
+	Store1; StoreLoad; Load2: 确保Store1数据对其他处理器变得可见（指刷新到内存），之前于Load2及所有后续装载指令的装载。StoreLoad会使该屏障之前的所有内存访问指令（存储和装载指令）完成之后，才执行该屏障之后的内存访问指令。StoreLoad是一个“全能型”的屏障，它同时具有其他三个屏障的效果。现代的多处理器大都支持该屏障（其他类型的屏障不一定被所有处理器支持）。执行该屏障开销会很昂贵，因为当前处理器通常要把写缓冲区中的数据全部刷新到内存中（buffer fully flush）。
 
 ## 重排序
 
@@ -37,6 +65,9 @@ JAVA内存模型主要是建立在如何处理java并发过程中的原子性、
 当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量刷新到主内存。
 
 编译器不会对volatile读与volatile读后面的任意内存操作重排序；编译器不会对volatile写与volatile写前面的任意内存操作重排序。为了实现volatile的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。
+
+1. 在每个volatile写操作前插入StoreStore屏障，在写操作后插入StoreLoad屏障；
+2. 在每个volatile读操作前插入LoadLoad屏障，在读操作后插入LoadStore屏障；
 
 **CAS操作同时具有volatile读和volatile写的内存语义**。volatile变量的读/写和CAS可以实现线程之间的通信。
 
@@ -99,6 +130,10 @@ as-if-serial语义的意思指：不管怎么重排序（编译器和处理器�
 
 JMM向程序员提供的happens-before规则能满足程序员的需求。JMM的happens-before规则不但简单易懂，而且也向程序员提供了足够强的内存可见性保证。
 
+
+![happen-before](Java内存模型-JMM-核心概念总结/happen-before.png)
+
+
 ## JMM的内存可见性保证
 
 Java程序的内存可见性保证按程序类型可以分为下列三类：
@@ -123,6 +158,8 @@ Java程序的内存可见性保证按程序类型可以分为下列三类：
 [CPU Cache与高性能编程](http://geek.csdn.net/news/detail/114619)
 
 [Cache一致性协议之MESI](http://blog.csdn.net/muxiqingyang/article/details/6615199)
+
+[内存屏障](http://ifeve.com/memory-barriers-or-fences/)
 
 [缓存一致性](http://www.infoq.com/cn/articles/cache-coherency-primer/)
 
