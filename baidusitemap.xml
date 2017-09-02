@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2015/12/02/FullGC-frequently/</loc>
+    <lastmod>2017-09-02T09:34:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>线上FullGC频繁问题的排查过程及解决方案</title>
+        <pubTime>2015-12-02T13:00:00.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>GC</tag>
+         
+        <tag>线上问题</tag>
+         
+         
+           
+             
+              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
-    <lastmod>2017-09-02T07:00:48.000Z</lastmod>
+    <lastmod>2017-09-02T07:01:32.000Z</lastmod>
     <data>
         <display>
         <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
@@ -15,9 +41,9 @@
          
         <tag>JVM</tag>
          
-        <tag>内存泄漏</tag>
-         
         <tag>线上问题</tag>
+         
+        <tag>内存泄漏</tag>
          
          
            
@@ -235,9 +261,9 @@
         <title>Java NIO Buffer详解</title>
         <pubTime>2017-01-14T15:47:59.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
@@ -257,9 +283,9 @@
         <title>Java NIO Channel详解</title>
         <pubTime>2017-01-18T14:34:00.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
@@ -279,9 +305,9 @@
         <title>Java NIO Selector详解</title>
         <pubTime>2017-01-23T16:33:00.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
@@ -327,9 +353,9 @@
         <title>Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术</title>
         <pubTime>2017-01-31T15:30:00.000Z</pubTime>
         
-        <tag>NIO</tag>
-         
         <tag>Java</tag>
+         
+        <tag>NIO</tag>
          
          
            
