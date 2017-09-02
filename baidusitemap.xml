@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
+    <lastmod>2017-09-02T09:51:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
+        <pubTime>2017-06-27T04:00:00.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>JVM</tag>
+         
+        <tag>线上问题</tag>
+         
+        <tag>内存泄漏</tag>
+         
+         
+           
+             
+              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2015/12/02/FullGC-frequently/</loc>
     <lastmod>2017-09-02T09:45:58.000Z</lastmod>
     <data>
@@ -18,32 +44,6 @@
         <tag>GC</tag>
          
         <tag>线上问题</tag>
-         
-         
-           
-             
-              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
-    <lastmod>2017-09-02T07:01:32.000Z</lastmod>
-    <data>
-        <display>
-        <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
-        <pubTime>2017-06-27T04:00:00.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>JVM</tag>
-         
-        <tag>线上问题</tag>
-         
-        <tag>内存泄漏</tag>
          
          
            
