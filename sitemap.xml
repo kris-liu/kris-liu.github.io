@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blogxin.cn/2016/11/27/JUC-ThreadPoolExecutor/</loc>
+    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
     
-    <lastmod>2017-09-02T06:41:53.000Z</lastmod>
+    <lastmod>2017-09-02T07:00:48.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
+    <loc>http://blogxin.cn/2016/11/27/JUC-ThreadPoolExecutor/</loc>
     
-    <lastmod>2017-09-02T06:40:51.000Z</lastmod>
+    <lastmod>2017-09-02T06:41:53.000Z</lastmod>
     
   </url>
   
