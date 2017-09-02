@@ -4,8 +4,34 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2016/11/27/JUC-ThreadPoolExecutor/</loc>
+    <lastmod>2017-09-02T06:41:53.000Z</lastmod>
+    <data>
+        <display>
+        <title>JUC - ThreadPoolExecutor 源码分析</title>
+        <pubTime>2016-11-27T14:13:52.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>并发</tag>
+         
+        <tag>源码</tag>
+         
+        <tag>线程池</tag>
+         
+         
+           
+             
+              <breadCrumb title="Concurrent" url="http://blogxin.cn/categories/Concurrent/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
-    <lastmod>2017-09-02T06:33:17.000Z</lastmod>
+    <lastmod>2017-09-02T06:40:51.000Z</lastmod>
     <data>
         <display>
         <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
@@ -39,9 +65,9 @@
         
         <tag>Java</tag>
          
-        <tag>JVM</tag>
-         
         <tag>并发</tag>
+         
+        <tag>JVM</tag>
          
         <tag>JMM</tag>
          
@@ -72,32 +98,6 @@
         <tag>源码</tag>
          
         <tag>读写锁</tag>
-         
-         
-           
-             
-              <breadCrumb title="Concurrent" url="http://blogxin.cn/categories/Concurrent/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2016/11/27/JUC-ThreadPoolExecutor/</loc>
-    <lastmod>2017-07-27T03:54:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>JUC - ThreadPoolExecutor 源码分析</title>
-        <pubTime>2016-11-27T14:13:52.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>并发</tag>
-         
-        <tag>源码</tag>
-         
-        <tag>线程池</tag>
          
          
            

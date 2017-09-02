@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blogxin.cn/2016/11/27/JUC-ThreadPoolExecutor/</loc>
+    
+    <lastmod>2017-09-02T06:41:53.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
     
-    <lastmod>2017-09-02T06:33:17.000Z</lastmod>
+    <lastmod>2017-09-02T06:40:51.000Z</lastmod>
     
   </url>
   
@@ -19,13 +26,6 @@
     <loc>http://blogxin.cn/2016/10/16/JUC-ReentrantReadWriteLock-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
     
     <lastmod>2017-08-03T03:29:05.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogxin.cn/2016/11/27/JUC-ThreadPoolExecutor/</loc>
-    
-    <lastmod>2017-07-27T03:54:10.000Z</lastmod>
     
   </url>
   
