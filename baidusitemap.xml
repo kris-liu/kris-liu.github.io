@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
-    <lastmod>2017-09-02T06:19:43.000Z</lastmod>
+    <lastmod>2017-09-02T06:24:40.000Z</lastmod>
     <data>
         <display>
         <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
@@ -305,9 +305,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
          
            
@@ -395,9 +395,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
          
            
