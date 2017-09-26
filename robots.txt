@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Allow: /archives/
 Allow: /categories/
-Allow: /tags/ 
+Allow: /tags/
 
 Sitemap: http://www.blogxin.cn/sitemap.xml
 Sitemap: http://www.blogxin.cn/baidusitemap.xml
