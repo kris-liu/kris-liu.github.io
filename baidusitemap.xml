@@ -4,6 +4,93 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2017/03/20/Netty-epollbug/</loc>
+    <lastmod>2017-10-05T15:51:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>Netty源码分析 解决NIO的epoll死循环bug</title>
+        <pubTime>2017-03-20T12:00:00.000Z</pubTime>
+        
+        <tag>NIO</tag>
+         
+        <tag>Netty</tag>
+         
+        <tag>源码</tag>
+         
+         
+           
+             
+              <breadCrumb title="Netty" url="http://blogxin.cn/categories/Netty/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2017/03/18/Netty-NioEventLoop/</loc>
+    <lastmod>2017-10-05T15:45:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>Netty源码分析 I/O线程NioEventLoop</title>
+        <pubTime>2017-03-18T12:00:00.000Z</pubTime>
+        
+        <tag>NIO</tag>
+         
+        <tag>Netty</tag>
+         
+        <tag>源码</tag>
+         
+         
+           
+             
+              <breadCrumb title="Netty" url="http://blogxin.cn/categories/Netty/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2017/10/05/postName/</loc>
+    <lastmod>2017-10-05T15:44:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>postName</title>
+        <pubTime>2017-10-05T15:44:25.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2015/12/02/FullGC-frequently/</loc>
+    <lastmod>2017-10-05T10:23:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>线上FullGC频繁问题的排查过程及解决方案</title>
+        <pubTime>2015-12-02T13:00:00.000Z</pubTime>
+        
+        <tag>JVM</tag>
+         
+        <tag>GC</tag>
+         
+        <tag>线上问题</tag>
+         
+         
+           
+             
+              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2017/01/31/mappedbytebuffer-zerocopy/</loc>
     <lastmod>2017-09-11T16:36:23.000Z</lastmod>
     <data>
@@ -11,9 +98,9 @@
         <title>Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术</title>
         <pubTime>2017-01-31T15:30:00.000Z</pubTime>
         
-        <tag>IO</tag>
-         
         <tag>NIO</tag>
+         
+        <tag>IO</tag>
          
          
            
@@ -127,30 +214,6 @@
            
              
               <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2015/12/02/FullGC-frequently/</loc>
-    <lastmod>2017-09-11T16:30:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>线上FullGC频繁问题的排查过程及解决方案</title>
-        <pubTime>2015-12-02T13:00:00.000Z</pubTime>
-        
-        <tag>JVM</tag>
-         
-        <tag>GC</tag>
-         
-        <tag>线上问题</tag>
-         
-         
-           
-             
-              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
           
         </display>
     </data>
@@ -311,9 +374,9 @@
         <title>I/O 多路复用之select、poll、epoll实现原理及对比总结</title>
         <pubTime>2016-12-24T06:00:00.000Z</pubTime>
         
-        <tag>IO</tag>
-         
         <tag>NIO</tag>
+         
+        <tag>IO</tag>
          
          
            
@@ -357,9 +420,9 @@
         <title>Java IO模型</title>
         <pubTime>2016-12-18T08:00:00.000Z</pubTime>
         
-        <tag>IO</tag>
-         
         <tag>NIO</tag>
+         
+        <tag>IO</tag>
          
         <tag>BIO</tag>
          
