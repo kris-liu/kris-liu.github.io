@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blogxin.cn/2017/03/11/Netty-ThreadModel/</loc>
+    <loc>http://blogxin.cn/2017/04/01/Netty-ServerBootstrap/</loc>
     
-    <lastmod>2017-10-06T16:26:04.000Z</lastmod>
+    <lastmod>2017-10-06T16:47:26.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blogxin.cn/2017/04/01/Netty-ServerBootstrap/</loc>
+    <loc>http://blogxin.cn/2017/03/11/Netty-ThreadModel/</loc>
     
-    <lastmod>2017-10-06T16:23:49.000Z</lastmod>
+    <lastmod>2017-10-06T16:26:04.000Z</lastmod>
     
   </url>
   
