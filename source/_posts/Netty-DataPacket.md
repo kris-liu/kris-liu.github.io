@@ -2,7 +2,7 @@
 title: Netty源码分析 解决TCP粘包拆包问题
 date: 2017-04-23 20:00:00
 categories: Netty
-tags: [NIO, Netty, 源码]
+tags: [Netty, 源码]
 ---
 
 > 本文使用`netty-4.1.5.Final`版本源码进行分析
@@ -38,7 +38,7 @@ TCP底层无法识别业务上一个完整的数据包，所以需要在设计�
 
 ### Netty解决策略
 
-为了解决TCP粘包、拆包导致的半包读写问题，Netty默认提供了多种编解码器用于处理半包，或者可以根据实际情况自行实现ChannelHandler来定制自己的应用协议栈，使用时只需要将对应的编解码器添加到channel的责任链上即可，熟练掌握这些类库的使用，就可以非常容易的处理TCP粘包拆包带来的问题。
+为了解决TCP粘包、拆包导致的半包读写问题，Netty默认提供了多种编解码器用于处理半包，或者可以根据实际情况自行实现ChannelHandler来定制自己的应用协议栈，一般可以直接实现ByteToMessageDecoder。使用时只需要将需要的编解码器添加到channel的责任链上即可，熟练掌握这些类库的使用，就可以非常容易的处理TCP粘包拆包带来的问题。
 
 #### Netty默认提供的编解码器：
 
@@ -57,9 +57,10 @@ TCP底层无法识别业务上一个完整的数据包，所以需要在设计�
 	依次遍历ByteBuf中的可读字节，判断看是否有自定义的分隔符，如果有，就以此位置为结束位置。
 
 * 定长字段标识消息长度的消息解码器：
+	* LengthFieldBasedFrameDecoder
 	* ProtobufVarint32FrameDecoder
 
-	读取ByteBuf的前4个字节，转化为int值，做为消息体的总长度。
+	读取ByteBuf的某几个字节，转化为长度值，做为消息体的总长度。
 
 
 #### 源码分析

@@ -2,7 +2,7 @@
 title: Netty 线程模型
 date: 2017-03-11 20:00:00
 categories: Netty
-tags: [NIO, Netty]
+tags: [Netty]
 ---
 
 ### Reactor模型

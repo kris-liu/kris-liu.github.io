@@ -2,7 +2,7 @@
 title: Netty源码分析 Bootstrap客户端启动
 date: 2017-04-10 20:00:00
 categories: Netty
-tags: [NIO, Netty, 源码]
+tags: [Netty, 源码]
 ---
 
 > 本文使用`netty-4.1.5.Final`版本源码进行分析

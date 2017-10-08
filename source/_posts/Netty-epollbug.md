@@ -2,12 +2,14 @@
 title: Netty源码分析 解决NIO的epoll死循环bug
 date: 2017-03-20 20:00:00
 categories: Netty
-tags: [NIO, Netty, 源码]
+tags: [Netty, 源码]
 ---
 
 > 本文使用`netty-4.1.5.Final`版本源码进行分析
 
 JDK的NIO类库有一个epoll死循环bug，它会导致Selector空轮询，IO线程CPU达到100%，严重影响系统运行。netty从api使用层面对该bug进行了规避解决，下面看下netty的解决策略并从源码了解其具体实现。
+
+<!--more-->
 
 ### Netty的解决策略：
 
