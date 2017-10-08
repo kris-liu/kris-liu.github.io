@@ -2,7 +2,7 @@
 title: JUC - ThreadPoolExecutor 源码分析
 date: 2016-11-27 22:13:52
 categories: Concurrent
-tags: [Java,并发,线程池,源码]
+tags: [Java,并发,线程池,异步,源码]
 ---
 
 ThreadPoolExecutor，Java线程池。使用线程池可以降低资源消耗，通过重复利用已创建的线程降低线程创建和销毁造成的消耗；可以提高响应速度，当任务到达时，任务可以不需要等待线程创建就能立即执行；可以提高线程的可管理性，防止无限制的创建线程，消耗系统资源；控制任务执行的并发量。
@@ -609,7 +609,7 @@ Worker与其说是工作线程，其实是管理工作线程，每个Worker内�
 
 ThreadPoolExecutor提供了几个protected的方法，在任务执行前，执行后，和线程池终止时执行。可以在自定义线程池中自由实现，用来记录和监控线程池的运行情况。
 
-```
+```java
     protected void beforeExecute(Thread t, Runnable r) { }//在执行给定线程中的给定 Runnable 之前调用的方法。
 
     protected void afterExecute(Runnable r, Throwable t) { }//基于完成执行给定 Runnable 所调用的方法。

@@ -2,7 +2,7 @@
 title: JUC - ReentrantReadWriteLock 源码分析
 date: 2016-10-16 02:09:04
 categories: Concurrent
-tags: [Java,并发,读写锁,源码]
+tags: [Java, 并发, 锁, 读写锁, 源码]
 ---
 
 ReentrantReadWriteLock，读写锁。维护了一对相关的锁，一个用于只读操作，另一个用于写入操作。只要没有 writer，读取锁可以由多个 reader 线程同时保持。写入锁是独占的。

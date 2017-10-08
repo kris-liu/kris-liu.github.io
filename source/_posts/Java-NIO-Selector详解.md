@@ -2,7 +2,7 @@
 title: Java NIO Selector详解
 date: 2017-01-24 00:33:00
 categories: IO&NIO
-tags: [Java, NIO]
+tags: [NIO]
 ---
 
 ## Selector选择器

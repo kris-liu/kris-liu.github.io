@@ -2,7 +2,7 @@
 title: Java NIO Channel详解
 date: 2017-01-18 22:34:00
 categories: IO&NIO
-tags: [Java, NIO]
+tags: [NIO]
 ---
 
 ## Channel通道

@@ -2,8 +2,9 @@
 title: ThreadLocal 源码分析
 date: 2016-11-18 19:15:44
 categories: Java
-tags: [Java,源码]
+tags: [Java, 源码]
 ---
+
 ThreadLocal线程局部变量，使得各线程能够保持各自独立的一份对象。通常被定义为类的静态类变量。
 
 ThreadLocal类本身定义了有get(), set(), remove()和initialValue()方法。前面三个方法是public的，initialValue()是protected的，主要用于我们在定义ThreadLocal对象的时候根据需要来重写。这样我们初始化这么一个对象在里面设置它的初始值时就用到这个方法。ThreadLocal变量因为本身定位为要被多个线程来访问，它通常被定义为static变量。
@@ -34,7 +35,7 @@ ThreadLocal有一个ThreadLocalMap静态内部类，ThreadLocalMap的实例是ja
 ### T	get() 
 返回此线程局部变量的当前线程副本中的值。
 
-```
+```java
     public T get() {
         Thread t = Thread.currentThread();
         ThreadLocalMap map = getMap(t);//活动当前Thread中的ThreadLocalMap
@@ -62,7 +63,7 @@ ThreadLocal有一个ThreadLocalMap静态内部类，ThreadLocalMap的实例是ja
 ### protected  T	initialValue() 
 返回此线程局部变量的当前线程的“初始值”。
 	
-```
+```java
     protected T initialValue() {//初始化方法，由子类实现
         return null;
     }
@@ -72,7 +73,7 @@ ThreadLocal有一个ThreadLocalMap静态内部类，ThreadLocalMap的实例是ja
 ### void	remove() 
 移除此线程局部变量当前线程的值。
 	
-```
+```java
      public void remove() {//获取当前线程中的ThreadLocalMap，并从中remove掉当前ThreadLocal实例对应的value
          ThreadLocalMap m = getMap(Thread.currentThread());
          if (m != null)
@@ -83,7 +84,7 @@ ThreadLocal有一个ThreadLocalMap静态内部类，ThreadLocalMap的实例是ja
 ### void	set(T value) 
 将此线程局部变量的当前线程副本中的值设置为指定值。     
 	  
-```
+```java
     public void set(T value) {
         Thread t = Thread.currentThread();
         ThreadLocalMap map = getMap(t);//获取当前线程中的ThreadLocalMap，存在则直接set，不存在则初始化并set
@@ -94,7 +95,7 @@ ThreadLocal有一个ThreadLocalMap静态内部类，ThreadLocalMap的实例是ja
     }
 ```
 
-```
+```java
 	ThreadLocalMap getMap(Thread t) {//ThreadLocalMap是Thread实例的变量
         return t.threadLocals;
     }
@@ -106,7 +107,7 @@ ThreadLocal有一个ThreadLocalMap静态内部类，ThreadLocalMap的实例是ja
 
 ## ThreadLocalMap
 
-```
+```java
     static class ThreadLocalMap {
 
         static class Entry extends WeakReference<ThreadLocal> {//ThreadLocalMap每个单元Entry，是WeakReference类型，当ThreadLocal没有强引用，则GC时会被回收，防止内存泄漏
@@ -266,7 +267,7 @@ HASH_INCREMENT = 0x61c88647
 
 每个ThreadLocal中的threadLocalHashCode都是HASH_INCREMENT的倍数，0x61c88647这个数字&上2的n次方-1的数字，hash分布十分的均匀。
 
-```
+```java
 public class ThreadLocal<T> {
 
     private final int threadLocalHashCode = nextHashCode();
@@ -286,7 +287,7 @@ public class ThreadLocal<T> {
 
 ### 测试hash分布
 
-```
+```java
 public class ThreadLocalTest {
 
     public static void main(String[] args) {
@@ -338,7 +339,7 @@ public class ThreadLocalTest {
 
 # ThreadLocal使用方式
 
-```
+```java
 public class ThreadLocalTest {
 
     private static class Count {

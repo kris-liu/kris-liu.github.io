@@ -2,7 +2,7 @@
 title: Java NIO 文件IO-内存映射文件MappedByteBuffer与zerocopy技术
 date: 2017-01-31 23:30:00
 categories: IO&NIO
-tags: [Java, NIO]
+tags: [IO, NIO]
 ---
 
 ## JavaNIO内存映射文件 MappedByteBuffer

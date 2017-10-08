@@ -2,7 +2,7 @@
 title: Java NIO Buffer详解
 date: 2017-01-14 23:47:59
 categories: IO&NIO
-tags: [Java, NIO]
+tags: [NIO]
 ---
 
 ## Buffer缓冲区
