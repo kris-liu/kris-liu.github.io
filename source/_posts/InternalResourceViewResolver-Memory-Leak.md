@@ -26,7 +26,7 @@ tags: [JVM, 内存泄漏, 线上问题]
 
 ![gc-root](InternalResourceViewResolver-Memory-Leak/gc-root.png)
 
-发现org.springframework.web.servlet.view.InternalResourceViewResolver中的viewCache这个HashMap有50万个entries，占了700多M内存，从而导致内存泄漏。查看项目使用的spring版本3.1.2版本中的InternalResourceViewResolver源码，发现其继承自AbstractCachingViewResolver，这个类内部使用了一个HashMap做为缓存，但并没有有效的缓存释放操作，导致程序在返回ModelAndView的时候，会不断的新增这个HashMap，导致内存泄漏。
+发现org.springframework.web.servlet.view.InternalResourceViewResolver中的viewCache这个HashMap有50万个entries，占了700多M内存，从而导致内存泄漏。查看项目使用的spring版本3.1.2版本中的InternalResourceViewResolver源码，发现其继承自AbstractCachingViewResolver，这个类内部使用了一个HashMap做为缓存，但并没有有效的缓存释放操作，导致程序在返回ModelAndView的时候，只要ModelAndView的viewName不同，便会不断的往这个HashMap添加数据，最终导致内存泄漏。
 
 3.1.2版本源代码如下：
 
@@ -63,6 +63,7 @@ public abstract class AbstractCachingViewResolver extends WebApplicationObjectSu
 	}
 }
 ```
+
 只要返回的viewName不同那么每次都创建一个新的View对象然后添加到viewCache中。
 
 
