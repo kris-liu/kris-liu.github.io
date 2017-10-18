@@ -4,7 +4,21 @@
   <url>
     <loc>http://blogxin.cn/2017/05/14/Space-Based-Architecture/</loc>
     
-    <lastmod>2017-10-18T18:35:07.000Z</lastmod>
+    <lastmod>2017-10-18T18:45:10.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
+    
+    <lastmod>2017-10-18T18:42:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogxin.cn/README.html</loc>
+    
+    <lastmod>2017-10-18T18:38:37.000Z</lastmod>
     
   </url>
   
@@ -117,13 +131,6 @@
     <loc>http://blogxin.cn/2017/01/24/Java-NIO-Selector%E8%AF%A6%E8%A7%A3/</loc>
     
     <lastmod>2017-09-11T16:31:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
-    
-    <lastmod>2017-09-11T16:30:30.000Z</lastmod>
     
   </url>
   

@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2017/05/14/Space-Based-Architecture/</loc>
-    <lastmod>2017-10-18T18:35:07.000Z</lastmod>
+    <lastmod>2017-10-18T18:45:10.000Z</lastmod>
     <data>
         <display>
         <title>基于空间的架构实践及思考</title>
@@ -22,6 +22,31 @@
     </data>
     </url>
 
+    
+  <url>
+    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
+    <lastmod>2017-10-18T18:42:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
+        <pubTime>2017-06-27T04:00:00.000Z</pubTime>
+        
+        <tag>JVM</tag>
+         
+        <tag>线上问题</tag>
+         
+        <tag>内存泄漏</tag>
+         
+         
+           
+             
+              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://blogxin.cn/2017/09/16/java-reference/</loc>
@@ -371,30 +396,6 @@
            
              
               <breadCrumb title="IO&amp;NIO" url="http://blogxin.cn/categories/IO-NIO/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2017/06/27/InternalResourceViewResolver-Memory-Leak/</loc>
-    <lastmod>2017-09-11T16:30:30.000Z</lastmod>
-    <data>
-        <display>
-        <title>InternalResourceViewResolver引起的内存泄漏问题排查</title>
-        <pubTime>2017-06-27T04:00:00.000Z</pubTime>
-        
-        <tag>JVM</tag>
-         
-        <tag>线上问题</tag>
-         
-        <tag>内存泄漏</tag>
-         
-         
-           
-             
-              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
           
         </display>
     </data>
