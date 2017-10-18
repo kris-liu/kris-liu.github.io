@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2017/09/16/java-reference/</loc>
+    <lastmod>2017-10-18T18:55:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java的强引用，软引用，弱引用，虚引用及其使用场景</title>
+        <pubTime>2017-09-16T11:00:00.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://blogxin.cn/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2017/05/14/Space-Based-Architecture/</loc>
     <lastmod>2017-10-18T18:45:10.000Z</lastmod>
     <data>
@@ -41,26 +61,6 @@
            
              
               <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2017/09/16/java-reference/</loc>
-    <lastmod>2017-10-14T13:52:08.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java的强引用，软引用，弱引用，虚引用及其使用场景</title>
-        <pubTime>2017-09-16T11:00:00.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="http://blogxin.cn/categories/Java/"/>
           
         </display>
     </data>
