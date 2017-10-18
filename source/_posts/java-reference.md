@@ -41,7 +41,7 @@ Java中有如下四种类型的引用：
 
 ### 软引用何时被回收
 
-首先看下SoftReference实现：
+软引用的回收时机相较于其他几种引用最难控制，首先看下SoftReference实现：
 
 ```java
 public class SoftReference<T> extends Reference<T> {
@@ -114,7 +114,7 @@ SoftReference中有一个全局变量clock代表最后一次GC的时间点，有
 	clock - timestamp <= freespace * SoftRefLRUPolicyMSPerMB 
 
 
-说明：
+#### 说明：
 
 clock - timestamp：最后一次GC时间和SoftReference对象实例timestamp的属性的差。就是这个SoftReference引用对象大概有多久未访问过了。
 
@@ -123,7 +123,9 @@ freespace：JVMHeap中空闲空间大小，单位为MB。
 SoftRefLRUPolicyMSPerMB：每1M空闲空间可保持的SoftReference对象生存的时长（单位ms）。这个参数就是一个常量，默认值1000，可以通过参数：`-XX:SoftRefLRUPolicyMSPerMB`进行设置。
 
 
-简单地理解就是：如果SoftReference引用对象未访问的时长小于等于空闲内存可保持软引用的最大时间范围，则不清除SoftReference所引用的对象；否则，则将其清除。空闲内存越大，SoftRefLRUPolicyMSPerMB越大，对象越不容易被回收；对象越久未被访问，越容易被回收。
+#### 总结：
+
+如果SoftReference引用对象未访问的时长小于等于空闲内存可保持软引用的最大时间范围，则不清除SoftReference所引用的对象；否则，则将其清除。空闲内存越大，SoftRefLRUPolicyMSPerMB越大，对象越不容易被回收；对象越久未被访问，越容易被回收。
 
 SoftReference会至少经历1次gc而不被回收，可以看下面的例子：
 
