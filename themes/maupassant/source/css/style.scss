@@ -266,7 +266,7 @@ div {
         padding-top: 15px;
         text-align: justify;
         text-justify: distribute;
-        word-break: break-all;
+        word-break: normal;
         h2 {
             margin: 1.4em 0 1.1em;
             border-bottom: 1px solid #eee;
@@ -285,11 +285,12 @@ div {
                 margin: 0 5px;
                 padding: 0 5px;
                 background: #f7f8f8;
+                font-family: Menlo, Consolas, monospace !important;
             }
             a {
                 color: #01579f;
                 padding-bottom: 2px;
-                word-break: break-all;
+                word-break: normal;
                 &:hover {
                     text-decoration: underline;
                 }
@@ -326,11 +327,12 @@ div {
                 margin: 0 5px;
                 padding: 0px 5px;
                 background: #f7f8f8;
+                font-family: Menlo, Consolas, monospace !important;
             }
             a {
                 color: #01579f;
                 padding-bottom: 2px;
-                word-break: break-all;
+                word-break: normal;
                 &:hover {
                     text-decoration: underline;
                 }
@@ -911,10 +913,6 @@ figure.highlight,
         background:   #f7f8f8;
         border-right: 1px solid #e6e6e6;
         padding:      0.3em 15px;
-
-        .line {
-            color: #aaaaaa;
-        }
     }
     // Code container
     .code {
@@ -1077,15 +1075,15 @@ figure.highlight,
     &.diff .code {
         .chunk,
         .meta {
-            color:       #795da3;
+            color: #795da3;
             font-weight: bold;
         }
         .addition {
-            color:            #55a532;
+            color: #55a532;
             background-color: #eaffea;
         }
         .deletion {
-            color:            #bd2c00;
+            color: #bd2c00;
             background-color: #ffecec;
         }
     }
@@ -1308,7 +1306,8 @@ figure.highlight,
         }
     }
     // XML, HTML
-    &.xml {
+    &.xml,
+    &.html {
         .tag {
             color: #333;
         }
@@ -1713,4 +1712,17 @@ em.search-keyword {
   color: #fff;
   background-color: #999999;
   text-shadow: 0
+}
+
+
+// Custom styles.
+.post-copyright {
+    margin: 2em 0 0;
+    padding: 0.5em 1em;
+    border-left: 3px solid #FF1700;
+    background-color: #F9F9F9;
+    list-style: none;
+    li {
+        margin: 8px 0;
+    }
 }

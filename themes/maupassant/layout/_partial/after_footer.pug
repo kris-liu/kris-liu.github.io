@@ -1,7 +1,7 @@
 if theme.fancybox == true
-  script(type='text/javascript', src='//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.js', async)
+  script(type='text/javascript', src='//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js', async)
   script(type='text/javascript', src=url_for(theme.js) + '/fancybox.js' + '?v=' + theme.version, async)
-  link(rel='stylesheet', type='text/css', href='//cdn.bootcss.com/fancybox/3.1.20/jquery.fancybox.min.css')
+  link(rel='stylesheet', type='text/css', href='//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css')
 
 if theme.tinysou
   script.
@@ -38,28 +38,18 @@ if theme.self_search == true
      var path = '#{config.root}' + search_path;
      searchFunc(path, 'local-search-input', 'local-search-result');
 
-if theme.baidu_analytics
-  script.
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?#{theme.baidu_analytics}";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-      })();
-
 if theme.canvas_nest.enable == true
     - var color=theme.canvas_nest.color || "0,0,0"
     - var opacity=theme.canvas_nest.opacity || "0.5"
     - var zIndex=theme.canvas_nest.zIndex || "-2"
     - var count=theme.canvas_nest.count || "50"
-    script(type='text/javascript', color='#{color}', opacity='#{opacity}', zIndex='#{zIndex}', count='#{count}',src='//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js')
+    script(type='text/javascript', color=color, opacity=opacity, zIndex=zIndex, count=count,src='//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js')
 
 if page.mathjax
-  include mathjax
+  include mathjax.pug
 
 if page.mathjax2
-  include mathjax2
+  include mathjax2.pug
 
 script(type='text/javascript', src=url_for(theme.js) + '/codeblock-resizer.js' + '?v=' + theme.version)
 script(type='text/javascript', src=url_for(theme.js) + '/smartresize.js' + '?v=' + theme.version)
