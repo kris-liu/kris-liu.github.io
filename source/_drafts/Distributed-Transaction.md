@@ -1,4 +1,0 @@
----
-title: Distributed-Transaction
-tags:
----

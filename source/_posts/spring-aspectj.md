@@ -2,7 +2,7 @@
 title: Spring AspectJ事务
 date: 2015-08-20 00:00:00
 categories: Spring
-tags: [Spring]
+tags: [Spring,事务]
 ---
 
 当事务管理使用的是代理形式，仅有在公有方法上标记的@Transactional是有效的，所有的私有的、受保护的或者包可见性的方法即使标记了@Transactional也不会有实质性的事务管理行为产生，并且系统不会给出任何错误或者提示信息。如果有必要在非公有方法上标记事务，那么不应当使用代理模式的事务管理，可以考虑使用AspectJ。
