@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
-    <lastmod>2018-08-12T10:51:24.431Z</lastmod>
+    <lastmod>2018-08-12T11:04:11.075Z</lastmod>
     <data>
         <display>
         <title>由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</title>
