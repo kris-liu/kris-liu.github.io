@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
+    <lastmod>2018-08-12T10:44:50.099Z</lastmod>
+    <data>
+        <display>
+        <title>由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</title>
+        <pubTime>2018-08-11T12:00:00.000Z</pubTime>
+        
+        <tag>MQ</tag>
+         
+        <tag>线上问题</tag>
+         
+        <tag>源码</tag>
+         
+         
+           
+             
+              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2015/08/20/spring-aspectj/</loc>
     <lastmod>2018-06-18T09:51:23.886Z</lastmod>
     <data>
@@ -457,9 +481,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
         <tag>读写锁</tag>
          
@@ -603,9 +627,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
@@ -629,9 +653,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
