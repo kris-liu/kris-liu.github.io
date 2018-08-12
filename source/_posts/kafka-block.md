@@ -5,7 +5,6 @@ categories: 线上问题
 tags: [MQ,源码,线上问题]
 ---
 
-
 最近线上有个需求希望能停止kafka消费某个topic一段时间，结果导致将该系统消费的所有topic都阻塞掉了。
 
 ### 背景介绍
@@ -666,9 +665,11 @@ partitionMap的key是topic+partitionId，value是PartitionTopicInfo，这里将�
 
 根据对线程堆栈以及源码的分析，得到kafka的线程模型：
 
-* 消息消费侧：kafka每个消费线程会处理一个topic的部分partition，对应着一个kafkaStream，每个kafkaStream会对应一个LinkedBlockingQueue缓存消息，每次消费线程消费消息时会从对应队列中获取消息；
+![线程模型](kafka-block/thread.png)
 
-* 消息拉取侧：kafka会根据broker数量和num.consumer.fetchers参数创建若干消息拉取线程，用于连接broker拉取消息，然后填充到各消费线程对应的LinkedBlockingQueue上。
+* 消息消费侧：kafka每个消费线程会处理一个topic的部分partition，对应着一个kafkaStream，每个kafkaStream对应一个LinkedBlockingQueue缓存消息，每次消费线程消费消息时会从对应队列中获取消息；
+
+* 消息拉取侧：kafka会根据broker数量和num.consumer.fetchers参数创建若干消息拉取线程，用于连接broker并拉取消息，然后填充到各消费线程对应的LinkedBlockingQueue上。
 
 两侧的线程通过LinkedBlockingQueue进行连接。
 
