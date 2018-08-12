@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
-    <lastmod>2018-08-12T10:44:50.099Z</lastmod>
+    <lastmod>2018-08-12T10:51:24.431Z</lastmod>
     <data>
         <display>
         <title>由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</title>
@@ -35,9 +35,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Spring</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>Spring</tag>
          
          
            
