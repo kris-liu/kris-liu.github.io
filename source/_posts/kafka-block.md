@@ -663,7 +663,7 @@ partitionMap的key是topic+partitionId，value是PartitionTopicInfo，这里将�
 
 ### kafka线程模型
 
-根据对线程堆栈以及源码的分析，得到kafka的线程模型：
+根据对线程堆栈以及源码的分析，了解了kafka的线程模型：
 
 ![线程模型](kafka-block/thread.png)
 
@@ -672,6 +672,9 @@ partitionMap的key是topic+partitionId，value是PartitionTopicInfo，这里将�
 * 消息拉取侧：kafka会根据broker数量和num.consumer.fetchers参数创建若干消息拉取线程，用于连接broker并拉取消息，然后填充到各消费线程对应的LinkedBlockingQueue上。
 
 两侧的线程通过LinkedBlockingQueue进行连接。
+
+
+所以建议不要将处理时间太长的业务，直接放在kafka消费线程上去处理，容易阻塞其他topic，可以投递到后端业务处理线程池去处理消息，或者可以将处理时间太长的业务单独使用一个ConsumerConnector，从而在topic维度完全隔离资源。
 
 
 ### 结论
