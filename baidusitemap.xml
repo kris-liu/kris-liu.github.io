@@ -3,6 +3,7 @@
 
 
     
+    
   <url>
     <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
     <lastmod>2018-08-12T11:04:11.075Z</lastmod>
@@ -35,9 +36,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>Spring</tag>
+         
+        <tag>Transaction</tag>
          
          
            
@@ -780,5 +781,4 @@
     </data>
     </url>
 
-    
 </urlset>
