@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="google-site-verification" content="DVfrDhwMEodDoWVy6nv0PCpolWhBlGBSaO9hiU2r61E"><meta name="google-site-verification" content="40TgWkMJTOetJQqAMZwk5nD5rtVQRjk5i2pe6FGka5g"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="佑祺's Blog"><title>分布式系统数据一致性问题常见解决方案 | 佑祺's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-91282031-1','auto');ga('send','pageview');
+</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">分布式系统数据一致性问题常见解决方案</h1><a id="logo" href="/.">佑祺's Blog</a><p class="description">Whatever you do, you have to keep moving forward!</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">分布式系统数据一致性问题常见解决方案</h1><div class="post-meta">Sep 30, 2018<span> | </span><span class="category"><a href="/categories/架构/">架构</a></span></div><div class="post-content"><p>随着业务的发展，为了提高系统的可用性，可维护性等，单一系统逐渐分解为业务功能独立的多个微服务组成的分布式系统集群，事务处理能力也被拆解到各个微服务中。这个时候一笔交易会涉及到交易，支付，券，账户等多个微服务系统的交互，多个微服务之间的交互如何保证上下游系统的数据一致性，就成了在日常研发过程中比较头疼的事情。</p>
+<p>当遇到数据一致性问题时，首先需要做到的就是<strong>可监控</strong>和<strong>可恢复</strong>。</p>
+<ul>
+<li><p>可监控：一般来说由整个业务的发起方对业务处理进度进行监控，监控所有未达到系统终态的记录，或者通过数据仓库对上下游系统各自记录进行数据核对。只有通过监控及时的发现数据不一致情况，才能发现问题并针对的进行相应处理措施。</p>
+</li>
+<li><p>可恢复：在发现上下游系统数据不一致时，需要有能力对业务进行补偿重试操作或者回滚操作，直到上下游相关系统状态达到合理的一致状态。下面列举了一些日常工作中处理数据一致性问题的几种常见解决方案。</p>
+</li>
+</ul>
+<p>###日常工作中处理数据一致性问题的几种常见解决方案：</p>
+<ol>
+<li><p>定时任务补偿</p>
+<p> 通过定时任务不断轮询扫描业务未达终态的记录，然后针对当前处理进度做相应的补偿逻辑，比如重试，或者回滚。一般常用两类定时任务，crontab或者各分布式定时任务组件。</p>
+<ul>
+<li><p>crontab定时任务</p>
+<ul>
+<li><p>优点：</p>
+<ol>
+<li><p>灵活，简单，快速。</p>
+</li>
+<li><p>无额外接入成本，一台linux服务器就能跑。</p>
+</li>
+</ol>
+</li>
+<li><p>缺点：</p>
+<ol>
+<li><p>单点。</p>
+</li>
+<li><p>性能低。</p>
+</li>
+<li><p>监控困难。</p>
+</li>
+<li><p>运维困难，尤其是往往脚本部署无规范。</p>
+</li>
+<li><p>不易维护，脚本独立于项目之外，修改、测试、回归代码困难，且容易遗漏。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code>- 分布式定时任务
+
+    - 优点：
+
+        1. 通用性好，适用于各种场景。
+
+    - 缺点：
+
+        1. 接入成本高，需要额外接入一些市面上成熟的分布式任务组件或者自己造轮子，增加了中间件的运维和研发成本。
+
+        2. 业务逻辑研发成本高，需要针对各个场景额外开发并维护一份定时任务补偿逻辑，增加了业务的运维和研发成本。
+
+        3. 延迟往往略高，实效性不如分布式事务和可靠事务消息。（分布式事务、可靠事务消息、分布式定时任务，从左到右延迟越来越高）
+</code></pre><ol>
+<li><p>可靠事务消息</p>
+<p> 业务事务提交时发送可靠事务消息，保证了消息必达，下游根据消息做相应处理，直至处理完成。</p>
+<ul>
+<li><p>优点：</p>
+<ol>
+<li><p>解耦，适用于对下游处理结果非强依赖的业务。例如：交易后记录风控信息。</p>
+</li>
+<li><p>提高核心链路吞吐量，增强整体服务的可用性。</p>
+</li>
+</ol>
+</li>
+<li><p>缺点：</p>
+<ol>
+<li><p>接入成本高，市面上成熟的MQ中间件支持事务特性的少，要么系统额外接入一套支持事务的MQ比如RocketMQ，要么需要自己造轮子，增加了中间件的运维和研发成本。</p>
+</li>
+<li><p>额外的业务研发成本，例如：RocketMQ的事务消息需要额外实现事务回查接口。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><p>分布式事务</p>
+<p> 分布式事务保证了上下游所有操作在同一个事务中进行处理，保证了数据的最终一致性。</p>
+<ul>
+<li><p>优点：</p>
+<ol>
+<li>开发、维护成本低。系统逻辑清晰，上下游各系统不需要开发额处理逻辑，适用于对下游处理结果强依赖的业务。例如：转账业务。</li>
+</ol>
+</li>
+<li><p>缺点：</p>
+<ol>
+<li><p>接入成本高，市面上没有成熟的分布式事务解决方案，需要自己造轮子。</p>
+</li>
+<li><p>场景限制，往往用在时间可控的内部业务中，一旦涉及外部第三方系统交互或者一些时间不可控的业务，则不适用。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p>上面列举了一些日常开发时常见的数据一致性解决方案，开发时一般可以根据上述各种方法的优缺点，结合业务特点和团队实际情况，选择合适的方式进行处理，特殊场景下也可以依据自身业务系统特点做针对性的解决方案。</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://blogxin.cn/2018/09/30/Distributed-Consistency/" data-id="cjmwbm76s000fse6z9tn3ldcd" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACN0lEQVR42u3aS27DMAxFUe9/0860QCP5PsoOYOpqFLTx52jAUCSPA6/z3+L//fsd8nl0hxuWDBkyXss4p2v+gPlVo2/WnnvxFBkyZGzA4CFy/lrzMDrfDvLc4d9lyJAhA986DaB8a2TIkCEjDbjo1uGRWIYMGTLmDBIoSdpH/l4rwN12FpchQ8YLGTxE/v7zI/0NGTJkvIpxhmuenPEgWwuvw7eSIUNGa0Z6QOVHSpLA8Q1C18qQIaMpg7QSebsxHRHj5bYLmAwZMjZjpLcjITV9dd4kGAZcGTJkNGKkD14ZDku3g4dsGTJk9GbwgS1eDksTwVq+N/zdkCFDRjvG+pBWesRNg2wwYCFDhozWjFoboHagTZuXKyFbhgwZPRhpiT89oPLxi1qZT4YMGbsxVpK5dEiidrdgIEyGDBmNGDxF42ByBx5w+QbJkCGjKyNtTKbH1HSbisU+GTJkbMxIP6evyIN1sQEgQ4aMdozaqBYPr2kBjvwYfAm4MmTIaMeoPazW2uTFuNqhWoYMGTsweBF/vXmZFvXIG8qQIWMfRjpywUe+Drz4UVaGDBkyanWtNBFMBzWGV8mQIaMp4wxXmrTVBizSdoIMGTJ6M2rpWi10rgdi0rqQIUNGV0Y6HsFfmm8QSTFlyJAhoxb4ao3PlbTvkRamDBky2jF4eOXFuxvyWRkyZMjAA6brh1LeRr0hNZQhQ8arGOQQuz4ctjLeenGVDBkyWjNqRTE+fkFC5xMJqwwZMlowPsFsslCdtb2DAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/架构/">架构</a></div><div class="post-nav"><a class="next" href="/2018/08/11/kafka-block/">由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
+  clientID: '530c0141e83989b1dc02',
+  clientSecret: '89e61ba0adc9b0c630bcc2641c791bfd7ef9faea',
+  repo: 'kris-liu.github.io',
+  owner: 'kris-liu',
+  admin: ['kris-liu'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://blogxin.cn"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Concurrent/">Concurrent</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/IO-NIO/">IO&NIO</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构/">架构</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/线上问题/">线上问题</a><span class="category-list-count">3</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/并发/" style="font-size: 15px;">并发</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/MQ/" style="font-size: 15px;">MQ</a> <a href="/tags/架构/" style="font-size: 15px;">架构</a> <a href="/tags/JVM/" style="font-size: 15px;">JVM</a> <a href="/tags/GC/" style="font-size: 15px;">GC</a> <a href="/tags/线上问题/" style="font-size: 15px;">线上问题</a> <a href="/tags/Git/" style="font-size: 15px;">Git</a> <a href="/tags/IO/" style="font-size: 15px;">IO</a> <a href="/tags/NIO/" style="font-size: 15px;">NIO</a> <a href="/tags/内存泄漏/" style="font-size: 15px;">内存泄漏</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Transaction/" style="font-size: 15px;">Transaction</a> <a href="/tags/源码/" style="font-size: 15px;">源码</a> <a href="/tags/锁/" style="font-size: 15px;">锁</a> <a href="/tags/异步/" style="font-size: 15px;">异步</a> <a href="/tags/读写锁/" style="font-size: 15px;">读写锁</a> <a href="/tags/线程池/" style="font-size: 15px;">线程池</a> <a href="/tags/缓存/" style="font-size: 15px;">缓存</a> <a href="/tags/BIO/" style="font-size: 15px;">BIO</a> <a href="/tags/AIO/" style="font-size: 15px;">AIO</a> <a href="/tags/JMM/" style="font-size: 15px;">JMM</a> <a href="/tags/内存模型/" style="font-size: 15px;">内存模型</a> <a href="/tags/Netty/" style="font-size: 15px;">Netty</a> <a href="/tags/Tomcat/" style="font-size: 15px;">Tomcat</a> <a href="/tags/Tools/" style="font-size: 15px;">Tools</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/09/30/Distributed-Consistency/">分布式系统数据一致性问题常见解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/11/kafka-block/">由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/23/Distributed-Transaction/">分布式事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/16/java-reference/">Java的强引用，软引用，弱引用，虚引用及其使用场景</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/InternalResourceViewResolver-Memory-Leak/">InternalResourceViewResolver引起的内存泄漏问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/14/Space-Based-Architecture/">基于空间的架构实践及思考</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/23/Netty-DataPacket/">Netty源码分析 解决TCP粘包拆包问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/22/jrebel-remote-server/">IntelliJ IDEA下使用JRebel远程热部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/Netty-Bootstrap/">Netty源码分析 Bootstrap客户端启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/01/Netty-ServerBootstrap/">Netty源码分析 ServerBootstrap服务端启动</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://blog.csdn.net/xx_ytm" title="我的CSDN博客" target="_blank">我的CSDN博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">佑祺's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
