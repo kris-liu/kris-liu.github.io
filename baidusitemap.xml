@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
+    <lastmod>2018-10-09T15:43:00.797Z</lastmod>
+    <data>
+        <display>
+        <title>分布式事务</title>
+        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
     <lastmod>2018-10-05T18:07:41.221Z</lastmod>
     <data>
@@ -64,28 +86,6 @@
            
              
               <breadCrumb title="Spring" url="http://blogxin.cn/categories/Spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
-    <lastmod>2018-06-10T16:03:20.989Z</lastmod>
-    <data>
-        <display>
-        <title>分布式事务</title>
-        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
-        
-        <tag>Transaction</tag>
-         
-        <tag>架构</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
           
         </display>
     </data>
