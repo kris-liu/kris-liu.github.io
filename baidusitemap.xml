@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2018/07/29/TransactionMessage/</loc>
-    <lastmod>2018-10-16T17:30:28.650Z</lastmod>
+    <lastmod>2018-10-16T17:41:21.834Z</lastmod>
     <data>
         <display>
         <title>事务消息实现原理</title>
@@ -526,9 +526,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
         <tag>读写锁</tag>
          
@@ -672,9 +672,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
@@ -698,9 +698,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
