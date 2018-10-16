@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
+    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
     
-    <lastmod>2018-10-09T16:08:18.566Z</lastmod>
+    <lastmod>2018-10-16T17:23:27.381Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
+    <loc>http://blogxin.cn/2018/07/29/TransactionMessage/</loc>
     
-    <lastmod>2018-10-05T18:07:41.221Z</lastmod>
+    <lastmod>2018-10-16T17:23:23.697Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
+    
+    <lastmod>2018-10-09T16:08:18.566Z</lastmod>
     
   </url>
   

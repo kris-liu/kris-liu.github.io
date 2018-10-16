@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
+    <lastmod>2018-10-16T17:23:27.381Z</lastmod>
+    <data>
+        <display>
+        <title>分布式系统数据一致性问题常见解决方案</title>
+        <pubTime>2018-09-30T13:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2018/07/29/TransactionMessage/</loc>
+    <lastmod>2018-10-16T17:23:23.697Z</lastmod>
+    <data>
+        <display>
+        <title>事务消息实现原理</title>
+        <pubTime>2018-07-29T08:00:00.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+        <tag>MQ</tag>
+         
+         
+           
+             
+              <breadCrumb title="MQ" url="http://blogxin.cn/categories/MQ/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
     <lastmod>2018-10-09T16:08:18.566Z</lastmod>
     <data>
@@ -25,26 +69,6 @@
     </url>
 
     
-  <url>
-    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
-    <lastmod>2018-10-05T18:07:41.221Z</lastmod>
-    <data>
-        <display>
-        <title>分布式系统数据一致性问题常见解决方案</title>
-        <pubTime>2018-09-30T13:00:00.000Z</pubTime>
-        
-        <tag>架构</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
   <url>
     <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
@@ -54,11 +78,11 @@
         <title>由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</title>
         <pubTime>2018-08-11T12:00:00.000Z</pubTime>
         
-        <tag>MQ</tag>
-         
         <tag>线上问题</tag>
          
         <tag>源码</tag>
+         
+        <tag>MQ</tag>
          
          
            
@@ -394,9 +418,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>异步</tag>
+         
+        <tag>源码</tag>
          
         <tag>线程池</tag>
          
@@ -502,9 +526,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
         <tag>读写锁</tag>
          
@@ -648,9 +672,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
          
            
@@ -674,9 +698,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
          
            
@@ -724,9 +748,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>异步</tag>
+         
+        <tag>源码</tag>
          
          
            
