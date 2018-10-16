@@ -684,5 +684,6 @@ kafka的每个消息拉取线程每次会拉取所有topic的消息，put到一�
 
 ### 解决
 
-一个topic使用一个ConsumerConnector，那么就在消息拉取线程上做到了topic维度的完全隔离，就可以使用这种在消费线程sleep这种停止消费方案了。
+一个topic使用一个ConsumerConnector，那么就在消息拉取线程上做到了topic维度的完全隔离，就可以使用在消费线程sleep这种停止消费方案了。
+
 
