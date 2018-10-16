@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
+    
+    <lastmod>2018-10-16T17:47:34.014Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blogxin.cn/2018/07/29/TransactionMessage/</loc>
     
     <lastmod>2018-10-16T17:41:21.834Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://blogxin.cn/about/index.html</loc>
     
     <lastmod>2018-10-04T16:51:19.215Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
-    
-    <lastmod>2018-08-12T11:04:11.075Z</lastmod>
     
   </url>
   
