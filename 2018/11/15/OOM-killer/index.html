@@ -5,13 +5,25 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create','UA-91282031-1','auto');ga('send','pageview');
 </script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">线上Java进程消失排查分析</h1><a id="logo" href="/.">佑祺's Blog</a><p class="description">Whatever you do, you have to keep moving forward!</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">线上Java进程消失排查分析</h1><div class="post-meta">Nov 15, 2018<span> | </span><span class="category"><a href="/categories/线上问题/">线上问题</a></span></div><div class="post-content"><h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>线上突然收到某应用端口报警，登陆服务器后，发现机器上的Java应用进程莫名其妙的消失了，便进行了一番排查，并把排查分析的过程做了下总结记录。</p>
 <h2 id="排查分析过程"><a href="#排查分析过程" class="headerlink" title="排查分析过程"></a>排查分析过程</h2><h3 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h3><p>首先Java进程已经消失了，最真实的现场已经不存在了(无法获取故障时的线程dump或堆内存dump)，那么就尽可能找寻一些蛛丝马迹，比如通过服务挂掉之前的日志、监控等信息，来尽可能还原服务消失前的一些经过：</p>
-<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><h5 id="应用日志"><a href="#应用日志" class="headerlink" title="应用日志"></a>应用日志</h5><p>Java应用日志，无明显报错，没有出现OOM异常。</p>
-<h5 id="dump日志"><a href="#dump日志" class="headerlink" title="dump日志"></a>dump日志</h5><p>系统配置了当JVM发生OOM时，自动生成dump文件，但是并没有出现dump文件。</p>
-<p>相关配置：<code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/heapdump.hprof</code></p>
-<h5 id="crash日志"><a href="#crash日志" class="headerlink" title="crash日志"></a>crash日志</h5><p>系统配置JVM崩溃日志，但是并没有出现crash日志。</p>
-<p>相关配置：<code>-XX:ErrorFile=/path/hs_error%p.log</code></p>
-<h5 id="gc日志"><a href="#gc日志" class="headerlink" title="gc日志"></a>gc日志</h5><p><img src="/2018/11/15/OOM-killer/gc.png" alt="gc"></p>
-<p>可以看出gc频率正常，死亡前并没有出现频繁FullGC等异常现象。</p>
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><ul>
+<li><p>应用日志</p>
+<p>  Java应用日志，无明显报错，没有出现OOM异常。</p>
+</li>
+<li><p>dump日志</p>
+<p>  系统配置了当JVM发生OOM时，自动生成dump文件，但是并没有出现dump文件。</p>
+<p>  相关配置：</p>
+<p>  <code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/heapdump.hprof</code></p>
+</li>
+<li><p>Crash日志</p>
+<p>  系统配置JVM崩溃日志，但是并没有出现Crash日志。</p>
+<p>  相关配置：</p>
+<p>  <code>-XX:ErrorFile=/path/hs_error%p.log</code></p>
+</li>
+<li><p>gc日志</p>
+<p>  <img src="/2018/11/15/OOM-killer/gc.png" alt="gc"></p>
+<p>  可以看出gc频率正常，死亡前并没有出现频繁FullGC等异常现象。</p>
+</li>
+</ul>
 <h4 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h4><p><img src="/2018/11/15/OOM-killer/memory.png" alt="memory"></p>
 <p>从业务监控以及系统指标监控来看并无明显问题，在一个时间点上因为应用进程死亡各项指标全掉了，只是在进程死亡前内存占用率一直非常高。</p>
 <h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>根据以上日志和监控信息，基本可以排除应用自身崩溃等原因死亡的，所以怀疑是有‘人’杀了它，线上环境并不会有什么机制会主动杀死应用，服务器也没有做什么重启等操作，所以可能是操作系统主动杀死的它，根据以往经验结合刚才的内存占用率高的监控，怀疑是系统的OOM-Killer机制杀死的它呢，查看<code>cat var/log/messages</code>，果然确认了是OOM-Killer杀死的它：</p>
@@ -20,13 +32,19 @@ ga('create','UA-91282031-1','auto');ga('send','pageview');
 <h3 id="继续排查"><a href="#继续排查" class="headerlink" title="继续排查"></a>继续排查</h3><p>已经确认了是OOM-Killer杀死它，也了解了OOM-Killer机制，那么我们该怎么解决呢，先看下我们的内存使用情况：</p>
 <h4 id="top命令："><a href="#top命令：" class="headerlink" title="top命令："></a>top命令：</h4><p><img src="/2018/11/15/OOM-killer/top.png" alt="top"></p>
 <p>虚拟机内存总大小4G。</p>
-<h4 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h4><h5 id="启动参数"><a href="#启动参数" class="headerlink" title="启动参数"></a>启动参数</h5><p><img src="/2018/11/15/OOM-killer/size.png" alt="size"></p>
-<p>堆内存设置了2.5G，应用程序运行在java8的环境上，所以PermSize配置无效。</p>
-<h5 id="gc日志-1"><a href="#gc日志-1" class="headerlink" title="gc日志"></a>gc日志</h5><p><img src="/2018/11/15/OOM-killer/fullgc.png" alt="fullgc"></p>
-<p>查看系统FullGC的记录，因为FullGC一般会记录比较全的各区域内存信息，以此来看MateSpaceSize大小，惊讶的发现居然MateSpaceSize有1G大小，仅仅堆+MateSpaceSize的空间就已经是3.5G了，另外看GC原因居然是因为<code>MetaData GC Threshold</code>，也就是MateSpaceSize空间不足导致的FullGC，但是GC日志里同样显示MateSpaceSize空间在GC前仍是充足的，便通过其他命令继续观察空间大小。</p>
-<h5 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h5><p><img src="/2018/11/15/OOM-killer/jmap.png" alt="jmap"></p>
-<p>通过<code>jmap -heap pid</code>命令查看各区域空间大小，看到MateSpaceSize大小只有20M，但是有一个CompressedClassSpaceSize居然占用了1G。</p>
-<p>相关区域及参数介绍：</p>
+<h4 id="Java内存使用"><a href="#Java内存使用" class="headerlink" title="Java内存使用"></a>Java内存使用</h4><ul>
+<li><p>启动参数</p>
+<p>  <img src="/2018/11/15/OOM-killer/size.png" alt="size"></p>
+<p>  堆内存设置了2.5G，应用程序运行在java8的环境上，所以PermSize配置无效。</p>
+</li>
+<li><p>gc日志</p>
+<p>  <img src="/2018/11/15/OOM-killer/fullgc.png" alt="fullgc"></p>
+<p>  查看系统FullGC的记录，因为FullGC一般会记录比较全的各区域内存信息，以此来看MateSpaceSize大小，惊讶的发现居然MateSpaceSize有1G大小，仅仅堆+MateSpaceSize的空间就已经是3.5G了，另外看GC原因居然是因为<code>MetaData GC Threshold</code>，也就是MateSpaceSize空间不足导致的FullGC，但是GC日志里同样显示MateSpaceSize空间在GC前仍是充足的，便通过其他命令继续观察空间大小。</p>
+</li>
+<li><p>jmap</p>
+<p>  <img src="/2018/11/15/OOM-killer/jmap.png" alt="jmap"></p>
+<p>  通过<code>jmap -heap pid</code>命令查看各区域空间大小，看到MateSpaceSize大小只有20M，但是有一个CompressedClassSpaceSize居然占用了1G。</p>
+<p>  相关区域及参数介绍：</p>
 <ul>
 <li><p>Metaspace（元空间）并不在虚拟机中，而是使用本地内存。Metaspace组成：</p>
 <ul>
@@ -47,10 +65,18 @@ ga('create','UA-91282031-1','auto');ga('send','pageview');
 <li><p><code>-XX:CompressedClassSpaceSize</code>：类指针压缩空间，只有64位平台上启用了类指针压缩才会存在这个区域。对于64位平台，为了压缩JVM对象中的_klass指针的大小，引入了类指针压缩空间，默认固定1G大小。</p>
 </li>
 </ul>
-<h5 id="XX-PrintFlagsInitial"><a href="#XX-PrintFlagsInitial" class="headerlink" title="-XX:+PrintFlagsInitial"></a>-XX:+PrintFlagsInitial</h5><p><img src="/2018/11/15/OOM-killer/PrintFlagsInitial.png" alt="PrintFlagsInitial"></p>
-<p>通过<code>java -XX:+PrintFlagsInitial</code>命令打印java的参数默认值，可以看出MateSpaceSize初始值是20M，可增长，CompressedClassSpaceSize默认固定1G空间。</p>
-<h5 id="堆外内存"><a href="#堆外内存" class="headerlink" title="堆外内存"></a>堆外内存</h5><p>因为系统使用了dubbo框架，所以使用了一部分堆外内存，默认最大值和堆内存最大大小相同，根据经验来说一般使用不了那么多堆外内存。若有需求可使用<code>-XX:MaxDirectMemorySize</code>进行最大值限制。</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>确认了虚拟机最大4G，也确定了Java进程相关内存使用，那么接下来如何解决呢</p>
+</li>
+</ul>
+<ul>
+<li><p>-XX:+PrintFlagsInitial</p>
+<p>  <img src="/2018/11/15/OOM-killer/flags.png" alt="PrintFlagsInitial"></p>
+<p>  通过<code>java -XX:+PrintFlagsInitial</code>命令打印java的参数默认值，可以看出MateSpaceSize初始值是20M，可增长，CompressedClassSpaceSize默认固定1G空间。</p>
+</li>
+<li><p>堆外内存</p>
+<p>  因为系统使用了dubbo框架，所以使用了一部分堆外内存，默认最大值和堆内存最大大小相同，根据经验来说一般使用不了那么多堆外内存。若有需求可使用<code>-XX:MaxDirectMemorySize</code>进行最大值限制。</p>
+</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>确认了虚拟机最大4G，也确定了Java进程相关内存使用情况，那么接下来如何解决：</p>
 <ol>
 <li><p>升级虚拟机内存</p>
 <p> 直接升级虚拟机内存到8G，效果立竿见影，不过即使升级内存后，内部的内存使用建议还是进行下适当优化调整。</p>
@@ -63,16 +89,17 @@ ga('create','UA-91282031-1','auto');ga('send','pageview');
 <p>  根据系统日常情况下的日志可以发现，系统gc并不频繁，fullgc后系统常驻内存大约200M以内，说明内存中并无大量常驻内存的对象，因为虚拟机只有4G内存，那么可以把最大堆调整到1.5G左右。</p>
 </li>
 <li><p>MateSpaceSize和CompressedClassSpaceSize</p>
-<p><img src="/2018/11/15/OOM-killer/jstat-gc.png" alt="jstat-gc"></p>
-<p><img src="/2018/11/15/OOM-killer/jstat-gccapacity.png" alt="jstat-gccapacity"></p>
-<p>通过<code>jstat -gc pid 1000</code>和<code>jstat -gccapacity pid 1000</code>命令，可以发现：MateSpace大约使用了100M多点，一般会把MateSpace最大最小设置成相同，以减少不必要的FullGC；CompressedClassSpace大约使用了12M多点。调整这两块空间时，一般会预留一个非常充足的buffer，减少后期不必要的频繁调整。</p>
-<p>优化后的参数设置：<code>-XX:NewSize=256m -Xms1530m -Xmx1530m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:CompressedClassSpaceSize=128m</code></p>
+<p>  <img src="/2018/11/15/OOM-killer/jstat-gc.png" alt="jstat-gc"></p>
+<p>  <img src="/2018/11/15/OOM-killer/jstat-gccapacity.png" alt="jstat-gccapacity"></p>
+<p>  通过<code>jstat -gc pid 1000</code>和<code>jstat -gccapacity pid 1000</code>命令，可以发现：MateSpace大约使用了100M多点，一般会把MateSpace最大最小设置成相同，以减少不必要的FullGC；CompressedClassSpace大约使用了12M多点。调整这两块空间时，一般会预留一个非常充足的buffer，减少后期不必要的频繁调整。</p>
+<p>  <strong>优化后的参数设置：</strong> </p>
+<p>  <code>-XX:NewSize=256m -Xms1530m -Xmx1530m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:CompressedClassSpaceSize=128m</code></p>
 </li>
 </ul>
 </li>
 </ol>
 <h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="https://www.cnblogs.com/duanxz/p/3520829.html" target="_blank" rel="external">Metaspace 之一：Metaspace整体介绍（永久代被替换原因、元空间特点、元空间内存查看分析方法）</a></p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://blogxin.cn/2018/11/15/OOM-killer/" data-id="cjolrjurf002ffv6z1sqpqfeq" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aUbKCMAwFUPa/ad4GFG4a0sc4p18OKhz9yDQ3PY54nV/W9SeTux0TCxcXt809L1fOvb6ydv8PPwkXF3cj91vFuP5MUp7yv+PagIuL+2butwK0ttHBxcX9DW5ne3R9BRcX923czhYkCUrygvhYr4aLi9vg5inl3OuRfBcXF3eJexZXHo+u3f/m6bi4uFu4nTA0+THJcKUcwuLi4g5zqxFGp8nJoTclDBcXd5jbOXqVl6d89FKQ4OLibuR2gtRzYBXmP7i4uA9xq6UquZ6HKcm/+KH5wcXF3cJNWpH83WfvedOr4eLijnHXDkt1os+1soiLi7uHW60P1UFsPzBtlTNcXNwlbr8Y5QFKNXyJ6i4uLu4ANx+EVMer5bw2b5NwcXH/idsPRvNjGeWQBRcXdyO307oUxiGNLRQuLu5+bj5SrQYoR3HdfAsXF3eYu3ZMqtOJrG2ScHFxd3KrxaVa2qrfzZ+Li4s7za1GnHlo0ilkUa+Gi4s7zO0HnWtD1gd6NVxc3BdwO/um/jEvXFzcN3PzMtc/ctHa4uDi4ja4+dHJalFLNj0jvRouLu4z+eRiQ5IQ+8e/cHFxt3D/AIIlKfh4JAZgAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/JVM/">JVM</a><a href="/tags/线上问题/">线上问题</a></div><div class="post-nav"><a class="next" href="/2018/09/30/Distributed-Consistency/">分布式系统数据一致性问题常见解决方案</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://blogxin.cn/2018/11/15/OOM-killer/" data-id="cjols0fiq002fjx6z40ihely5" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aUbKCMAwFUPa/ad4GFG4a0sc4p18OKhz9yDQ3PY54nV/W9SeTux0TCxcXt809L1fOvb6ydv8PPwkXF3cj91vFuP5MUp7yv+PagIuL+2butwK0ttHBxcX9DW5ne3R9BRcX923czhYkCUrygvhYr4aLi9vg5inl3OuRfBcXF3eJexZXHo+u3f/m6bi4uFu4nTA0+THJcKUcwuLi4g5zqxFGp8nJoTclDBcXd5jbOXqVl6d89FKQ4OLibuR2gtRzYBXmP7i4uA9xq6UquZ6HKcm/+KH5wcXF3cJNWpH83WfvedOr4eLijnHXDkt1os+1soiLi7uHW60P1UFsPzBtlTNcXNwlbr8Y5QFKNXyJ6i4uLu4ANx+EVMer5bw2b5NwcXH/idsPRvNjGeWQBRcXdyO307oUxiGNLRQuLu5+bj5SrQYoR3HdfAsXF3eYu3ZMqtOJrG2ScHFxd3KrxaVa2qrfzZ+Li4s7za1GnHlo0ilkUa+Gi4s7zO0HnWtD1gd6NVxc3BdwO/um/jEvXFzcN3PzMtc/ctHa4uDi4ja4+dHJalFLNj0jvRouLu4z+eRiQ5IQ+8e/cHFxt3D/AIIlKfh4JAZgAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/JVM/">JVM</a><a href="/tags/线上问题/">线上问题</a></div><div class="post-nav"><a class="next" href="/2018/09/30/Distributed-Consistency/">分布式系统数据一致性问题常见解决方案</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
   clientID: '530c0141e83989b1dc02',
   clientSecret: '89e61ba0adc9b0c630bcc2641c791bfd7ef9faea',
   repo: 'kris-liu.github.io',
