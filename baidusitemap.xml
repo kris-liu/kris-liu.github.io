@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2018/11/15/OOM-killer/</loc>
+    <lastmod>2018-11-17T18:05:46.522Z</lastmod>
+    <data>
+        <display>
+        <title>线上Java进程消失排查分析</title>
+        <pubTime>2018-11-15T14:00:00.000Z</pubTime>
+        
+        <tag>JVM</tag>
+         
+        <tag>线上问题</tag>
+         
+         
+           
+             
+              <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
+    <lastmod>2018-11-15T18:25:44.510Z</lastmod>
+    <data>
+        <display>
+        <title>分布式系统数据一致性问题常见解决方案</title>
+        <pubTime>2018-09-30T13:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2018/08/11/kafka-block/</loc>
     <lastmod>2018-10-16T17:47:34.014Z</lastmod>
     <data>
@@ -45,26 +87,6 @@
            
              
               <breadCrumb title="MQ" url="http://blogxin.cn/categories/MQ/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
-    <lastmod>2018-10-16T17:23:27.381Z</lastmod>
-    <data>
-        <display>
-        <title>分布式系统数据一致性问题常见解决方案</title>
-        <pubTime>2018-09-30T13:00:00.000Z</pubTime>
-        
-        <tag>架构</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
           
         </display>
     </data>

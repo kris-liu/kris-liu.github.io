@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="google-site-verification" content="DVfrDhwMEodDoWVy6nv0PCpolWhBlGBSaO9hiU2r61E"><meta name="google-site-verification" content="40TgWkMJTOetJQqAMZwk5nD5rtVQRjk5i2pe6FGka5g"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="佑祺's Blog"><title>线上Java进程消失排查分析 | 佑祺's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-91282031-1','auto');ga('send','pageview');
+</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">线上Java进程消失排查分析</h1><a id="logo" href="/.">佑祺's Blog</a><p class="description">Whatever you do, you have to keep moving forward!</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">线上Java进程消失排查分析</h1><div class="post-meta">Nov 15, 2018<span> | </span><span class="category"><a href="/categories/线上问题/">线上问题</a></span></div><div class="post-content"><h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>线上突然收到某应用端口报警，登陆服务器后，发现机器上的Java应用进程莫名其妙的消失了，便进行了一番排查，并把排查分析的过程做了下总结记录。</p>
+<h2 id="排查分析过程"><a href="#排查分析过程" class="headerlink" title="排查分析过程"></a>排查分析过程</h2><h3 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h3><p>首先Java进程已经消失了，最真实的现场已经不存在了(无法获取故障时的线程dump或堆内存dump)，那么就尽可能找寻一些蛛丝马迹，比如通过服务挂掉之前的日志、监控等信息，来尽可能还原服务消失前的一些经过：</p>
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><h5 id="应用日志"><a href="#应用日志" class="headerlink" title="应用日志"></a>应用日志</h5><p>Java应用日志，无明显报错，没有出现OOM异常。</p>
+<h5 id="dump日志"><a href="#dump日志" class="headerlink" title="dump日志"></a>dump日志</h5><p>系统配置了当JVM发生OOM时，自动生成dump文件，但是并没有出现dump文件。</p>
+<p>相关配置：<code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/heapdump.hprof</code></p>
+<h5 id="crash日志"><a href="#crash日志" class="headerlink" title="crash日志"></a>crash日志</h5><p>系统配置JVM崩溃日志，但是并没有出现crash日志。</p>
+<p>相关配置：<code>-XX:ErrorFile=/path/hs_error%p.log</code></p>
+<h5 id="gc日志"><a href="#gc日志" class="headerlink" title="gc日志"></a>gc日志</h5><p><img src="/2018/11/15/OOM-killer/gc.png" alt="gc"></p>
+<p>可以看出gc频率正常，死亡前并没有出现频繁FullGC等异常现象。</p>
+<h4 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h4><p><img src="/2018/11/15/OOM-killer/memory.png" alt="memory"></p>
+<p>从业务监控以及系统指标监控来看并无明显问题，在一个时间点上因为应用进程死亡各项指标全掉了，只是在进程死亡前内存占用率一直非常高。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>根据以上日志和监控信息，基本可以排除应用自身崩溃等原因死亡的，所以怀疑是有‘人’杀了它，线上环境并不会有什么机制会主动杀死应用，服务器也没有做什么重启等操作，所以可能是操作系统主动杀死的它，根据以往经验结合刚才的内存占用率高的监控，怀疑是系统的OOM-Killer机制杀死的它呢，查看<code>cat var/log/messages</code>，果然确认了是OOM-Killer杀死的它：</p>
+<p><img src="/2018/11/15/OOM-killer/oomkiller.png" alt="OOM-Killer日志"></p>
+<h4 id="OOM-Killer是什么"><a href="#OOM-Killer是什么" class="headerlink" title="OOM-Killer是什么"></a>OOM-Killer是什么</h4><p>Linux内核有个机制叫OOM killer（Out-Of-Memory killer），该机制会监控那些占用内存过大，尤其是瞬间很快消耗大量内存的进程，为了防止内存耗尽而内核会把该进程杀掉。查看系统日志/var/log/messages会发现Out of Memory: Kill process 1865（sshd）类似的错误信息。</p>
+<h3 id="继续排查"><a href="#继续排查" class="headerlink" title="继续排查"></a>继续排查</h3><p>已经确认了是OOM-Killer杀死它，也了解了OOM-Killer机制，那么我们该怎么解决呢，先看下我们的内存使用情况：</p>
+<h4 id="top命令："><a href="#top命令：" class="headerlink" title="top命令："></a>top命令：</h4><p><img src="/2018/11/15/OOM-killer/top.png" alt="top"></p>
+<p>虚拟机内存总大小4G。</p>
+<h4 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h4><h5 id="启动参数"><a href="#启动参数" class="headerlink" title="启动参数"></a>启动参数</h5><p><img src="/2018/11/15/OOM-killer/size.png" alt="size"></p>
+<p>堆内存设置了2.5G，应用程序运行在java8的环境上，所以PermSize配置无效。</p>
+<h5 id="gc日志-1"><a href="#gc日志-1" class="headerlink" title="gc日志"></a>gc日志</h5><p><img src="/2018/11/15/OOM-killer/fullgc.png" alt="fullgc"></p>
+<p>查看系统FullGC的记录，因为FullGC一般会记录比较全的各区域内存信息，以此来看MateSpaceSize大小，惊讶的发现居然MateSpaceSize有1G大小，仅仅堆+MateSpaceSize的空间就已经是3.5G了，另外看GC原因居然是因为<code>MetaData GC Threshold</code>，也就是MateSpaceSize空间不足导致的FullGC，但是GC日志里同样显示MateSpaceSize空间在GC前仍是充足的，便通过其他命令继续观察空间大小。</p>
+<h5 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h5><p><img src="/2018/11/15/OOM-killer/jmap.png" alt="jmap"></p>
+<p>通过<code>jmap -heap pid</code>命令查看各区域空间大小，看到MateSpaceSize大小只有20M，但是有一个CompressedClassSpaceSize居然占用了1G。</p>
+<p>相关区域及参数介绍：</p>
+<ul>
+<li><p>Metaspace（元空间）并不在虚拟机中，而是使用本地内存。Metaspace组成：</p>
+<ul>
+<li><p>Klass Metaspace:Klass Metaspace就是用来存klass的，klass是我们熟知的class文件在jvm里的运行时数据结构，不过有点要提的是我们看到的类似A.class其实是存在heap里的，是java.lang.Class的一个对象实例。这块内存是紧接着Heap的，和我们之前的perm一样，这块内存大小可通过-XX:CompressedClassSpaceSize参数来控制，这个参数前面提到了默认是1G，但是这块内存也可以没有，假如没有开启压缩指针就不会有这块内存，这种情况下klass都会存在NoKlass Metaspace里，另外如果我们把-Xmx设置大于32G的话，其实也是没有这块内存的，因为会这么大内存会关闭压缩指针开关。还有就是这块内存最多只会存在一块。</p>
+</li>
+<li><p>NoKlass Metaspace:NoKlass Metaspace专门来存klass相关的其他的内容，比如method，constantPool等，这块内存是由多块内存组合起来的，所以可以认为是不连续的内存块组成的。这块内存是必须的，虽然叫做NoKlass Metaspace，但是也其实可以存klass的内容，上面已经提到了对应场景。</p>
+</li>
+</ul>
+</li>
+<li><p><code>-XX:MetaspaceSize</code>：Metaspace初始空间大小，达到该值就会触发垃圾收集进行类型卸载，同时GC会对该值进行调整：如果释放了大量的空间，就适当降低该值；如果释放了很少的空间，那么在不超过MaxMetaspaceSize时，适当提高该值。 </p>
+</li>
+<li><p><code>-XX:MaxMetaspaceSize</code>：Metaspace最大空间，默认是没有限制的。 </p>
+</li>
+<li><p><code>-XX:+UseCompressedOops</code>：使用压缩对象指针，”oops”指的是普通对象指针(“ordinary” object pointers)。64位平台上默认打开，Java堆中对象指针会被压缩成32位。使用堆基地址（如果堆在低26G内存中的话，基地址为0）。</p>
+</li>
+<li><p><code>-XX:+UseCompressedClassPointers</code>：使用压缩类指针，64位平台上默认打开，对象中指向类元数据的指针会被压缩成32位，类指针压缩空间会有一个基地址。</p>
+</li>
+<li><p><code>-XX:CompressedClassSpaceSize</code>：类指针压缩空间，只有64位平台上启用了类指针压缩才会存在这个区域。对于64位平台，为了压缩JVM对象中的_klass指针的大小，引入了类指针压缩空间，默认固定1G大小。</p>
+</li>
+</ul>
+<h5 id="XX-PrintFlagsInitial"><a href="#XX-PrintFlagsInitial" class="headerlink" title="-XX:+PrintFlagsInitial"></a>-XX:+PrintFlagsInitial</h5><p><img src="/2018/11/15/OOM-killer/PrintFlagsInitial.png" alt="PrintFlagsInitial"></p>
+<p>通过<code>java -XX:+PrintFlagsInitial</code>命令打印java的参数默认值，可以看出MateSpaceSize初始值是20M，可增长，CompressedClassSpaceSize默认固定1G空间。</p>
+<h5 id="堆外内存"><a href="#堆外内存" class="headerlink" title="堆外内存"></a>堆外内存</h5><p>因为系统使用了dubbo框架，所以使用了一部分堆外内存，默认最大值和堆内存最大大小相同，根据经验来说一般使用不了那么多堆外内存。若有需求可使用<code>-XX:MaxDirectMemorySize</code>进行最大值限制。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>确认了虚拟机最大4G，也确定了Java进程相关内存使用，那么接下来如何解决呢</p>
+<ol>
+<li><p>升级虚拟机内存</p>
+<p> 直接升级虚拟机内存到8G，效果立竿见影，不过即使升级内存后，内部的内存使用建议还是进行下适当优化调整。</p>
+</li>
+</ol>
+<ol>
+<li><p>优化Java内存使用</p>
+<ul>
+<li><p>堆内存</p>
+<p>  根据系统日常情况下的日志可以发现，系统gc并不频繁，fullgc后系统常驻内存大约200M以内，说明内存中并无大量常驻内存的对象，因为虚拟机只有4G内存，那么可以把最大堆调整到1.5G左右。</p>
+</li>
+<li><p>MateSpaceSize和CompressedClassSpaceSize</p>
+<p><img src="/2018/11/15/OOM-killer/jstat-gc.png" alt="jstat-gc"></p>
+<p><img src="/2018/11/15/OOM-killer/jstat-gccapacity.png" alt="jstat-gccapacity"></p>
+<p>通过<code>jstat -gc pid 1000</code>和<code>jstat -gccapacity pid 1000</code>命令，可以发现：MateSpace大约使用了100M多点，一般会把MateSpace最大最小设置成相同，以减少不必要的FullGC；CompressedClassSpace大约使用了12M多点。调整这两块空间时，一般会预留一个非常充足的buffer，减少后期不必要的频繁调整。</p>
+<p>优化后的参数设置：<code>-XX:NewSize=256m -Xms1530m -Xmx1530m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:CompressedClassSpaceSize=128m</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="https://www.cnblogs.com/duanxz/p/3520829.html" target="_blank" rel="external">Metaspace 之一：Metaspace整体介绍（永久代被替换原因、元空间特点、元空间内存查看分析方法）</a></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://blogxin.cn/2018/11/15/OOM-killer/" data-id="cjolrjurf002ffv6z1sqpqfeq" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aUbKCMAwFUPa/ad4GFG4a0sc4p18OKhz9yDQ3PY54nV/W9SeTux0TCxcXt809L1fOvb6ydv8PPwkXF3cj91vFuP5MUp7yv+PagIuL+2butwK0ttHBxcX9DW5ne3R9BRcX923czhYkCUrygvhYr4aLi9vg5inl3OuRfBcXF3eJexZXHo+u3f/m6bi4uFu4nTA0+THJcKUcwuLi4g5zqxFGp8nJoTclDBcXd5jbOXqVl6d89FKQ4OLibuR2gtRzYBXmP7i4uA9xq6UquZ6HKcm/+KH5wcXF3cJNWpH83WfvedOr4eLijnHXDkt1os+1soiLi7uHW60P1UFsPzBtlTNcXNwlbr8Y5QFKNXyJ6i4uLu4ANx+EVMer5bw2b5NwcXH/idsPRvNjGeWQBRcXdyO307oUxiGNLRQuLu5+bj5SrQYoR3HdfAsXF3eYu3ZMqtOJrG2ScHFxd3KrxaVa2qrfzZ+Li4s7za1GnHlo0ilkUa+Gi4s7zO0HnWtD1gd6NVxc3BdwO/um/jEvXFzcN3PzMtc/ctHa4uDi4ja4+dHJalFLNj0jvRouLu4z+eRiQ5IQ+8e/cHFxt3D/AIIlKfh4JAZgAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/JVM/">JVM</a><a href="/tags/线上问题/">线上问题</a></div><div class="post-nav"><a class="next" href="/2018/09/30/Distributed-Consistency/">分布式系统数据一致性问题常见解决方案</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
+  clientID: '530c0141e83989b1dc02',
+  clientSecret: '89e61ba0adc9b0c630bcc2641c791bfd7ef9faea',
+  repo: 'kris-liu.github.io',
+  owner: 'kris-liu',
+  admin: ['kris-liu'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://blogxin.cn"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Concurrent/">Concurrent</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/IO-NIO/">IO&NIO</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MQ/">MQ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tomcat/">Tomcat</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构/">架构</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/线上问题/">线上问题</a><span class="category-list-count">4</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/锁/" style="font-size: 15px;">锁</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/架构/" style="font-size: 15px;">架构</a> <a href="/tags/JVM/" style="font-size: 15px;">JVM</a> <a href="/tags/GC/" style="font-size: 15px;">GC</a> <a href="/tags/线上问题/" style="font-size: 15px;">线上问题</a> <a href="/tags/Git/" style="font-size: 15px;">Git</a> <a href="/tags/IO/" style="font-size: 15px;">IO</a> <a href="/tags/NIO/" style="font-size: 15px;">NIO</a> <a href="/tags/内存泄漏/" style="font-size: 15px;">内存泄漏</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/并发/" style="font-size: 15px;">并发</a> <a href="/tags/Transaction/" style="font-size: 15px;">Transaction</a> <a href="/tags/源码/" style="font-size: 15px;">源码</a> <a href="/tags/异步/" style="font-size: 15px;">异步</a> <a href="/tags/读写锁/" style="font-size: 15px;">读写锁</a> <a href="/tags/线程池/" style="font-size: 15px;">线程池</a> <a href="/tags/缓存/" style="font-size: 15px;">缓存</a> <a href="/tags/BIO/" style="font-size: 15px;">BIO</a> <a href="/tags/AIO/" style="font-size: 15px;">AIO</a> <a href="/tags/JMM/" style="font-size: 15px;">JMM</a> <a href="/tags/内存模型/" style="font-size: 15px;">内存模型</a> <a href="/tags/Netty/" style="font-size: 15px;">Netty</a> <a href="/tags/Tomcat/" style="font-size: 15px;">Tomcat</a> <a href="/tags/MQ/" style="font-size: 15px;">MQ</a> <a href="/tags/Tools/" style="font-size: 15px;">Tools</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/15/OOM-killer/">线上Java进程消失排查分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/30/Distributed-Consistency/">分布式系统数据一致性问题常见解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/11/kafka-block/">由一次kafka消费端消息阻塞问题分析kafka消费端线程模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/29/TransactionMessage/">事务消息实现原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/23/Distributed-Transaction/">分布式事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/16/java-reference/">Java的强引用，软引用，弱引用，虚引用及其使用场景</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/InternalResourceViewResolver-Memory-Leak/">InternalResourceViewResolver引起的内存泄漏问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/14/Space-Based-Architecture/">基于空间的架构实践及思考</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/23/Netty-DataPacket/">Netty源码分析 解决TCP粘包拆包问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/22/jrebel-remote-server/">IntelliJ IDEA下使用JRebel远程热部署</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://blog.csdn.net/xx_ytm" title="我的CSDN博客" target="_blank">我的CSDN博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">佑祺's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
