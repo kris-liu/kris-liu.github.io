@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blogxin.cn/2018/11/15/OOM-killer/</loc>
+    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
     
-    <lastmod>2018-11-17T18:27:19.461Z</lastmod>
+    <lastmod>2019-01-27T09:25:57.507Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
     
-    <lastmod>2018-11-15T18:25:44.510Z</lastmod>
+    <lastmod>2019-01-27T09:21:17.959Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogxin.cn/2018/11/15/OOM-killer/</loc>
+    
+    <lastmod>2018-11-17T18:27:19.461Z</lastmod>
     
   </url>
   
@@ -26,13 +33,6 @@
     <loc>http://blogxin.cn/2018/07/29/TransactionMessage/</loc>
     
     <lastmod>2018-10-16T17:41:21.834Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
-    
-    <lastmod>2018-10-09T16:08:18.566Z</lastmod>
     
   </url>
   

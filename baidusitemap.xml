@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
+    <lastmod>2019-01-27T09:25:57.507Z</lastmod>
+    <data>
+        <display>
+        <title>分布式事务</title>
+        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
+    <lastmod>2019-01-27T09:21:17.959Z</lastmod>
+    <data>
+        <display>
+        <title>分布式系统数据一致性问题常见解决方案</title>
+        <pubTime>2018-09-30T13:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2018/11/15/OOM-killer/</loc>
     <lastmod>2018-11-17T18:27:19.461Z</lastmod>
     <data>
@@ -19,26 +61,6 @@
            
              
               <breadCrumb title="线上问题" url="http://blogxin.cn/categories/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2018/09/30/Distributed-Consistency/</loc>
-    <lastmod>2018-11-15T18:25:44.510Z</lastmod>
-    <data>
-        <display>
-        <title>分布式系统数据一致性问题常见解决方案</title>
-        <pubTime>2018-09-30T13:00:00.000Z</pubTime>
-        
-        <tag>架构</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
           
         </display>
     </data>
@@ -93,28 +115,6 @@
     </url>
 
     
-  <url>
-    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
-    <lastmod>2018-10-09T16:08:18.566Z</lastmod>
-    <data>
-        <display>
-        <title>分布式事务</title>
-        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
-        
-        <tag>Transaction</tag>
-         
-        <tag>架构</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
   <url>
     <loc>http://blogxin.cn/2015/08/20/spring-aspectj/</loc>
@@ -124,9 +124,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>Spring</tag>
+         
+        <tag>Transaction</tag>
          
          
            
