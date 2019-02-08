@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2019/02/06/spring-boot-init/</loc>
+    <lastmod>2019-02-08T11:42:52.071Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot启动流程解析</title>
+        <pubTime>2019-02-06T12:00:00.000Z</pubTime>
+        
+        <tag>Spring</tag>
+         
+        <tag>SpringBoot</tag>
+         
+         
+           
+             
+              <breadCrumb title="Spring" url="http://blogxin.cn/categories/Spring/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
     <lastmod>2019-01-27T09:25:57.507Z</lastmod>
     <data>
@@ -124,9 +146,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Spring</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>Spring</tag>
          
          
            
