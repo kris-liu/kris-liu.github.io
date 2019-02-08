@@ -310,26 +310,25 @@ public final class SpringFactoriesLoader {
 				
 			}
 			final class PostProcessorRegistrationDelegate {
-				public static void invokeBeanFactoryPostProcessors(
-					ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
+				public static void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 		
-						... ...
-						
-						List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
-			
-						String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
-						for (String ppName : postProcessorNames) {
-							if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
-								currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
-								processedBeans.add(ppName);
-							}
+					... ...
+					
+					List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
+		
+					String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+					for (String ppName : postProcessorNames) {
+						if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+							currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
+							processedBeans.add(ppName);
 						}
-						sortPostProcessors(currentRegistryProcessors, beanFactory);
-						registryProcessors.addAll(currentRegistryProcessors);
-						invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-						currentRegistryProcessors.clear();
-			
-						... ...
+					}
+					sortPostProcessors(currentRegistryProcessors, beanFactory);
+					registryProcessors.addAll(currentRegistryProcessors);
+					invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+					currentRegistryProcessors.clear();
+		
+					... ...
 						
 				}
 			}
@@ -402,6 +401,7 @@ public final class SpringFactoriesLoader {
 		`deferredImportSelectorHandler.process()`方法用来处理自动配置功能。主要通过`AutoConfigurationImportSelector`来处理，该类是通过`@SpringBootApplication`注解上的`@Import`注解导入的，`AutoConfigurationImportSelector`通过`SpringFactoriesLoader`获取所有`spring.factories`文件中的`EnableAutoConfiguration`类型自动配置类，根据类上的`@Conditional`系列注解，过滤掉不需要加载的自动配置类，将剩余需要加载的自动配置类进行初始化解析。
 		
 	* `onRefresh()`方法用于创建web容器，如果是web项目，则容器继承于`ServletWebServerApplicationContext`，将会在这一步创建web容器。
+	
 		```java
 			protected void onRefresh() {
 				super.onRefresh();
@@ -415,6 +415,7 @@ public final class SpringFactoriesLoader {
 		```
 
 	* `finishRefresh()`方法用于启动web容器，如果是web项目，则容器继承于`ServletWebServerApplicationContext`，将会在这一步启动web容器，并发布`ServletWebServerInitializedEvent `事件。
+	
 		```java
 			protected void finishRefresh() {
 				super.finishRefresh();
