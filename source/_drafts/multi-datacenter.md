@@ -126,15 +126,82 @@ date: 2019-03-02 20:00:00
 
 以下是一些常见的数据同步方案：
 
-#### Mysql异步主从同步
+#### Mysql异步主从复制
 
+MySQL主从复制是最常见的数据复制方案，指数据可以从一个MySQL数据库服务器主节点复制到一个或多个从节点。MySQL默认采用异步复制的方式。
 
+##### MySQL主从复制的基本过程：
+
+1. Slave上面的IO线程连接上Master，并请求从指定日志文件的指定位置(或者从最开始的日志)之后的日志内容。
+
+2. Master接收到来自Slave的IO线程的请求后，通过负责复制的IO线程根据请求信息读取指定日志指定位置之后的日志信息，返回给Slave端的IO线程。返回信息中除了日志所包含的信息之外，还包括本次返回的信息在Master端的Binary Log文件的名称以及在Binary Log中的位置。
+
+3. Slave的IO线程接收到信息后，将接收到的日志内容依次写入到Slave端的Relay Log文件(mysql-relay-bin.xxxxxx)的最末端，并将读取到的Master端的bin-log的文件名和位置记录到master-info文件中，以便在下一次读取的时候能够清楚的告诉Master需要从哪个bin-log的哪个位置开始进行日志同步。
+
+4. Slave 的 SQL 线程检测到 Relay Log 中新增加了内容后，会马上解析该 Log 文件中的内容成为在 Master 端真实执行时候的那些可执行的 Query 语句，并在自身执行这些 Query。这样，实际上就是在 Master 端和 Slave 端执行了同样的 Query，所以两端的数据是完全一样的。
+
+##### 优点：
+
+1. 架构比较简单，常见，运维起来也比较简单。
+
+2. 性能高，由于是异步复制，主节点写入时无需关注数据同步操作。
+
+3. 从库可以提供一定的读的能力，进行架构上的读写分离。
+
+4. 主库宕机后，从库仍保存有数据，防止数据大量丢失，若业务对主从同步产生的数据丢失可以接受，那么可以将从库升级为主库继续提供服务。
+
+##### 缺点：
+
+1. 异步复制导致主从之间会产生延迟，数据一致性无法保证，主库宕机后，数据可能丢失，RPO>0
+
+2. 从库只有一个sqlThread，复制性能不高，主库写压力大时，复制很可能延时加大，虽然可以通过并行复制技术提高复制线程数以及组提交技术提高复制并发能力以提高复制速度。
+
+3. 依赖网络，网络抖动时，主从延迟情况会更加严重。
 
 #### Mysql半同步
 
+半同步复制（Semi-synchronous Replication）：相比异步复制，半同步复制牺牲了一定的性能，提升了主备之间数据的一致性（有一些情况还是会出现主备数据不一致）。
 
+MySQL半同步复制的实现是建立在MySQL异步复制的基础上的。MySQL支持两种略有不同的半同步复制：AFTER_SYNC和AFTER_COMMIT。rpl_semi_sync_master_wait_point参数控制半同步模式下，主库在返回给客户端事务成功的时间点。
+
+开启半同步复制时，Master在返回之前会等待Slave的响应或超时。当Slave超时时，半同步复制退化成异步复制。这也是MySQL半同步复制存在的一个问题。
+
+* AFTER_COMMIT过程：
+
+	1. 写master binlog并commit  
+	2. 同步binlog到slave并commit
+	3. slave返回acknowledgment给master
+	4. master接收到slave acknowledgment
+	5. master返回结果给client
+
+	Master commit之后再将日志复制到Slave。所有已经复制到slave的事务在master上一定commit了。所有master上commit的事务不一定复制到slave。（比如，master commit之后，还没来得及将日志复制到slave就宕机了）。AFTER_COMMIT在master宕机的情况下，无法保证数据的一致性
+
+* AFTER_SYNC过程：
+
+	1. 写master binglog  
+	2. 同步主binlog到slave  
+	3. slave返回acknowledgment给master
+	4. master接收到acknowledgment并commit
+	5. master返回结果给client
+
+	日志复制到Slave之后，Master再commit。所有在master上commit的事务都已经复制到slave。所有已经复制到slave的事务在master不一定commit了（比如，master将日志复制到slave之后，在commit之前宕机了）
+
+##### 优点：
+
+1. 从库可以提供一定的读的能力，进行架构上的读写分离。
+
+2. AFTER_SYNC模式下，可以保证数据不丢，主库宕机时从库可以升级为主库继续提供服务。
+
+##### 缺点：
+
+1. 当Slave超时时，会退化成异步复制。
+
+2. 当Master宕机时，数据一致性无法保证，重启时可能需要人工干预。
+
+3. 每次事务处理都需要进行远程数据同步，对性能有一定影响。
 
 #### Mysql PXC
+
 
 
 
@@ -145,11 +212,18 @@ date: 2019-03-02 20:00:00
 #### OceanBase
 
 
+
 #### 自定义DB-Failover方案
+
 
 
 #### 自研数据同步组件
 
+饿了吗的DRC
+
+#### 其他
+
+Oracle Data Guard的最大保护模式。
 
 
 ## 学习资料
@@ -194,9 +268,29 @@ date: 2019-03-02 20:00:00
 
 
 
+[数据库灾备解决方案](https://help.aliyun.com/document_detail/69079.html?spm=a2c4g.11186623.6.542.6685214fNl0PzF#h2-url-8)
+
+[数据一致性-分区可用性-性能——多副本强同步数据库系统实现之我见](http://hedengcheng.com/?p=892#_Toc415239467)
+
+[演讲实录|黄东旭：分布式数据库模式与反模式](https://pingcap.com/blog-cn/talk-tidb-pattern/)
+
+[MySQL半同步复制](https://www.jianshu.com/p/45cb4f425d9a)
+
+[MySQL 5.7半同步复制技术](https://www.jianshu.com/p/5ef1565738ab)
+
+[http://mysql.taobao.org/monthly/2017/04/01/](http://mysql.taobao.org/monthly/2017/04/01/)
+
 []()
 
 []()
+
+[]()
+
+[世界领先！一文详解蚂蚁金服自研数据库OceanBase的高可用及容灾方案](https://mp.weixin.qq.com/s/4zmwSJsEi4G7EiS9FefqtA)
+
+[如何基于OceanBase构建应用和数据库的异地多活](https://mp.weixin.qq.com/s/-3T8mYOUKUgqAG_M-XOArw)
+
+[100%自主知识产权！蚂蚁金服自研数据库OceanBase的设计与实践哲学](https://mp.weixin.qq.com/s/BwIumLDirVgiu9n11_HSNQ)
 
 []()
 
