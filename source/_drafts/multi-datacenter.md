@@ -126,9 +126,9 @@ date: 2019-03-02 20:00:00
 
 以下是一些常见的数据同步方案：
 
-#### Mysql异步主从复制
+#### Mysql异步复制
 
-MySQL主从复制是最常见的数据复制方案，指数据可以从一个MySQL数据库服务器主节点复制到一个或多个从节点。MySQL默认采用异步复制的方式。
+MySQL异步复制是最常见的主从复制方案，指数据可以从一个MySQL数据库主节点复制到一个或多个从节点。
 
 ##### MySQL主从复制的基本过程：
 
@@ -152,19 +152,17 @@ MySQL主从复制是最常见的数据复制方案，指数据可以从一个MyS
 
 ##### 缺点：
 
-1. 异步复制导致主从之间会产生延迟，数据一致性无法保证，主库宕机后，数据可能丢失，RPO>0
+1. 异步复制导致主从之间会产生延迟，数据一致性无法保证，主库宕机后，数据可能丢失。RPO>0
 
-2. 从库只有一个sqlThread，复制性能不高，主库写压力大时，复制很可能延时加大，虽然可以通过基于GTID的组提交并行复制技术提高复制并发能力以提高复制速度。
+2. 网络抖动时，主从复制延迟会加大，延迟导致的数据丢失情况会更加严重。
 
-3. 网络抖动时，主从延迟导致的数据丢失情况会更加严重。
+3. 从库只有一个sqlThread，复制性能不高，主库写压力大时，主从复制延迟会加大，可以通过基于GTID的组提交并行复制技术提高主从复制的并发能力以提高复制速度，MySQL5.7的并行复制建立在组提交的基础上，所有在主库上能够完成prepared的语句表示没有数据冲突，就可以在slave节点并行复制。
 
 #### Mysql半同步
 
 半同步复制（Semi-synchronous Replication）：相比异步复制，半同步复制牺牲了一定的性能，提升了主备之间数据的一致性（有一些情况还是会出现主备数据不一致）。
 
 MySQL半同步复制的实现是建立在MySQL异步复制的基础上的。MySQL支持两种略有不同的半同步复制：AFTER_SYNC和AFTER_COMMIT。rpl_semi_sync_master_wait_point参数控制半同步模式下主库返回给客户端事务成功的时间点。
-
-开启半同步复制时，Master在返回之前会等待Slave的响应或超时。当Slave超时时，半同步复制退化成异步复制。这也是MySQL半同步复制存在的一个问题。
 
 * AFTER_COMMIT过程：
 
@@ -174,7 +172,7 @@ MySQL半同步复制的实现是建立在MySQL异步复制的基础上的。MySQ
 	4. master接收到slave acknowledgment
 	5. master返回结果给client
 
-	Master commit之后再将日志复制到Slave。所有已经复制到slave的事务在master上一定commit了。所有master上commit的事务不一定复制到slave。（比如，master commit之后，还没来得及将日志复制到slave就宕机了）。AFTER_COMMIT在master宕机的情况下，无法保证数据的一致性
+	Master commit之后再将日志复制到slave。所有已经复制到slave的事务在master上一定commit了。所有master上commit的事务不一定复制到slave，比如，master commit之后，还没来得及将日志复制到slave就宕机了，这时无法保证数据的一致性。
 
 * AFTER_SYNC过程：
 
@@ -184,7 +182,7 @@ MySQL半同步复制的实现是建立在MySQL异步复制的基础上的。MySQ
 	4. master接收到acknowledgment并commit
 	5. master返回结果给client
 
-	日志复制到Slave之后，Master再commit。所有在master上commit的事务都已经复制到slave。所有已经复制到slave的事务在master不一定commit了（比如，master将日志复制到slave之后，在commit之前宕机了）
+	日志复制到slave之后，master再commit。所有在master上commit的事务都已经复制到了slave。所有已经复制到slave的事务在master不一定commit了，比如，master将日志复制到slave之后，master在commit之前宕机了，那么slave有可能比master执行了更多事物。
 
 ##### 优点：
 
@@ -194,9 +192,9 @@ MySQL半同步复制的实现是建立在MySQL异步复制的基础上的。MySQ
 
 ##### 缺点：
 
-1. 当Slave超时时，会退化成异步复制。
+1. 开启半同步复制时，Master在返回之前会等待Slave的响应或超时，当Slave超时时，半同步复制退化成异步复制。
 
-2. 当Master宕机时，数据一致性无法保证，依然存在从节点多执行或从节点少执行的情况,重启时可能需要人工干预。
+2. 当Master宕机时，数据一致性无法保证，依然存在从节点多执行或从节点少执行的情况，重启时可能需要人工干预。
 
 3. 每次事务处理都需要实时进行远程数据同步，对性能有一定影响。
 
@@ -243,6 +241,8 @@ PXC是基于认证的复制方式进行数据复制。工作原理如下：首�
 5. 所有的表必须含有主键。
 
 #### MySQL Group Replication
+
+MySQL官方推荐的一款高可用集群方案MySQL Group Replication，简称：MGR(组复制)。它是官方推出的一种基于Paxos协议的状态机复制，彻底解决了基于传统的异步复制和半同步复制中数据一致性问题无法保证的情况。
 
 
 
@@ -303,11 +303,11 @@ Oracle Data Guard的最大保护模式。
 
 [分布式系统 - 关于异地多活的一点笔记](http://afghl.github.io/2018/02/11/distributed-system-multi-datacenter-1.html)
 
-[数据库灾备解决方案](https://help.aliyun.com/document_detail/69079.html?spm=a2c4g.11186623.6.542.6685214fNl0PzF#h2-url-8)
-
 [数据一致性-分区可用性-性能——多副本强同步数据库系统实现之我见](http://hedengcheng.com/?p=892#_Toc415239467)
 
 [演讲实录|黄东旭：分布式数据库模式与反模式](https://pingcap.com/blog-cn/talk-tidb-pattern/)
+
+[数据库灾备解决方案](https://help.aliyun.com/document_detail/69079.html?spm=a2c4g.11186623.6.542.6685214fNl0PzF#h2-url-8)
 
 [MySQL半同步复制](https://www.jianshu.com/p/45cb4f425d9a)
 
@@ -321,7 +321,7 @@ Oracle Data Guard的最大保护模式。
 
 [Galera Cluster原理](https://segmentfault.com/a/1190000013652043)
 
-[]()
+[mgr]()
 
 []()
 
