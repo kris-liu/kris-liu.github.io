@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blogxin.cn/2019/03/02/multi-datacenter/</loc>
+    
+    <lastmod>2019-03-17T11:03:24.616Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blogxin.cn/2019/02/06/spring-boot-init/</loc>
     
     <lastmod>2019-02-08T11:50:10.637Z</lastmod>

@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2019/03/02/multi-datacenter/</loc>
+    <lastmod>2019-03-17T11:03:24.616Z</lastmod>
+    <data>
+        <display>
+        <title>多活架构思考总结</title>
+        <pubTime>2019-03-02T12:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2019/02/06/spring-boot-init/</loc>
     <lastmod>2019-02-08T11:50:10.637Z</lastmod>
     <data>
