@@ -24,7 +24,6 @@ description: 分布式事务一般是指涉及到操作多个数据库，甚至�
 
 ## 分布式事务
 
-
 传统的数据库事务应用在单个会话內，对单个数据库资源进行操作。随着业务的发展，系统逐渐发展为面向服务的分布式系统架构，数据库资源也随之拆分。越来越多的场景需要将多个数据库操作，甚至是多个RPC接口操作，汇聚在一个业务操作內，并要求该操作整体具有事物的特性，所以产生了分布式事务的概念。
 
 分布式事务一般是指涉及到操作多个数据库，甚至是操作多个分布式服务的事务，可以看做是多个分布式的操作序列组成的一个逻辑单元。分布式事务的目的是为了保证分布式系统中的数据一致性，作为保证分布式一致性的一种解决方案。
@@ -303,4 +302,27 @@ TCC模型使用2PC原子提交协议来保证分布式事务原子性。隔离�
 
 	5. 一般不适用在涉及到第三方外部接口交互的业务上，因为外部调用时间不可控，而且外部系统往往无法提供Try、Confirm和Cancel三种能力的接口；
 
+
+
+## 参考
+
+[分布式事务综述](https://mp.weixin.qq.com/s/sy_PKHc_km6uZ3TgJYfRnw)
+
+[干货 | 一篇文章带你学习分布式事务](https://mp.weixin.qq.com/s/RDnf637MY0IVgv2NpNVByw)
+
+[分布式事务解决方案与适用场景分析](https://mp.weixin.qq.com/s/Okvgn5beGy5aJypfu6mKcg)
+
+[分布式事务：蚂蚁金服核心金融场景下的演进](https://mp.weixin.qq.com/s/-pXa9nm6szmyi1a5s9eABA)
+
+[蚂蚁金服黑科技：SOFA DTX分布式事务，保障亿级资金操作一致性](https://mp.weixin.qq.com/s/5IdUAMF3ws-DQt46pgwUyQ)
+
+[深度 | 为你解读 SOFA-DTX 分布式事务的设计演进路线上篇](https://mp.weixin.qq.com/s/vj3i3Eu50FZk68j7RoW_ZA)
+
+[深度 | 为你解读 SOFA-DTX 分布式事务的设计演进路线下篇](https://mp.weixin.qq.com/s/TEMtJoN4CU6bpc7epEFI7g)
+
+[搞不懂分布式事务？看这篇就够了](https://mp.weixin.qq.com/s/VEx36VLW4UfEFo8ZiGs5cg)
+
+[说说数据库事务和开发（下）—— 分布式事务](https://mp.weixin.qq.com/s/2yKBqeoBcHAYqeynoQC4Xw)
+
+[关于分布式事务、两阶段提交协议、三阶提交协议](https://www.hollischuang.com/archives/681)
 
