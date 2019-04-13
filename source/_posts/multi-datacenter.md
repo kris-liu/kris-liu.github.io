@@ -11,15 +11,17 @@ date: 2019-03-02 20:00:00
 
 多活架构主要是为了提升系统的容灾能力，提高系统的可用性，保障业务持续可用。比如单机房的网络故障、地震火灾等不可抗因素，都有可能造成整个机房瘫痪，对业务的可用性造成严重影响。多活架构还可以解决单机房容量问题，提高系统的扩展能力。
 
+
 ## 要不要做多活
 
 随着业务的高速发展，规模越来越大，技术上的投入也越来越高，每次故障造成的损失和影响更是会加速增长，初期故障损失和影响小于技术投入，随着高速发展当故障造成的损失和影响高于技术上的投入时，就需要加大技术上的投入使用更加高可用的技术架构来避免故障，提高系统容灾能力，来减少故障对业务造成的影响，提高系统的可用性，多活架构就是其中最重要的一种。
 
-一般来说，容灾的两个关键技术指标是RTO和RPO：
+一般来说，容灾能力的两个关键技术指标是RTO和RPO：
 
-- RTO：Recovery Time Object，恢复时间目标。指故障发生后，从系统故障导致业务停顿之刻开始，到系统恢复至可以支持各部门运作，业务恢复运营之时，此两点之间的时间段称为RTO。RTO是反映业务恢复及时性的指标，体现了企业能容忍的系统最长恢复时间。RTO值越小，代表容灾系统的恢复能力越强，但企业投资也越高。
+- RTO，Recovery Time Objective，恢复时间目标。表示能容忍的从故障发生到系统恢复正常运转的时间，这个时间越短，容灾要求越高。
 
-- RPO：Recovery Point Object，恢复点目标。指灾难发生后，容灾系统进行数据恢复，恢复得来的数据所对应的时间点称为RPO。RPO是反映数据丢失量的指标，体现了企业能容忍的最大数据丢失量的指标。RPO值越小，代表企业数据丢失越少，企业损失越小。
+- RPO，Recovery Point Objective，数据恢复点目标。表示能容忍故障造成过去多长时间的数据丢失，RPO为0表示不允许数据丢失。
+
 
 ## 多活架构方案
 
@@ -99,9 +101,10 @@ date: 2019-03-02 20:00:00
 
 6. 蓝绿发布。流量可以在入口进行灵活的流量调度，基于此可以实现蓝绿发布，减小发布引起的故障影响面，将发布引起的故障处理时间极大缩短。
 
+
 ## 多活的技术点
 
-多活架构中除了整体架构方案，还有很多细节技术点，比如流量管控以及数据同步的具体方案
+多活架构中除了整体架构方案，还有很多细节技术点，比如`流量管控`以及`数据同步`的具体方案
 
 ### 流量管控
 
@@ -275,7 +278,7 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 
 #### 其他数据同步方案
 
-强一致：阿里的X-DB（强一致）；Oracle Data Guard的最大保护模式；DB2 HADR中采用Sync模式。
+强一致：阿里的X-DB（强一致）；Oracle Data Guard的最大保护模式；DB2 HADR中采用Sync模式；共享存储。
 
 非强一致：阿里云的DTS；饿了吗的DRC；otter。
 
@@ -283,17 +286,23 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 
 在系统设计上，我们往往追求系统的高可用性，但是当真的遇到数据不一致的情况下，比如机房故障，往往为了要保证数据一致性，选择暂停业务，待数据达到一致后再启动业务，因为数据不一致性带来的影响，往往恢复起来十分困难，即使有对账、核对等手段。为了保证数据同步时的一致性问题，除了通过数据库本身及相关组件提供的数据同步方案之外，还可以通过业务上的一定改造来达到这个目的。
 
-##### 流水型业务数据的DB-Failover解决方案：
+* 流水型业务数据的DB-Failover解决方案：
 
-流水型业务数据比如订单数据，特点是同一用户的每个订单之间没有强关联性。
+	流水型业务数据比如订单数据，特点是同一用户的每个订单之间没有强关联性。
 
-业务正常状态下，进行数据流水读写的时候，只有主库提供服务，主库和备库之间进行正常的数据同步，在备用机房额外增加一组和主库相同结构的Failover库，Failover库不进行数据同步，没有任何历史数据，只在故障期间使用；当故障发生时，将所有数据读写迁移至Failover库，这样保证了所有新的交易流水能够正常处理，历史交易由于数据一致性的问题将暂时不提供服务；当故障恢复后，将读写迁移回主库，并将Failover库上的数据同步回主库，然后提供正常服务。基于此方案，在保证数据一致性的前提下提高了业务的可用性。
+	业务正常状态下，进行数据流水读写的时候，只有主库提供服务，主库和备库之间进行正常的数据同步，在备用机房额外增加一组和主库相同结构的Failover库，Failover库不进行数据同步，没有任何历史数据，只在故障期间使用；当故障发生时，将所有数据读写迁移至Failover库，这样保证了所有新的交易流水能够正常处理，历史交易由于数据一致性的问题将暂时不提供服务；当故障恢复后，将读写迁移回主库，并将Failover库上的数据同步回主库，然后提供正常服务。基于此方案，在保证数据一致性的前提下提高了业务的可用性。
 
-##### 账户型业务数据的DB-Failover解决方案：
+* 账户型业务数据的DB-Failover解决方案：
 
-账户型业务数据比如用户账户余额，特点是属于业务上的共享数据，每一笔交易都有可能与之关联。
+	账户型业务数据比如用户账户余额，特点是属于业务上的共享数据，每一笔交易都有可能与之关联。
 
-业务正常状态下，在更新账户的同时，通过事物消息将账户更新后的快照同步更新到另外一个机房的缓存中，同时额外增加一组和主库相同结构的Failover库，Failover库不进行数据同步，没有任何历史数据，只在故障期间使用；当故障发生时，先从事物消息中间件中拉取所有预提交状态的消息（因为这部分消息无法确定事物最终是提交还是回滚状态）或未消费完成消息，将这部分用户作为黑名单，后续故障期间的交易不对这部分用户提供服务，然后将业务的读写迁移至Failover库，在Failover库上进行操作前，先从缓存中读取账户快照，缓存中有快照则直接使用缓存中的快照，缓存中没有则读从库获取账户快照，缓存没有说明该账户最近一段时间无操作或在黑名单中，先读缓存再读从库是因为缓存+黑名单的数据一定覆盖了主从延迟丢失的数据，然后将得到的账户快照数据写入Failover库，该用户账户就可以正常在Failover库上进行账户业务操作了；待故障恢复后，再将Failover库的数据同步回主库。
+	业务正常状态下，在更新账户的同时，通过事物消息将账户更新后的快照同步更新到另外一个机房的缓存中，同时额外增加一组和主库相同结构的Failover库，Failover库不进行数据同步，没有任何历史数据，只在故障期间使用；当故障发生时，先从事物消息中间件中拉取所有预提交状态的消息（因为这部分消息无法确定事物最终是提交还是回滚状态）或未消费完成消息，将这部分用户作为黑名单，后续故障期间的交易不对这部分用户提供服务，然后将业务的读写迁移至Failover库，在Failover库上进行操作前，先从缓存中读取账户快照，缓存中有快照则直接使用缓存中的快照，缓存中没有则读从库获取账户快照，缓存没有说明该账户最近一段时间无操作或在黑名单中，先读缓存再读从库是因为缓存+黑名单的数据一定覆盖了主从延迟丢失的数据，然后将得到的账户快照数据写入Failover库，该用户账户就可以正常在Failover库上进行账户业务操作了；待故障恢复后，再将Failover库的数据同步回主库。
+
+* 通用数据的DB-Failover解决方案
+
+	业务正常状态下，每次请求预先将操作日志记录到备机房，当故障发生时，任何操作前先查询操作日志库，如果在故障发生前一段时间（取决于数据库最大同步延迟）有过操作记录，则不对该部分黑名单执行业务操作，只处理新增数据以及最近无操作的数据，操作直接在从库执行，这个从库将升级为新的主库，待故障恢复后，由dba将原主库未同步的数据重新同步至新主库，当同步追平后黑名单自然解除。核心思路即WAL(Write-Ahead Logging)，故障时通过WAL中的数据对问题数据进行隔离。
+
+各种自定义DB-Failover方案的核心思路就是通过业务层去发现可能存在状态不一致的数据，并对其进行拦截，避免在脏数据上继续进行操作，待故障恢复后，重新同步至一致性状态。
 
 
 ## 学习资料
@@ -302,10 +311,14 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 
 [素描单元化](https://mp.weixin.qq.com/s/jfbHvEMSZtgXis3AtSOZyw)
 
-[支付宝架构师眼里的高可用与容灾架构演进
+[支付宝架构师眼里的高可用与容灾架构演进
 ](https://mp.weixin.qq.com/s/j3LI89MW_xk9ufbQ9DThoA)
 
-[阿里异地多活与同城双活的架构演进](https://mp.weixin.qq.com/s/VPkQhJLl_ULwklP1sqF79g)
+[分布式系统数据层设计模式](https://mp.weixin.qq.com/s/_CBoYbOoVDkFDoEgC0I68Q)
+
+[花呗-亿级金融业务架构演进](https://myslide.cn/slides/15667?vertical=1)
+
+[阿里异地多活与同城双活的架构演进](https://mp.weixin.qq.com/s/VPkQhJLl_ULwklP1sqF79g)
 
 [专访阿里巴巴毕玄：异地多活数据中心项目的来龙去脉](https://www.infoq.cn/article/interview-alibaba-bixuan)
 
@@ -315,23 +328,23 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 
 [数据库灾备解决方案](https://help.aliyun.com/document_detail/69079.html?spm=a2c4g.11186623.6.542.6685214fNl0PzF#h2-url-8)
 
-[一个理论，三个原则，多个步骤 | 阿里游戏异地多活设计之道](https://mp.weixin.qq.com/s/4oNOkoQFk2LhzwStJ_KoFA)
+[一个理论，三个原则，多个步骤 | 阿里游戏异地多活设计之道](https://mp.weixin.qq.com/s/4oNOkoQFk2LhzwStJ_KoFA)
 
-[在游戏运维实战中摸索前行的“异地双活”架构](https://mp.weixin.qq.com/s/0X6PlpsHU1e0a9PPZhhqQA)
+[在游戏运维实战中摸索前行的“异地双活”架构](https://mp.weixin.qq.com/s/0X6PlpsHU1e0a9PPZhhqQA)
 
 [从传统银行到互联网，异地多活难不难](https://mp.weixin.qq.com/s/Za70G4awqFbx-5pFkejuXA)
 
-[为什么要做多活？饿了么多活技术架构及运维挑战](https://mp.weixin.qq.com/s/0k1iuAlVoaBAjcwyB4Z_sA)
+[为什么要做多活？饿了么多活技术架构及运维挑战](https://mp.weixin.qq.com/s/0k1iuAlVoaBAjcwyB4Z_sA)
 
-[饿了么异地多活技术实现（一）总体介绍](https://zhuanlan.zhihu.com/p/32009822?utm_source=wechat_session&utm_medium=social&s_r=0)
+[饿了么异地多活技术实现（一）总体介绍](https://zhuanlan.zhihu.com/p/32009822?utm_source=wechat_session&utm_medium=social&s_r=0)
 
-[饿了么异地多活技术实现（二）API-Router的设计与实现](https://zhuanlan.zhihu.com/p/32587960?utm_source=wechat_session&utm_medium=social&s_r=0)
+[饿了么异地多活技术实现（二）API-Router的设计与实现](https://zhuanlan.zhihu.com/p/32587960?utm_source=wechat_session&utm_medium=social&s_r=0)
 
 [饿了么异地多活技术实现（三）GZS&DAL](https://zhuanlan.zhihu.com/p/33430869?utm_source=wechat_session&utm_medium=social&s_r=0)
 
-[饿了么异地多活技术实现（四）- 实时双向复制工具（DRC）](https://zhuanlan.zhihu.com/p/34958596?utm_source=wechat_session&utm_medium=social&s_r=0)
+[饿了么异地多活技术实现（四）- 实时双向复制工具（DRC）](https://zhuanlan.zhihu.com/p/34958596?utm_source=wechat_session&utm_medium=social&s_r=0)
 
-[饿了么MySQL异地多活的数据双向复制经验谈](https://www.ctolib.com/topics-121228.html)
+[饿了么MySQL异地多活的数据双向复制经验谈](https://www.ctolib.com/topics-121228.html)
 
 [MT异地多活](https://www.jianshu.com/p/0d2c83272502)
 
@@ -340,8 +353,6 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 [分布式系统 - 关于异地多活的一点笔记](http://afghl.github.io/2018/02/11/distributed-system-multi-datacenter-1.html)
 
 [数据一致性-分区可用性-性能——多副本强同步数据库系统实现之我见](http://hedengcheng.com/?p=892#_Toc415239467)
-
-[演讲实录|黄东旭：分布式数据库模式与反模式](https://pingcap.com/blog-cn/talk-tidb-pattern/)
 
 [MySQL半同步复制](https://www.jianshu.com/p/45cb4f425d9a)
 
@@ -372,4 +383,6 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 [城市级故障自动无损容灾的“新常态”方案](https://mp.weixin.qq.com/s?__biz=MzI5OTUxMDk1Mw==&mid=2247483804&idx=1&sn=3b9dadf59d97e61f5e3598c9aa0009cd&scene=21#wechat_redirect)
 
 [基于Raft分布式一致性协议实现的局限及其对数据库的风险](https://mp.weixin.qq.com/s?__biz=MzI5OTUxMDk1Mw==&mid=2247483809&idx=1&sn=ff5a99b4073f88b34ec32fa37ad9f4fc&scene=21#wechat_redirect)
+
+[演讲实录|黄东旭：分布式数据库模式与反模式](https://pingcap.com/blog-cn/talk-tidb-pattern/)
 
