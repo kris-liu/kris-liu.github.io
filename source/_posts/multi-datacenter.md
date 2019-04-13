@@ -309,7 +309,7 @@ OceanBase利用Paxos协议在底层实现了多副本数据一致性，具有RPO
 
 [从“挖光缆”到“剪网线”|蚂蚁金服异地多活单元化架构下的微服务体系](https://mp.weixin.qq.com/s/0FhXlRGGgtAojXYRrhWcUQ)
 
-[素描单元化](https://mp.weixin.qq.com/s/jfbHvEMSZtgXis3AtSOZyw)
+[素描单元化](https://mp.weixin.qq.com/s/jfbHvEMSZtgXis3AtSOZyw)
 
 [支付宝架构师眼里的高可用与容灾架构演进
 ](https://mp.weixin.qq.com/s/j3LI89MW_xk9ufbQ9DThoA)
