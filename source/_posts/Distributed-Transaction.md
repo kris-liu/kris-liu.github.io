@@ -320,9 +320,12 @@ TCC模型使用2PC原子提交协议来保证分布式事务原子性。隔离�
 
 [深度 | 为你解读 SOFA-DTX 分布式事务的设计演进路线下篇](https://mp.weixin.qq.com/s/TEMtJoN4CU6bpc7epEFI7g)
 
+[蚂蚁金服分布式事务开源以及实践](https://mp.weixin.qq.com/s/S283Hs6tOXH30qyQowkYuQ)
+
 [搞不懂分布式事务？看这篇就够了](https://mp.weixin.qq.com/s/VEx36VLW4UfEFo8ZiGs5cg)
 
 [说说数据库事务和开发（下）—— 分布式事务](https://mp.weixin.qq.com/s/2yKBqeoBcHAYqeynoQC4Xw)
 
 [关于分布式事务、两阶段提交协议、三阶提交协议](https://www.hollischuang.com/archives/681)
+
 
