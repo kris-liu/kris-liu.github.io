@@ -4,13 +4,15 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2019/03/02/multi-datacenter/</loc>
-    <lastmod>2019-04-13T16:44:14.756Z</lastmod>
+    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
+    <lastmod>2019-04-23T15:07:34.930Z</lastmod>
     <data>
         <display>
-        <title>多活架构思考总结</title>
-        <pubTime>2019-03-02T12:00:00.000Z</pubTime>
+        <title>分布式事务</title>
+        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
         
+        <tag>Transaction</tag>
+         
         <tag>架构</tag>
          
          
@@ -24,15 +26,13 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
-    <lastmod>2019-03-22T12:18:34.267Z</lastmod>
+    <loc>http://blogxin.cn/2019/03/02/multi-datacenter/</loc>
+    <lastmod>2019-04-13T16:44:14.756Z</lastmod>
     <data>
         <display>
-        <title>分布式事务</title>
-        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
+        <title>多活架构思考总结</title>
+        <pubTime>2019-03-02T12:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>架构</tag>
          
          
