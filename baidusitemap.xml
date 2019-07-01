@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2019/06/01/sharding-db/</loc>
-    <lastmod>2019-07-01T17:10:33.347Z</lastmod>
+    <lastmod>2019-07-01T17:14:51.682Z</lastmod>
     <data>
         <display>
         <title>基于Spring+MyBatis实现一个分库分表、读写分离功能的工具库</title>
