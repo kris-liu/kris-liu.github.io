@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2019/06/01/sharding-db/</loc>
+    <lastmod>2019-07-01T17:10:33.347Z</lastmod>
+    <data>
+        <display>
+        <title>基于Spring+MyBatis实现一个分库分表、读写分离功能的工具库</title>
+        <pubTime>2019-06-01T14:00:00.000Z</pubTime>
+        
+        <tag>Spring</tag>
+         
+        <tag>架构</tag>
+         
+        <tag>SpringBoot</tag>
+         
+        <tag>MyBatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
     <lastmod>2019-04-23T15:07:34.930Z</lastmod>
     <data>
