@@ -1,15 +1,16 @@
 ---
 title: 基于Spring+MyBatis实现一个分库分表、读写分离功能的工具库
-date: 2019-06-01 22:00:00
 categories: 架构
-tags: 
+tags:
   - 架构
   - Spring
   - SpringBoot
   - MyBatis
+date: 2019-06-01 22:00:00
 ---
 
-一般随着业务的发展，业务量越来越大，业务越来越复杂，数据量也越来越大，数据库层面的优化通常会使用分库分表、读写分离的策略进行扩展。
+
+一般随着业务的高速发展，业务量越来越大，业务也越来越复杂，数据量也越来越大，数据库层面的优化通常会使用分库分表、主从读写分离的策略进行扩展。本文介绍了分库分表，主从读写分离的优缺点，并对其中一种实现方案进行了原理描述，并亲自动手实现了一个可实用的demo。
 
 
 ## 分表的优缺点
@@ -71,7 +72,7 @@ tags:
 3. 跨分片的事务引起的分布式事务问题。解决方案见：[分布式事务](http://blogxin.cn/2018/04/23/Distributed-Transaction/)。不过还是建议一般情况下通过一定的系统设计，避免分布式事务的问题。
 
 
-## 读写分离的优缺点
+## 主从读写分离的优缺点
 
 #### 优点：
 
@@ -181,7 +182,7 @@ Client模式架构简单，没有中间层，性能较好，减少了中间层Pr
 	}
 	
 	```
-	
+
 	```java
 	public abstract class AbstractShardingStrategyWithDataBase implements ShardingStrategy {
 	
@@ -203,7 +204,7 @@ Client模式架构简单，没有中间层，性能较好，减少了中间层Pr
 	
 	}
 	```
-	
+
 	```java
 	public class HashShardingStrategyWithDataBase extends AbstractShardingStrategyWithDataBase {
 	
@@ -315,7 +316,7 @@ Client模式架构简单，没有中间层，性能较好，减少了中间层Pr
 	        }
 	    }
 	```
-	
+
 	```java
 	public class ShardingContext {
 
@@ -388,7 +389,7 @@ Client模式架构简单，没有中间层，性能较好，减少了中间层Pr
 	    Integer calculate(int sharingDataBaseCount, int sharingTableCount, int currentShardingTableKey);
 	}
 	```
-	
+
 	```java
 	/**
 	 * 默认分库策略，将分表从小到大均匀分配至各分库中
@@ -475,7 +476,7 @@ Client模式架构简单，没有中间层，性能较好，减少了中间层Pr
 	    }
 	}
 	```
-	
+
 	```java
     @Resource
     private ShardingProperties shardingProperties;
@@ -627,13 +628,148 @@ Client模式架构简单，没有中间层，性能较好，减少了中间层Pr
 
 ### 实现读写分离能力
 
+1. 分库分表配置文件信息中添加`slave`从库节点的信息：
+
+	```java
+	sharding.databases.test.shardingStrategy=cn.blogxin.sharding.plugin.strategy.database.DefaultShardingDataBaseStrategy
+	sharding.databases.test.shardingCount=2
+	
+	sharding.databases.test.dataSource.master.0.driverClassName=com.mysql.jdbc.Driver
+	sharding.databases.test.dataSource.master.0.url=jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8
+	sharding.databases.test.dataSource.master.0.username=root
+	sharding.databases.test.dataSource.master.0.password=
+	
+	sharding.databases.test.dataSource.master.1.driverClassName=com.mysql.jdbc.Driver
+	sharding.databases.test.dataSource.master.1.url=jdbc:mysql://127.0.0.1:3306/test1?useUnicode=true&characterEncoding=utf-8
+	sharding.databases.test.dataSource.master.1.username=root
+	sharding.databases.test.dataSource.master.1.password=
+	
+	sharding.databases.test.dataSource.slave.0.driverClassName=com.mysql.jdbc.Driver
+	sharding.databases.test.dataSource.slave.0.url=jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8
+	sharding.databases.test.dataSource.slave.0.username=root
+	sharding.databases.test.dataSource.slave.0.password=
+	
+	sharding.databases.test.dataSource.slave.1.driverClassName=com.mysql.jdbc.Driver
+	sharding.databases.test.dataSource.slave.1.url=jdbc:mysql://127.0.0.1:3306/test1?useUnicode=true&characterEncoding=utf-8
+	sharding.databases.test.dataSource.slave.1.username=root
+	sharding.databases.test.dataSource.slave.1.password=
+	```
+
+
+2. 在`ShardingContext`中添加主从信息的上下文，需要使用从库时，通过`forceSlave()`方法进行设置，这样在设置分库key的时候就可以通过`ShardingContext.getMasterSalve()`方法获取主从节点信息，然后通过`ShardingContext.setShardingDatabase(sharding.databaseName() + ShardingContext.getMasterSalve() + databaseNum);`方法设置分库key，通过这种方式将SQL的执行路由到从库对应的`DataSource`。一般可以通过AOP的方式，在切面中通过`ShardingContext`来设置是否需要在从库执行SQL，并在切面中及时清除上下文信息：
+
+	```java
+	/**
+	 * 分库分表表上下文，使用完成后必须及时调用clear方法清空上下文
+	 *
+	 * @author kris
+	 */
+	public class ShardingContext {
+	
+	    /**
+	     * MASTER OR SLAVE
+	     * 建议通过切面设置强制读从库，DB操作执行完成后在切面执行clearSlave方法，清除主从上下文
+	     */
+	    private static final ThreadLocal<String> MASTER_SALVE = new ThreadLocal<String>() {
+	        @Override
+	        protected String initialValue() {
+	            return Constants.MASTER;
+	        }
+	    };
+	    
+	    public static void forceSlave() {
+	        MASTER_SALVE.set(Constants.SLAVE);
+	    }
+	
+	    public static void clearSlave() {
+	        MASTER_SALVE.remove();
+	    }
+	
+	    public static String getMasterSalve() {
+	        return MASTER_SALVE.get();
+	    }
+	
+	    public static void clear() {
+	        ShardingContext.MASTER_SALVE.remove();
+	    }
+	```
 
 
 ### 使用springboot的starter自动装配
 
+Spring Boot Starter是在SpringBoot组件中被提出来的一种概念，Starter会把该功能模块所有用到的依赖都给包含进来，避免了开发者自己去引入依赖所带来的麻烦，基于“约定大于配置”这一理念对模块内的Bean根据一定条件进行自动装配。使用者只需要依赖相应功能的Starter，无需做过多的配置和依赖，Spring Boot就能自动扫描并加载相应的模块。
+
+下面我们把该分库分表库封装成一个Starter：
+
+1. 首先在封装的插件jar中添加如下两个自动配置类：
+
+	```java
+	@Configuration
+	public class ShardingTableConfiguration {
+	
+	    @Bean
+	    public ShardingInterceptor shardingInterceptor() {
+	        return new ShardingInterceptor();
+	    }
+	}
+	```
+
+	```java
+	@Configuration
+	@AutoConfigureBefore(DataSourceAutoConfiguration.class)
+	@ConditionalOnProperty(name = "sharding.databases", havingValue = "enable")
+	@EnableConfigurationProperties(ShardingProperties.class)
+	public class ShardingDataSourceConfiguration {
+	
+		... ...
+		... ...
+		
+	}
+	```
+
+2. 创建一个`sharding-db-spring-boot-starter`模块，引入插件jar：
+
+	```xml
+	<dependencies>
+		<dependency>
+			<groupId>cn.blogxin.sharding</groupId>
+			<artifactId>plugin</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
+	```
+
+
+3. 在`sharding-db-spring-boot-starter`模块中，路径`resources/META-INF/`下创建一个`spring.factories`文件，在该文件内添加需要自动装配的类：
+
+	```java
+	org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+	cn.blogxin.sharding.plugin.ShardingTableConfiguration,\
+	cn.blogxin.sharding.plugin.ShardingDataSourceConfiguration
+	```
+
+4. 引入该Starter即可以使用分库分表、主从分离的能力。由于分库、主从分离能力需要对数据库连接池进行特殊配置，所以将分库能力做成可选，只有添加了相关特殊配置才能自动启动该能力：
+
+	```java
+	@ConditionalOnProperty(name = "sharding.databases", havingValue = "enable")
+	```
+
+	```java
+	sharding.databases=enable
+	```
+
+	```xml
+	<dependency>
+	    <groupId>cn.blogxin.sharding</groupId>
+	    <artifactId>sharding-db-spring-boot-starter</artifactId>
+	    <version>${project.parent.version}</version>
+	</dependency>
+	```
 
 
 ### 实现DOME
+
+基于上述对分库分表、主从读写分离的一种实现方案的原理描述，亲自动手实现了一个可实用的demo：
 
 https://github.com/kris-liu/Sharding-DB
 
