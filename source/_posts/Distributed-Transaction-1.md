@@ -38,7 +38,7 @@ TCC分布式事务模型主要包括三部分：
 
 * 业务活动管理器：业务活动管理器管理控制整个业务活动，包括记录维护TCC全局事务的事务状态和每个从业务服务的子事务状态，并在业务活动提交时调用所有从业务服务的Confirm操作，在业务活动取消时调用所有从业务服务的Cancel操作。
 
-![TCC](/Users/xin/work/project/kris/kris-liu.github.io/source/_posts/Distributed-Transaction/TCC.png)
+![TCC](Distributed-Transaction-1/TCC.png)
 
 
 
@@ -48,7 +48,7 @@ TCC分布式事务模型主要包括三部分：
 
 基于以上思路，一个完整的TCC分布式事务流程如下：
 
-![TCC分布式事务流程原理](/Users/xin/work/project/kris/kris-liu.github.io/source/_posts/Distributed-Transaction-1/Distributed-Transaction.jpg)
+![TCC分布式事务流程原理](Distributed-Transaction-1/Distributed-Transaction.jpg)
 
 1.	主业务服务开启一个业务的本地事务；
 2.	主业务服务向业务活动管理器申请启动分布式事务。首先挂起业务事务，新起一个本地事务来记录主事务活动记录，记录完成直接提交该新事务，新起一个事务来记录是为了保证无论业务事务是否提交，主事务活动记录一定已经记录了下来，然后回到业务事务使用业务的本地事物来更新主事务活动记录的状态，使用业务是为了保证业务事务的提交和主事务活动的状态更新在一个本地事务中完成，在这个过程中锁定了主事务活动记录，最终通过主事务活动的状态及锁定情况就可以判断整笔分布式事务的执行情况；
