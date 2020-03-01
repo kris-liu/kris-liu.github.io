@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2020/02/16/Distributed-Transaction-1/</loc>
+    <lastmod>2020-03-01T13:01:38.957Z</lastmod>
+    <data>
+        <display>
+        <title>从零开始写一个分布式事务框架(一)</title>
+        <pubTime>2020-02-16T14:16:26.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
+    <lastmod>2020-03-01T12:29:11.589Z</lastmod>
+    <data>
+        <display>
+        <title>分布式事务</title>
+        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2019/06/01/sharding-db/</loc>
     <lastmod>2019-07-01T17:18:09.202Z</lastmod>
     <data>
@@ -18,28 +62,6 @@
         <tag>SpringBoot</tag>
          
         <tag>MyBatis</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://blogxin.cn/2018/04/23/Distributed-Transaction/</loc>
-    <lastmod>2019-04-23T15:07:34.930Z</lastmod>
-    <data>
-        <display>
-        <title>分布式事务</title>
-        <pubTime>2018-04-23T13:00:00.000Z</pubTime>
-        
-        <tag>Transaction</tag>
-         
-        <tag>架构</tag>
          
          
            
@@ -192,9 +214,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Spring</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>Spring</tag>
          
          
            
@@ -616,9 +638,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
         <tag>读写锁</tag>
          
@@ -762,9 +784,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
@@ -788,9 +810,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>锁</tag>
+         
+        <tag>源码</tag>
          
          
            
