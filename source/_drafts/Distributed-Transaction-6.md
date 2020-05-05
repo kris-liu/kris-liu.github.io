@@ -1,6 +1,8 @@
 ---
-title: Distributed-Transaction-6
-date: 2020-05-05 20:52:57
-categories:
+title: 从零开始写一个分布式事务框架(三)-事务协调器
+categories: 架构
 tags:
+  - 架构
+  - Transaction
+date: 2020-05-05 15:00:00
 ---
