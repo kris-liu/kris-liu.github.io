@@ -5,15 +5,15 @@
     
   <url>
     <loc>http://blogxin.cn/2020/05/04/Distributed-Transaction-2/</loc>
-    <lastmod>2020-05-05T13:19:17.734Z</lastmod>
+    <lastmod>2020-05-05T13:26:23.133Z</lastmod>
     <data>
         <display>
         <title>从零开始写一个分布式事务框架(二)-架构</title>
         <pubTime>2020-05-04T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -33,9 +33,9 @@
         <title>从零开始写一个分布式事务框架(一)</title>
         <pubTime>2020-02-16T14:16:26.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -55,9 +55,9 @@
         <title>分布式事务</title>
         <pubTime>2018-04-23T13:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -211,9 +211,9 @@
         <title>事务消息实现原理</title>
         <pubTime>2018-07-29T08:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
         <tag>MQ</tag>
          
