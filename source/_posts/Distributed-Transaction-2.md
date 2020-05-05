@@ -8,7 +8,7 @@ date: 2020-05-04 15:00:00
 ---
 
 
-根据上篇描述的实现思路和原理，进行功能拆解和组件的划分，梳理出如下整体架构图：
+根据[上篇](http://blogxin.cn/2020/02/16/Distributed-Transaction-1/)描述的实现思路和原理，进行功能拆解和组件的划分，梳理出如下整体架构图：
 
 ![DT](Distributed-Transaction-2/DT.jpg)
 
