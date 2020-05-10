@@ -4,16 +4,38 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2020/05/05/Distributed-Transaction-3/</loc>
+    <lastmod>2020-05-10T15:11:49.918Z</lastmod>
+    <data>
+        <display>
+        <title>从零开始写一个分布式事务框架(三)-事务记录</title>
+        <pubTime>2020-05-05T07:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+        <tag>Transaction</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2020/05/04/Distributed-Transaction-2/</loc>
-    <lastmod>2020-05-05T13:26:23.133Z</lastmod>
+    <lastmod>2020-05-10T15:11:48.472Z</lastmod>
     <data>
         <display>
         <title>从零开始写一个分布式事务框架(二)-架构</title>
         <pubTime>2020-05-04T07:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>架构</tag>
+         
+        <tag>Transaction</tag>
          
          
            
@@ -27,15 +49,15 @@
     
   <url>
     <loc>http://blogxin.cn/2020/02/16/Distributed-Transaction-1/</loc>
-    <lastmod>2020-03-01T13:21:08.872Z</lastmod>
+    <lastmod>2020-05-10T15:11:47.461Z</lastmod>
     <data>
         <display>
         <title>从零开始写一个分布式事务框架(一)</title>
         <pubTime>2020-02-16T14:16:26.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>架构</tag>
+         
+        <tag>Transaction</tag>
          
          
            
@@ -55,9 +77,9 @@
         <title>分布式事务</title>
         <pubTime>2018-04-23T13:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>架构</tag>
+         
+        <tag>Transaction</tag>
          
          
            
@@ -211,9 +233,9 @@
         <title>事务消息实现原理</title>
         <pubTime>2018-07-29T08:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>架构</tag>
+         
+        <tag>Transaction</tag>
          
         <tag>MQ</tag>
          
