@@ -142,7 +142,7 @@ public class TwoPhaseTransactionSynchronization implements TransactionSynchroniz
 
 ### 分支事务注册
 
-服务之间的调用一般通过RPC或HTTP框架进行通信，远程调用发起的过程中我们一般可以通过切面SpringAOP的方式，拦截远程调用，注册分支事务。这里我们使用Dubbo作为服务之间的通信框架，Dubbo在使用xml的配置方式时，通过命名空间提供的解析器，会将分支事务的服务接口创建一个`BeanDefinition`，这样的bean就会执行Spring的扩展点，比如通过`BeanPostProcessor`相关扩展点比如`AbstractAutoProxyCreator`，对bean进行AOP增强，然而如果不使用xml而是直接使用`@org.apache.dubbo.config.annotation.Reference`注解进行bean的引入时，则不会创建`BeanDefinition`，而是直接在`ReferenceAnnotationBeanPostProcessor`中直接创建一个bean然后放到Springbean工厂里。所以我们没有采用SpringAOP的方式，而是使用dubbo的Filter扩展点。进行分支事务的注册。
+服务之间的调用一般通过RPC或HTTP框架进行通信，远程调用发起的过程中我们一般可以通过切面SpringAOP的方式，拦截远程调用，注册分支事务。这里我们使用Dubbo作为服务之间的通信框架，Dubbo在使用xml的配置方式时，通过命名空间提供的解析器，会将分支事务的服务接口创建一个`BeanDefinition`，这样的bean就会执行Spring的扩展点，比如通过`BeanPostProcessor`相关扩展点比如`AbstractAutoProxyCreator`，对bean进行AOP增强，然而如果不使用xml而是直接使用`@org.apache.dubbo.config.annotation.Reference`注解进行bean的引入时，则不会创建`BeanDefinition`，而是直接在`ReferenceAnnotationBeanPostProcessor`中通过`ReferenceBeanBuilder`直接创建一个bean然后放到Springbean工厂里。所以我们没有采用SpringAOP的方式，而是使用dubbo的Filter扩展点。进行分支事务的注册。
 
 ```java
 /**
