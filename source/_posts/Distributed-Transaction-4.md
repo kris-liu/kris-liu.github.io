@@ -136,7 +136,7 @@ public class TwoPhaseTransactionSynchronization implements TransactionSynchroniz
 
 ```
 
-`beforeCommit`中，我们对分布式事务的超时时间进行校验，超时则禁止本地事务提交，进而触发分布式事务的回滚；`afterCompletion`中我们根据本地事务提交的状态是提交还是回滚，就可以触发`TransactionManager`的二阶段`commit`或`rollback`方法了。
+`beforeCommit`中，我们对分布式事务的超时时间进行校验，超时则禁止本地事务提交，进而触发分布式事务的回滚；`afterCompletion`中我们根据本地事务提交的状态是提交还是回滚，就可以触发`TransactionManager`的二阶段`commit`或`rollback`方法了，同时需要在这里进行事务上下文的资源清理工作。
 
 
 
