@@ -14,6 +14,8 @@ Transaction Manager：事务管理器。控制分布式事务的边界，负责�
 
 事务管理器定义的接口如下：
 
+<!--more-->
+
 ```java
 /**
  * 分布式事务管理器。
@@ -51,10 +53,10 @@ public interface TransactionManager {
 
 ### 开启分布式事务
 
-首先我们看`start`方法：
+首先我们看下`start`方法：
 
 ```java
-		@Override
+    @Override
     public void start(String xidSuffix) {
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
             throw new DTException("分布式事务需要在一个本地事务环境中开启");
@@ -89,7 +91,9 @@ public interface TransactionManager {
     }
 ```
 
-首先，分布式事务需要在一个本地事务的环境中执行，才能将主事务记录的更新和业务本地事务的更新放在同一个本地事务环境中一起提交或回滚，因为我们是根据本地事务是否提交完成来做为整笔分布式事务是否完成的标志，所以先校验当前是否已经在本地事务环境中；然后生成事务ID，并生成Activity主事务记录，Activity记录中包含了事务ID，事务名称，事务的超时时间，补偿字段等信息；然后使用`ActivityRepository.insert`插入Activity记录，这里需要注意，我们在insert接口上增加了`@Transactional(propagation = Propagation.REQUIRES_NEW)`注解，使用到了`Propagation.REQUIRES_NEW`事务传播属性，该事务传播属性的作用是，如果当前在一个事务中，则挂起当前事务，创建一个新的事务来执行insert，这保证无论执行中出现任何异常，分布式事务记录一定已经写库完成，后续就可以根据事务记录的状态来做补偿等操作了；然后执行`ActivityRepository.update`将主事务状态从`INIT`更新为`COMMIT`状态，update使用了`Propagation.REQUIRED`事务传播属性，是为了将该更新操作和本地业务事务放到一个本地事务中；最后使用`TransactionSynchronizationManager`注册一个事务同步器，事务同步器提供了本地事务执行过程中的一系列扩展点，可以在本地事务提交前后进行拦截，这里我们使用到了`beforeCommit`和`afterCompletion`扩展点，用来进行校验操作和分布式事务的二阶段提交操作。
+
+
+首先，分布式事务需要在一个本地事务的环境中执行，才能将主事务记录的更新和业务本地事务的更新放在同一个本地事务环境中一起提交或回滚，因为我们是根据本地事务是否提交完成来做为整笔分布式事务是否完成的标志，所以先校验当前是否已经在本地事务环境中；然后生成事务ID，并生成Activity主事务记录，Activity记录中包含了事务ID，事务名称，事务的超时时间，补偿字段等信息；然后使用`ActivityRepository.insert`插入Activity记录，这里需要注意，我们在insert接口上增加了`@Transactional(propagation = Propagation.REQUIRES_NEW)`注解，使用到了`Propagation.REQUIRES_NEW`事务传播属性，该事务传播属性的作用是，如果当前在一个事务中，则挂起当前事务，创建一个新的事务来执行`insert`，这保证无论执行中出现任何异常，分布式事务记录一定已经写库完成，后续就可以根据事务记录的状态来做补偿等操作了；然后执行`ActivityRepository.update`将主事务状态从`INIT`更新为`COMMIT`状态，`update`使用了`Propagation.REQUIRED`事务传播属性，是为了将该更新操作和本地业务事务放到一个本地事务中；最后使用`TransactionSynchronizationManager`注册一个事务同步器，事务同步器提供了本地事务执行过程中的一系列扩展点，可以在本地事务提交前后进行拦截，这里我们使用到了`beforeCommit`和`afterCompletion`扩展点，用来进行校验操作和分布式事务的二阶段提交操作。
 
 ```java
 /**
