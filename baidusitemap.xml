@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2020/05/09/Distributed-Transaction-4/</loc>
-    <lastmod>2020-05-17T13:57:14.783Z</lastmod>
+    <loc>http://blogxin.cn/2020/05/16/Distributed-Transaction-5/</loc>
+    <lastmod>2020-05-24T12:17:55.355Z</lastmod>
     <data>
         <display>
-        <title>从零开始写一个分布式事务框架(四)-事务管理器</title>
-        <pubTime>2020-05-09T07:00:00.000Z</pubTime>
+        <title>从零开始写一个分布式事务框架(五)-资源管理器</title>
+        <pubTime>2020-05-16T08:00:00.000Z</pubTime>
         
         <tag>架构</tag>
          
@@ -26,12 +26,34 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2020/05/05/Distributed-Transaction-3/</loc>
-    <lastmod>2020-05-10T15:11:49.918Z</lastmod>
+    <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-6/</loc>
+    <lastmod>2020-05-24T12:17:53.714Z</lastmod>
     <data>
         <display>
-        <title>从零开始写一个分布式事务框架(三)-事务记录</title>
-        <pubTime>2020-05-05T07:00:00.000Z</pubTime>
+        <title>从零开始写一个分布式事务框架(六)-事务协调器</title>
+        <pubTime>2020-05-24T07:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+        <tag>Transaction</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2020/02/16/Distributed-Transaction-1/</loc>
+    <lastmod>2020-05-24T12:17:12.027Z</lastmod>
+    <data>
+        <display>
+        <title>从零开始写一个分布式事务框架(一)</title>
+        <pubTime>2020-02-16T14:16:26.000Z</pubTime>
         
         <tag>架构</tag>
          
@@ -49,7 +71,7 @@
     
   <url>
     <loc>http://blogxin.cn/2020/05/04/Distributed-Transaction-2/</loc>
-    <lastmod>2020-05-10T15:11:48.472Z</lastmod>
+    <lastmod>2020-05-24T12:17:11.051Z</lastmod>
     <data>
         <display>
         <title>从零开始写一个分布式事务框架(二)-架构</title>
@@ -70,12 +92,34 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2020/02/16/Distributed-Transaction-1/</loc>
-    <lastmod>2020-05-10T15:11:47.461Z</lastmod>
+    <loc>http://blogxin.cn/2020/05/05/Distributed-Transaction-3/</loc>
+    <lastmod>2020-05-24T12:17:10.293Z</lastmod>
     <data>
         <display>
-        <title>从零开始写一个分布式事务框架(一)</title>
-        <pubTime>2020-02-16T14:16:26.000Z</pubTime>
+        <title>从零开始写一个分布式事务框架(三)-事务记录</title>
+        <pubTime>2020-05-05T07:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+        <tag>Transaction</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://blogxin.cn/2020/05/09/Distributed-Transaction-4/</loc>
+    <lastmod>2020-05-24T12:17:09.428Z</lastmod>
+    <data>
+        <display>
+        <title>从零开始写一个分布式事务框架(四)-事务管理器</title>
+        <pubTime>2020-05-09T07:00:00.000Z</pubTime>
         
         <tag>架构</tag>
          
