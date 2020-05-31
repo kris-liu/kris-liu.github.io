@@ -95,7 +95,7 @@ dt.job.namespace=pay_test_job	//job的zk路径namespace
     @Resource
     private TransactionManager dtTransactionManager;
 
-		@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public boolean execute(Xxx xxx) {
         dtTransactionManager.start();
       	//执行本地事务
@@ -104,13 +104,13 @@ dt.job.namespace=pay_test_job	//job的zk路径namespace
     }
 ```
 
-引入`TransactionManager`，在`Transactional`本地事务中，需要执行`dtTransactionManager.start();`开启分布式事务。
+引入`TransactionManager`，在`@Transactional`本地事务中，需要执行`dtTransactionManager.start();`开启一个分布式事务。
 
 
 
 
 
-### DEMO
+### 使用DEMO
 
 使用DT分布式事务组件的demo： https://github.com/kris-liu/DT/tree/master/dt-demo
 
@@ -119,8 +119,9 @@ dt.job.namespace=pay_test_job	//job的zk路径namespace
 1. 执行初始化SQL并初始化数据：https://github.com/kris-liu/DT/blob/master/dt-demo/sql/init.sql
 2. 启动`DemoAccountApplication`，`DemoCouponApplication`两个分支事务提供方。
 3. 启动`DemoPayApplication`分布式事务发起方，实现了一个同时使用余额和券两种渠道组合支付的接口demo。
-4. 请求接口http://127.0.0.1:8082/pay，参数：{"uid":"000001","orderId":"ORDER000002","amount":"200","channels":[{"channelId":"10","amount":"100","assetsId":""},{"channelId":"11","amount":"100","assetId":"COUPON000001"}]}
-5. 可以在分布式事务执行过程中的各个环节模拟异常，观察分布式事务会通过补偿达到最终一致。
+4. 请求测试接口http://127.0.0.1:8082/pay
+5. 参数：{"uid":"000001","orderId":"ORDER000002","amount":"200","channels":[{"channelId":"10","amount":"100","assetsId":""},{"channelId":"11","amount":"100","assetId":"COUPON000001"}]}
+6. 可以在分布式事务执行过程中的各个环节模拟异常，观察分布式事务会通过补偿达到最终一致。
 
 
 
