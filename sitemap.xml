@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blogxin.cn/2017/04/01/Netty-ServerBootstrap/</loc>
+    
+    <lastmod>2020-05-31T15:16:56.221Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogxin.cn/2020/05/31/Distributed-Transaction-9/</loc>
+    
+    <lastmod>2020-05-31T15:15:32.835Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
     
-    <lastmod>2020-05-31T15:02:32.241Z</lastmod>
+    <lastmod>2020-05-31T15:10:53.058Z</lastmod>
     
   </url>
   
@@ -159,13 +173,6 @@
     <loc>http://blogxin.cn/2017/04/23/Netty-DataPacket/</loc>
     
     <lastmod>2017-10-08T11:41:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogxin.cn/2017/04/01/Netty-ServerBootstrap/</loc>
-    
-    <lastmod>2017-10-08T11:41:30.000Z</lastmod>
     
   </url>
   
