@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
+    <lastmod>2020-05-31T15:28:57.951Z</lastmod>
+    <data>
+        <display>
+        <title>从零开始写一个分布式事务框架(八)-使用教程</title>
+        <pubTime>2020-05-24T14:00:00.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2020/05/31/Distributed-Transaction-9/</loc>
     <lastmod>2020-05-31T15:23:16.103Z</lastmod>
     <data>
@@ -11,9 +33,9 @@
         <title>从零开始写一个分布式事务框架(九)-RoadMap</title>
         <pubTime>2020-05-31T12:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -33,9 +55,9 @@
         <title>从零开始写一个分布式事务框架(七)-SpringBootStarter</title>
         <pubTime>2020-05-24T12:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -70,28 +92,6 @@
 
     
   <url>
-    <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
-    <lastmod>2020-05-31T15:10:53.058Z</lastmod>
-    <data>
-        <display>
-        <title>从零开始写一个分布式事务框架(八)-使用教程</title>
-        <pubTime>2020-05-24T14:00:00.000Z</pubTime>
-        
-        <tag>架构</tag>
-         
-        <tag>Transaction</tag>
-         
-         
-           
-             
-              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-6/</loc>
     <lastmod>2020-05-24T12:23:48.023Z</lastmod>
     <data>
@@ -99,9 +99,9 @@
         <title>从零开始写一个分布式事务框架(六)-事务协调器</title>
         <pubTime>2020-05-24T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -121,9 +121,9 @@
         <title>从零开始写一个分布式事务框架(三)-事务记录</title>
         <pubTime>2020-05-05T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -143,9 +143,9 @@
         <title>从零开始写一个分布式事务框架(五)-资源管理器</title>
         <pubTime>2020-05-16T08:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -165,9 +165,9 @@
         <title>从零开始写一个分布式事务框架(一)</title>
         <pubTime>2020-02-16T14:16:26.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -187,9 +187,9 @@
         <title>从零开始写一个分布式事务框架(二)-架构</title>
         <pubTime>2020-05-04T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -209,9 +209,9 @@
         <title>从零开始写一个分布式事务框架(四)-事务管理器</title>
         <pubTime>2020-05-09T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -231,9 +231,9 @@
         <title>分布式事务</title>
         <pubTime>2018-04-23T13:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -387,9 +387,9 @@
         <title>事务消息实现原理</title>
         <pubTime>2018-07-29T08:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
         <tag>MQ</tag>
          
@@ -412,9 +412,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Spring</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>Spring</tag>
          
          
            

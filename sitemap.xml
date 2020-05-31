@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
+    
+    <lastmod>2020-05-31T15:28:57.951Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blogxin.cn/2020/05/31/Distributed-Transaction-9/</loc>
     
     <lastmod>2020-05-31T15:23:16.103Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://blogxin.cn/2017/04/01/Netty-ServerBootstrap/</loc>
     
     <lastmod>2020-05-31T15:16:56.221Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
-    
-    <lastmod>2020-05-31T15:10:53.058Z</lastmod>
     
   </url>
   
