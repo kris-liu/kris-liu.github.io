@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
-    <lastmod>2020-05-31T15:28:57.951Z</lastmod>
+    <lastmod>2020-05-31T15:32:27.690Z</lastmod>
     <data>
         <display>
         <title>从零开始写一个分布式事务框架(八)-使用教程</title>
@@ -412,9 +412,9 @@
         <title>Spring AspectJ事务</title>
         <pubTime>2015-08-19T16:00:00.000Z</pubTime>
         
-        <tag>Transaction</tag>
-         
         <tag>Spring</tag>
+         
+        <tag>Transaction</tag>
          
          
            
