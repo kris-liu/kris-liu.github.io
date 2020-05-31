@@ -4,16 +4,38 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
+    <lastmod>2020-05-31T14:51:22.153Z</lastmod>
+    <data>
+        <display>
+        <title>从零开始写一个分布式事务框架(八)-使用教程</title>
+        <pubTime>2020-05-24T14:00:00.000Z</pubTime>
+        
+        <tag>Transaction</tag>
+         
+        <tag>架构</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-7/</loc>
-    <lastmod>2020-05-24T14:11:44.356Z</lastmod>
+    <lastmod>2020-05-24T14:12:20.857Z</lastmod>
     <data>
         <display>
         <title>从零开始写一个分布式事务框架(七)-SpringBootStarter</title>
         <pubTime>2020-05-24T12:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -33,9 +55,9 @@
         <title>从零开始写一个分布式事务框架(六)-事务协调器</title>
         <pubTime>2020-05-24T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -55,9 +77,9 @@
         <title>从零开始写一个分布式事务框架(三)-事务记录</title>
         <pubTime>2020-05-05T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -77,9 +99,9 @@
         <title>从零开始写一个分布式事务框架(五)-资源管理器</title>
         <pubTime>2020-05-16T08:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -99,9 +121,9 @@
         <title>从零开始写一个分布式事务框架(一)</title>
         <pubTime>2020-02-16T14:16:26.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -121,9 +143,9 @@
         <title>从零开始写一个分布式事务框架(二)-架构</title>
         <pubTime>2020-05-04T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -143,9 +165,9 @@
         <title>从零开始写一个分布式事务框架(四)-事务管理器</title>
         <pubTime>2020-05-09T07:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -165,9 +187,9 @@
         <title>分布式事务</title>
         <pubTime>2018-04-23T13:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
          
            
@@ -187,9 +209,9 @@
         <title>基于Spring+MyBatis实现一个分库分表、读写分离功能的工具库</title>
         <pubTime>2019-06-01T14:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Spring</tag>
+         
+        <tag>架构</tag>
          
         <tag>SpringBoot</tag>
          
@@ -321,9 +343,9 @@
         <title>事务消息实现原理</title>
         <pubTime>2018-07-29T08:00:00.000Z</pubTime>
         
-        <tag>架构</tag>
-         
         <tag>Transaction</tag>
+         
+        <tag>架构</tag>
          
         <tag>MQ</tag>
          
@@ -662,9 +684,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>异步</tag>
+         
+        <tag>源码</tag>
          
         <tag>线程池</tag>
          
@@ -770,9 +792,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
         <tag>读写锁</tag>
          
@@ -916,9 +938,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
          
            
@@ -942,9 +964,9 @@
          
         <tag>并发</tag>
          
-        <tag>锁</tag>
-         
         <tag>源码</tag>
+         
+        <tag>锁</tag>
          
          
            
@@ -992,9 +1014,9 @@
          
         <tag>并发</tag>
          
-        <tag>源码</tag>
-         
         <tag>异步</tag>
+         
+        <tag>源码</tag>
          
          
            
