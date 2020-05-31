@@ -72,7 +72,6 @@ deploy:
   type: git
   repo: 
     github: git@github.com:kris-liu/kris-liu.github.io.git
-    coding: git@git.coding.net:kris-liu/kris-liu.git
   branch: master
 
 # sitemap

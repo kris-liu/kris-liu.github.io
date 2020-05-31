@@ -7,8 +7,11 @@ tags: [Netty, 源码]
 
 > 本文使用`netty-4.1.5.Final`版本源码进行分析
 
-ServerBootstrap是Socket服务端的启动辅助类，用户通过ServerBootstrap可以方便的创建Netty的服务端，并加以定制。下面我们看一下服务端ServerBootstrap如何启动并对启动过程的源码进行分析。<!--more-->
-## ServerBootstrap服务端启动
+ServerBootstrap是Socket服务端的启动辅助类，用户通过ServerBootstrap可以方便的创建Netty的服务端，并加以定制。下面我们看一下服务端ServerBootstrap如何启动并对启动过程的源码进行分析。
+
+<!--more-->
+
+## ServerBootstrap服务端启动
 
 ```java
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
