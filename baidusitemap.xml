@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://blogxin.cn/2021/02/13/DDD/</loc>
+    <lastmod>2021-02-15T11:48:19.883Z</lastmod>
+    <data>
+        <display>
+        <title>领域驱动设计学习</title>
+        <pubTime>2021-02-12T16:00:00.000Z</pubTime>
+        
+        <tag>架构</tag>
+         
+        <tag>DDD</tag>
+         
+         
+           
+             
+              <breadCrumb title="架构" url="http://blogxin.cn/categories/%E6%9E%B6%E6%9E%84/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://blogxin.cn/2020/05/24/Distributed-Transaction-8/</loc>
     <lastmod>2020-05-31T15:39:09.894Z</lastmod>
     <data>
@@ -253,9 +275,9 @@
         <title>基于Spring+MyBatis实现一个分库分表、读写分离功能的工具库</title>
         <pubTime>2019-06-01T14:00:00.000Z</pubTime>
         
-        <tag>Spring</tag>
-         
         <tag>架构</tag>
+         
+        <tag>Spring</tag>
          
         <tag>SpringBoot</tag>
          
